@@ -52,7 +52,6 @@
 import Layout from '@/Layouts/Main.vue'
 import ExternalLink from '@/Shared/ExternalLink.vue'
 import * as timeago from 'timeago.js'
-import { dashboard } from '@/api'
 
 export default {
   metaInfo: { title: 'Dashboard' },

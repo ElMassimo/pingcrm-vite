@@ -5,7 +5,7 @@ const pages = import.meta.env.SSR
 
 export async function resolvePage (name: string) {
   const page = pages[`./Pages/${name}.vue`]
-  
+
   if (!page)
     throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`)
 

@@ -55,7 +55,7 @@
 <script>
 export default {
   props: {
-    value: File,
+    value: {},
     label: {
       type: String,
       default: null,

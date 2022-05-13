@@ -116,7 +116,7 @@ export default {
       }
     },
   },
-  created () {
+  mounted () {
     const onEscape = (e) => {
       if (this.open && e.keyCode === 27)
         this.close()
@@ -131,12 +131,12 @@ export default {
       this.showModal = true
       this.showBackdrop = true
       this.showContent = true
-      document.body.style.setProperty('overflow', 'hidden')
+      if (!import.meta.env.SSR) document.body.style.setProperty('overflow', 'hidden')
     },
     close () {
       this.showBackdrop = false
       this.showContent = false
-      document.body.style.removeProperty('overflow')
+      if (!import.meta.env.SSR) document.body.style.removeProperty('overflow')
     },
   },
 }

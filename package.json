@@ -5,9 +5,9 @@
     "lint": "eslint --ext js,vue,ts,md --format node_modules/eslint-formatter-friendly app/javascript"
   },
   "dependencies": {
-    "@inertiajs/inertia": "^0.10.1",
-    "@inertiajs/inertia-vue": "^0.7.2",
-    "@inertiajs/progress": "^0.2.5",
+    "@inertiajs/inertia": "^0.11.0",
+    "@inertiajs/inertia-vue": "^0.8.0",
+    "@inertiajs/progress": "^0.2.7",
     "@js-from-routes/core": "^1.0.1",
     "@js-from-routes/inertia": "^1.0.3",
     "@popperjs/core": "^2.9.3",
@@ -19,6 +19,7 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@inertiajs/server": "^0.1.0",
     "@mussi/eslint-config": "^0.5.0",
     "@types/node": "^16.6.1",
     "autoprefixer": "^10.3.1",
@@ -32,8 +33,9 @@
     "vite": "^2.9.1",
     "vite-plugin-full-reload": "^0.2.2",
     "vite-plugin-ruby": "^3.0.9",
-    "vite-plugin-vue2": "^1.8.0",
-    "vite-plugin-windicss": "^1.2.7",
+    "vite-plugin-vue2": "^1.9.3",
+    "vite-plugin-windicss": "^1.8.4",
+    "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.2.0"
   },
   "resolutions": {

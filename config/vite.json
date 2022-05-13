@@ -12,5 +12,8 @@
   "test": {
     "autoBuild": true,
     "publicOutputDir": "vite-test"
+  },
+  "production": {
+    "ssrBuildEnabled": true
   }
 }

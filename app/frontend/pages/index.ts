@@ -1,3 +1,5 @@
+import DefaultLayout from '~/layouts/DefaultLayout.vue'
+
 // NOTE: Optimize the SSR bundle by not splitting by page.
 const pages = import.meta.env.SSR
   ? import.meta.globEagerDefault('./Pages/**/*.vue')
@@ -9,7 +11,10 @@ export async function resolvePage (name: string) {
   if (!page)
     throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`)
 
-  return import.meta.env.SSR
-    ? page
-    : (await page()).default
+  const resolvedPage  = import.meta.env.SSR ? page : (await page()).default
+
+  return {
+    layout: DefaultLayout,
+    ...resolvedPage,
+  }
 }

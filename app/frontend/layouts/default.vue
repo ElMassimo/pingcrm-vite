@@ -1,5 +1,13 @@
+<script setup lang="ts">
+import BaseLayout from '~/Layouts/BaseLayout.vue'
+import { dashboard, users, usersSessions } from '~/api'
+import { useUser } from '~/composables/user'
+
+const { user } = useUser()
+</script>
+
 <template>
-  <minimal-layout>
+  <BaseLayout>
     <div class="md:flex md:flex-col">
       <div
         class="md:h-screen md:flex md:flex-col"
@@ -8,7 +16,7 @@
           <div class="bg-indigo-900 md:flex-shrink-0 md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
             <inertia-link
               class="mt-1"
-              :href="routes.dashboard"
+              :href="dashboard.list.path()"
               aria-label="Home"
               role="navigation"
             >
@@ -38,7 +46,7 @@
           </div>
           <div class="bg-white border-b w-full p-4 md:py-0 md:px-12 text-sm md:text-md flex justify-between items-center">
             <div class="mt-1 mr-4">
-              {{ $page.props.auth.user.account.name }}
+              {{ user.name }}
             </div>
             <dropdown
               class="mt-1"
@@ -47,7 +55,7 @@
             >
               <div class="flex items-center cursor-pointer select-none group">
                 <div class="text-gray-800 group-hover:text-indigo-600 focus:text-indigo-600 mr-1 whitespace-nowrap">
-                  {{ $page.props.auth.user.first_name }} <span class="hidden md:inline">{{ $page.props.auth.user.last_name }}</span>
+                  {{ user.first_name }} <span class="hidden md:inline">{{ user.last_name }}</span>
                 </div>
                 <icon
                   class="w-5 h-5 group-hover:fill-indigo-600 fill-gray-800 focus:fill-indigo-600"
@@ -61,20 +69,20 @@
                 <inertia-link
                   class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
                   role="navigation"
-                  :href="routes.profile"
+                  :href="users.edit.path(user)"
                 >
                   My Profile
                 </inertia-link>
                 <inertia-link
                   class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
                   role="navigation"
-                  :href="routes.users"
+                  :href="users.list.path()"
                 >
                   Manage Users
                 </inertia-link>
                 <inertia-link
                   class="block w-full text-left px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  :href="routes.signOut"
+                  :href="usersSessions.destroy.path()"
                   method="delete"
                   as="button"
                 >
@@ -96,35 +104,5 @@
         </div>
       </div>
     </div>
-  </minimal-layout>
+  </BaseLayout>
 </template>
-
-<script>
-import MinimalLayout from '@/Layouts/Minimal.vue'
-import Dropdown from '@/Shared/Dropdown.vue'
-import FlashMessages from '@/Shared/FlashMessages.vue'
-import Icon from '@/Shared/Icon.vue'
-import Logo from '@/Shared/Logo.vue'
-import MainMenu from '@/Shared/MainMenu.vue'
-
-export default {
-  components: {
-    MinimalLayout,
-    Dropdown,
-    FlashMessages,
-    Icon,
-    Logo,
-    MainMenu,
-  },
-  computed: {
-    routes () {
-      return {
-        dashboard: this.$api.dashboard.list.path(),
-        profile: this.$api.users.edit.path(this.$page.props.auth.user),
-        users: this.$api.users.list.path(),
-        signOut: this.$api.usersSessions.destroy.path(),
-      }
-    },
-  },
-}
-</script>

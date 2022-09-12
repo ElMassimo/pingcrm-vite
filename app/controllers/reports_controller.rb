@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
   def index
-    render inertia: 'Reports/Index', props: {}
+    render_page
   end
 end

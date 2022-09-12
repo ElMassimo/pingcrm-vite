@@ -145,13 +145,10 @@
 </template>
 
 <script>
-import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
-import mapValues from 'lodash/mapValues'
-import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Shared/SearchFilter.vue'
-import throttle from 'lodash/throttle'
-import UsersApi from '@/api/UsersApi'
+import Icon from '~/components/Icon.vue'
+import { clean, reset, throttle } from '~/helpers/object'
+import SearchFilter from '~/components/SearchFilter.vue'
+import { users as usersApi } from '~/api'
 
 export default {
   metaInfo: { title: 'Users' },
@@ -159,7 +156,6 @@ export default {
     Icon,
     SearchFilter,
   },
-  layout: Layout,
   props: {
     users: {
       type: Array,
@@ -186,8 +182,8 @@ export default {
   watch: {
     form: {
       handler: throttle(function () {
-        const query = pickBy(this.form)
-        UsersApi.list({
+        const query = clean(this.form)
+        usersApi.index({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -200,10 +196,10 @@ export default {
   },
   methods: {
     pathToEdit (user) {
-      return UsersApi.edit.path(user)
+      return usersApi.edit.path(user)
     },
     reset () {
-      this.form = mapValues(this.form, () => null)
+      this.form = reset(this.form)
     },
   },
 }

@@ -129,16 +129,13 @@
 </template>
 
 <script>
-import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
-import mapValues from 'lodash/mapValues'
-import Pagination from '@/Shared/Pagination.vue'
-import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Shared/SearchFilter.vue'
-import Modal from '@/Shared/Modal.vue'
+import Icon from '~/components/Icon.vue'
+import { clean, reset, throttle } from '~/helpers/object'
+import Pagination from '~/components/Pagination.vue'
+import SearchFilter from '~/components/SearchFilter.vue'
+import Modal from '~/components/Modal.vue'
 import NewOrganization from '@/Pages/Organizations/_New.vue'
-import throttle from 'lodash/throttle'
-import OrganizationsApi from '@/api/OrganizationsApi'
+import api from '~/api'
 
 export default {
   metaInfo: { title: 'Organizations' },
@@ -149,7 +146,6 @@ export default {
     Modal,
     NewOrganization,
   },
-  layout: Layout,
   props: {
     organizations: {
       type: Object,
@@ -172,8 +168,8 @@ export default {
   watch: {
     form: {
       handler: throttle(function () {
-        const query = pickBy(this.form)
-        OrganizationsApi.list({
+        const query = clean(this.form)
+        api.organizations.index({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -186,10 +182,10 @@ export default {
   },
   methods: {
     pathToEdit (organization) {
-      return OrganizationsApi.edit.path(organization)
+      return api.organizations.edit.path(organization)
     },
     reset () {
-      this.form = mapValues(this.form, () => null)
+      this.form = reset(this.form)
     },
   },
 }

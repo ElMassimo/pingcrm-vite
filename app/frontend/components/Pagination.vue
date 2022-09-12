@@ -1,16 +1,14 @@
 <template>
   <div class="mt-6 -mb-1 flex flex-wrap">
-    <template v-for="(link, key) in links">
+    <template v-for="(link, key) in links" :key="key">
       <div
         v-if="link.label === 'gap'"
-        :key="key"
         class="mr-1 mb-1 px-4 py-3 text-sm text-gray-500"
       >
         …
       </div>
       <div
         v-else-if="link.url === null"
-        :key="key"
         class="mr-1 mb-1 px-4 py-3 text-sm border rounded text-gray-700 border-gray-400"
         :class="{ 'ml-auto': link.label === 'Next' }"
       >
@@ -18,7 +16,6 @@
       </div>
       <inertia-link
         v-else
-        :key="key"
         class="mr-1 mb-1 px-4 py-3 text-sm border rounded text-gray-900 border-gray-400 hover:bg-white focus:border-indigo-500 focus:text-indigo-500"
         :class="{ 'bg-white': link.active, 'ml-auto': link.label === 'Next' }"
         :href="link.url"

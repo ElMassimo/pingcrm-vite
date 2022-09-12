@@ -16,4 +16,9 @@ class ApplicationController < ActionController::Base
     pagy, paged_items = pagy(items)
     { data: serializer.many(paged_items), meta: pagy_metadata(pagy) }
   end
+
+  # Internal: Render a Vue page that matches the current controller name and action.
+  def render_page(**props)
+    render inertia: "#{controller_name}/#{action_name}", props: props
+  end
 end

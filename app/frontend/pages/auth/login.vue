@@ -1,4 +1,23 @@
-<template>
+<script setup lang="ts">
+import { usersSessions } from '@/api'
+import { useForm } from '~/composables/form'
+
+const form = useForm({
+  user: {
+    email: 'johndoe@example.com',
+    password: 'secret',
+    remember_me: null,
+  },
+})
+const { user } = $(form)
+
+function login (form: any) {
+  usersSessions.create({ form })
+}
+</script>
+
+<template layout="base">
+  <Head title="Login"/>
   <div class="p-6 bg-indigo-800 min-h-screen flex justify-center items-center">
     <div class="w-full max-w-md">
       <logo
@@ -17,7 +36,7 @@
           </h1>
           <div class="mx-auto mt-6 w-24 border-b-2"/>
           <text-input
-            v-model="form.user.email"
+            v-model="user.email"
             class="mt-10"
             label="Email"
             type="email"
@@ -25,7 +44,7 @@
             autocapitalize="off"
           />
           <text-input
-            v-model="form.user.password"
+            v-model="user.password"
             class="mt-6"
             label="Password"
             type="password"
@@ -36,7 +55,7 @@
           >
             <input
               id="remember"
-              v-model="form.user.remember_me"
+              v-model="user.remember_me"
               class="mr-1"
               type="checkbox"
             >
@@ -61,39 +80,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import Layout from '@/Layouts/Minimal.vue'
-import FlashMessages from '@/Shared/FlashMessages.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
-import Logo from '@/Shared/Logo.vue'
-import TextInput from '@/Shared/TextInput.vue'
-import { usersSessions } from '@/api'
-
-export default {
-  metaInfo: { title: 'Login' },
-  components: {
-    FlashMessages,
-    LoadingButton,
-    Logo,
-    TextInput,
-  },
-  layout: Layout,
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: {
-          email: 'johndoe@example.com',
-          password: 'secret',
-          remember_me: null,
-        },
-      }),
-    }
-  },
-  methods: {
-    login (form) {
-      usersSessions.create({ form })
-    },
-  },
-}
-</script>

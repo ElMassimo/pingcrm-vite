@@ -1,27 +1,25 @@
-import { createInertiaApp } from '@inertiajs/inertia-vue'
-import type { CreateInertiaAppProps } from '@inertiajs/inertia-vue'
-import Vue from '~/vue'
+import { createInertiaApp } from '@inertiajs/inertia-vue3'
+import type { CreateInertiaAppProps } from '@inertiajs/inertia-vue3'
+import { createApp as createVueApp, h } from 'vue'
 import { resolvePage } from '~/pages'
+import api from '~/api'
 
-export function createApp (options: Omit<CreateInertiaAppProps, 'resolve' | 'setup'>) {
+export function createApp (options?: Omit<CreateInertiaAppProps, 'resolve' | 'setup'>) {
   return createInertiaApp({
     resolve: resolvePage,
-    setup ({ plugin, app, props, el }) {
-      Vue.use(plugin)
 
-      const vueApp = new Vue({
-        render: h => h(app, props),
-        metaInfo: {
-          titleTemplate (title) {
-            return title ? `${title} - PingCRM on Vite Ruby` : 'PingCRM on Vite Ruby'
-          },
-        },
-      })
+    title: title => [title, 'PingCRM on Vite Ruby'].filter(x => x).join(' - '),
+
+    setup ({ plugin, app: InertiaApp, props, el }) {
+      const app = createVueApp({ render: () => h(InertiaApp, props) })
+        .use(plugin)
+
+      app.config.globalProperties.$api = api
 
       if (el)
-        vueApp.$mount(el)
+        app.mount(el)
 
-      return vueApp
+      return app
     },
     ...options,
   })

@@ -44,8 +44,7 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
-import ExternalLink from '@/Shared/ExternalLink.vue'
+import ExternalLink from '~/components/ExternalLink.vue'
 import * as timeago from 'timeago.js'
 
 export default {
@@ -53,7 +52,6 @@ export default {
   components: {
     ExternalLink,
   },
-  layout: Layout,
   props: {
     release: { type: Object, required: true },
     repo: { type: Object, required: true },

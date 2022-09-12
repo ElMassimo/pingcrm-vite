@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="$attrs.class">
     <label
       v-if="label"
       class="form-label"
@@ -8,11 +8,11 @@
     <textarea
       :id="id"
       ref="input"
-      v-bind="$attrs"
+      v-bind="{ ...$attrs, class: null }"
       class="form-textarea"
       :class="{ error: errors.length }"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
     />
     <div
       v-if="errors.length"
@@ -24,16 +24,19 @@
 </template>
 
 <script>
+import { v4 as uuid } from 'uuid'
+
 export default {
   inheritAttrs: false,
+  emits: ['update:modelValue'],
   props: {
     id: {
       type: String,
       default () {
-        return `textarea-input-${this._uid}`
+        return `textarea-input-${uuid()}`
       },
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },

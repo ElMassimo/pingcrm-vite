@@ -8,14 +8,14 @@ class OrganizationsController < ApplicationController
                     trash_filter(params[:trashed]).
                     order(:name)
 
-    render inertia: 'Organizations/Index', props: {
+    render_page(
       organizations: paginate_data(organizations, serializer: OrganizationSerializer),
       filters: params.slice(:search, :trashed)
-    }
+    )
   end
 
   def edit
-    render inertia: 'Organizations/Edit', props: {
+    render_page(
       organization: jbuilder do |json|
         json.(@organization, :id, :name, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
       end,
@@ -24,7 +24,7 @@ class OrganizationsController < ApplicationController
           json.array! @organization.contacts.order_by_name, :id, :name, :phone, :city, :deleted_at
         end
       }
-    }
+    )
   end
 
   def create

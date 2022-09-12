@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import SelectInput from '@/Shared/SelectInput.vue'
-import TextInput from '@/Shared/TextInput.vue'
-import FileInput from '@/Shared/FileInput.vue'
+import SelectInput from '~/components/SelectInput.vue'
+import TextInput from '~/components/TextInput.vue'
+import FileInput from '~/components/FileInput.vue'
 
 export default {
   components: {
@@ -64,8 +64,9 @@ export default {
     TextInput,
     FileInput,
   },
+  emits: ['update:modelValue', 'submit'],
   props: {
-    value: {
+    modelValue: {
       type: Object,
       required: true,
     },
@@ -73,10 +74,10 @@ export default {
   computed: {
     form: {
       get () {
-        return this.value
+        return this.modelValue
       },
       set (val) {
-        this.$emit('input', val)
+        this.$emit('update:modelValue', val)
       },
     },
   },

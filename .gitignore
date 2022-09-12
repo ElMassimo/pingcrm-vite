@@ -43,4 +43,5 @@ yarn-debug.log*
 /public/vite*
 node_modules
 *.local
+.vite-inspect
 .DS_Store

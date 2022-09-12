@@ -1,7 +1,5 @@
 {
   "all": {
-    "devServerConnectTimeout": 0.01,
-    "sourceCodeDir": "app/javascript",
     "watchAdditionalPaths": []
   },
   "development": {
@@ -11,7 +9,8 @@
   },
   "test": {
     "autoBuild": true,
-    "publicOutputDir": "vite-test"
+    "publicOutputDir": "vite-test",
+    "port": 3037
   },
   "production": {
     "ssrBuildEnabled": true

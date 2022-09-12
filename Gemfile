@@ -30,12 +30,21 @@ gem 'vite_rails', '~> 3.0'
 # Allows to register per-request thread-safe variables (https://github.com/ElMassimo/request_store_rails)
 gem 'request_store_rails'
 
+# Generate TypeScript interfaces from JSON serializers (https://github.com/ElMassimo/types_from_serialiezrs)
+gem 'types_from_serializers'
+
 group :development, :test do
   # Ruby fast debugger - base + CLI (https://github.com/deivid-rodriguez/byebug)
   gem 'pry-byebug'
 
+  # Use rules from standard, and tweak them to make sense.
+  gem 'standard', require: false
+
   # Automatic Ruby code style checking tool. (https://github.com/rubocop-hq/rubocop)
   gem 'rubocop', require: false
+
+  # Lint rules for RSpec tests.
+  gem 'rubocop-rspec', require: false
 
   # Automatic performance checking tool for Ruby code. (https://github.com/rubocop-hq/rubocop-performance)
   gem 'rubocop-performance', require: false

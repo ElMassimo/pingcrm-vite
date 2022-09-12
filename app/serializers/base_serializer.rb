@@ -4,7 +4,9 @@ OjSerializers::Serializer::ALLOWED_INSTANCE_VARIABLES |= ['scope']
 
 # Internal: Provides simple integration with cancancan.
 class BaseSerializer < Oj::Serializer
-  private
+  include TypesFromSerializer::DSL
+
+private
 
   delegate :can?, :polymorphic_url, to: :scope
 

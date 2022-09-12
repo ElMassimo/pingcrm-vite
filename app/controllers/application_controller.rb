@@ -10,18 +10,7 @@ class ApplicationController < ActionController::Base
   # Used in BaseSerializer.
   before_action { RequestLocals[:current_controller] = self }
 
-  inertia_share auth: -> {
-    {
-      user: current_user.as_json(
-        only: [ :id, :first_name, :last_name ],
-        include: {
-          account: {
-            only: [ :id, :name ]
-          }
-        }
-      )
-    }
-  }
+  inertia_share user: -> { CurrentUserSerializer.one_if(current_user) }
 
   def paginate_data(items, serializer:)
     pagy, paged_items = pagy(items)

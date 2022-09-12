@@ -6,7 +6,7 @@ export default defineConfig({
     include: [
       'app/views/**/*.{html,erb}',
       'app/helpers/**/*.rb',
-      'app/javascript/**/*.{vue,js,ts,jsx,tsx}',
+      'app/frontend/**/*.{vue,js,ts,jsx,tsx}',
     ],
   },
   theme: {

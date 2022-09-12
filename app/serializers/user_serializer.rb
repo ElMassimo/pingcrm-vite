@@ -4,11 +4,13 @@
 class UserSerializer < BaseSerializer
   attributes(:id, :email, :name, :owner, :deleted_at)
 
-  attribute def photo
+  type :string
+  def photo
     polymorphic_url(user.photo.variant(resize_to_fill: [64, 64])) if user.photo.attached?
   end
 
-  attribute def can
+  type :object
+  def can
     { edit_user: can?(:edit, user) }
   end
 end

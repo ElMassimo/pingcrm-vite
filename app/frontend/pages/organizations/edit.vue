@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
         class="text-indigo-500 hover:text-indigo-800"
-        :href="$api.organizations.list.path()"
+        :href="$api.organizations.index.path()"
       >
         Organizations
       </inertia-link>
@@ -124,11 +124,10 @@
 </template>
 
 <script>
-import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
-import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import _ from 'lodash'
+import Icon from '~/components/Icon.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
+import TrashedMessage from '~/components/TrashedMessage.vue'
+import { omit } from '~/helpers/object'
 
 import { organizations } from '@/api'
 import OrganizationForm from './Form.vue'
@@ -143,7 +142,6 @@ export default {
     OrganizationForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     organization: {
       type: Object,
@@ -158,7 +156,7 @@ export default {
   data () {
     return {
       form: this.$inertia.form({
-        organization: _.omit(this.organization, 'id', 'deleted_at'),
+        organization: omit(this.organization, 'id', 'deleted_at'),
       }),
     }
   },

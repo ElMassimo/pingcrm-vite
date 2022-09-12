@@ -1,7 +1,7 @@
 <!-- Source: https://github.com/adamwathan/vue-tailwind-examples -->
 
 <template>
-  <portal to="modal">
+  <teleport to="#modals">
     <div
       v-if="showModal"
       class="fixed inset-0"
@@ -70,11 +70,12 @@
         </div>
       </transition>
     </div>
-  </portal>
+  </teleport>
 </template>
 
 <script>
 export default {
+  emits: ['close'],
   props: {
     open: {
       type: Boolean,
@@ -117,14 +118,10 @@ export default {
     },
   },
   mounted () {
-    const onEscape = (e) => {
-      if (this.open && e.keyCode === 27)
-        this.close()
-    }
-    document.addEventListener('keydown', onEscape)
-    this.$once('hook:destroyed', () => {
-      document.removeEventListener('keydown', onEscape)
-    })
+    document.addEventListener('keydown', this.onEscape)
+  },
+  unmounted() {
+    document.removeEventListener('keydown', this.onEscape);
   },
   methods: {
     show () {
@@ -137,6 +134,10 @@ export default {
       this.showBackdrop = false
       this.showContent = false
       if (!import.meta.env.SSR) document.body.style.removeProperty('overflow')
+    },
+    onEscape () {
+      if (this.open && e.key === 'Escape')
+        this.close()
     },
   },
 }

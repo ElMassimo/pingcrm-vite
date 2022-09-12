@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
         class="text-indigo-400 hover:text-indigo-600"
-        :href="$api.contacts.list.path()"
+        :href="$api.contacts.index.path()"
       >
         Contacts
       </inertia-link>
@@ -30,8 +30,7 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
 import ContactForm from './Form.vue'
 
 export default {
@@ -40,7 +39,6 @@ export default {
     LoadingButton,
     ContactForm,
   },
-  layout: Layout,
   props: {
     organizations: {
       type: Array,

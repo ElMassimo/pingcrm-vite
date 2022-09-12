@@ -4,9 +4,9 @@
     @click="show = true"
   >
     <slot/>
-    <portal
+    <teleport
       v-if="show"
-      to="dropdown"
+      to="#dropdown"
     >
       <div>
         <div
@@ -16,12 +16,12 @@
         <div
           ref="dropdown"
           style="position: absolute; z-index: 99999;"
-          @click.stop="show = autoClose ? false : true"
+          @click.stop="show = !autoClose"
         >
           <slot name="dropdown"/>
         </div>
       </div>
-    </portal>
+    </teleport>
   </button>
 </template>
 
@@ -33,10 +33,6 @@ export default {
     placement: {
       type: String,
       default: 'bottom-end',
-    },
-    boundary: {
-      type: String,
-      default: 'scrollParent',
     },
     autoClose: {
       type: Boolean,
@@ -58,7 +54,7 @@ export default {
               {
                 name: 'preventOverflow',
                 options: {
-                  boundariesElement: this.boundary,
+                  altBoundary: true,
                 },
               },
             ],
@@ -72,7 +68,7 @@ export default {
   },
   mounted () {
     document.addEventListener('keydown', (e) => {
-      if (e.keyCode === 27)
+      if (e.key === 'Escape')
         this.show = false
     })
   },

@@ -9,7 +9,7 @@ import components from 'unplugin-vue-components/vite'
 import layouts from './app/frontend/vite-plugins/layouts'
 import reloadOnChange from 'vite-plugin-full-reload'
 
-const app = 'app/frontend'
+import inspect from 'vite-plugin-inspect'
 
 export default defineConfig({
   plugins: [
@@ -27,7 +27,8 @@ export default defineConfig({
       imports: ['vue'],
     }),
     components({
-      dirs: [`${app}/components`],
+      dts: true,
+      dirs: [`components`],
       extensions: ['vue', 'ts'],
     }),
     layouts(),
@@ -37,5 +38,10 @@ export default defineConfig({
      * Build
      */
     splitVendorChunkPlugin(),
+
+    /**
+     * Debug
+     */
+    process.env.DEBUG && inspect(),
   ],
 })

@@ -3,7 +3,6 @@
 // logic in a relevant structure within app/javascript and only use these
 // entrypoints to reference that code so it'll be compiled.
 import 'virtual:windi.css'
-import 'virtual:windi-devtools'
 import '~/styles/application.css'
 
 import { InertiaProgress } from '@inertiajs/progress'

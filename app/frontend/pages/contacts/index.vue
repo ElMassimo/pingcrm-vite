@@ -137,15 +137,12 @@
 </template>
 
 <script>
-import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
-import mapValues from 'lodash/mapValues'
-import Pagination from '@/Shared/Pagination.vue'
-import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Shared/SearchFilter.vue'
-import throttle from 'lodash/throttle'
+import Icon from '~/components/Icon.vue'
+import { clean, reset, throttle } from '~/helpers/object'
+import Pagination from '~/components/Pagination.vue'
+import SearchFilter from '~/components/SearchFilter.vue'
 
-import ContactsApi from '@/api/ContactsApi'
+import { contacts as contactsApi } from '~/api'
 
 export default {
   metaInfo: { title: 'Contacts' },
@@ -154,7 +151,6 @@ export default {
     Pagination,
     SearchFilter,
   },
-  layout: Layout,
   props: {
     contacts: {
       type: Object,
@@ -176,8 +172,8 @@ export default {
   watch: {
     form: {
       handler: throttle(function () {
-        const query = pickBy(this.form)
-        ContactsApi.list({
+        const query = clean(this.form)
+        contactsApi.index({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -190,10 +186,10 @@ export default {
   },
   methods: {
     pathToEdit (contact) {
-      return ContactsApi.edit.path(contact)
+      return contactsApi.edit.path(contact)
     },
     reset () {
-      this.form = mapValues(this.form, () => null)
+      this.form = reset(this.form)
     },
   },
 }

@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import Icon from '@/Shared/Icon.vue'
+import Icon from '~/components/Icon.vue'
 
 export default {
   components: {
@@ -81,10 +81,10 @@ export default {
   computed: {
     routes () {
       return {
-        root: this.$api.dashboard.list.path(),
-        organizations: this.$api.organizations.list.path(),
-        contacts: this.$api.contacts.list.path(),
-        reports: this.$api.reports.list.path(),
+        root: this.$api.dashboard.index.path(),
+        organizations: this.$api.organizations.index.path(),
+        contacts: this.$api.contacts.index.path(),
+        reports: this.$api.reports.index.path(),
       }
     },
   },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseLayout from '~/Layouts/BaseLayout.vue'
+import BaseLayout from '~/layouts/BaseLayout.vue'
 import { dashboard, users, usersSessions } from '~/api'
 import { useUser } from '~/composables/user'
 
@@ -16,7 +16,7 @@ const { user } = useUser()
           <div class="bg-indigo-900 md:flex-shrink-0 md:w-56 px-6 py-4 flex items-center justify-between md:justify-center">
             <inertia-link
               class="mt-1"
-              :href="dashboard.list.path()"
+              :href="dashboard.index.path()"
               aria-label="Home"
               role="navigation"
             >
@@ -36,12 +36,11 @@ const { user } = useUser()
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
               ><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-              <div
-                slot="dropdown"
-                class="mt-2 px-8 py-4 shadow-lg bg-indigo-800 rounded"
-              >
-                <main-menu/>
-              </div>
+              <template #dropdown>
+                <div class="mt-2 px-8 py-4 shadow-lg bg-indigo-800 rounded">
+                  <main-menu/>
+                </div>
+              </template>
             </dropdown>
           </div>
           <div class="bg-white border-b w-full p-4 md:py-0 md:px-12 text-sm md:text-md flex justify-between items-center">
@@ -62,33 +61,32 @@ const { user } = useUser()
                   name="cheveron-down"
                 />
               </div>
-              <div
-                slot="dropdown"
-                class="mt-2 py-2 shadow-xl bg-white rounded text-sm"
-              >
-                <inertia-link
-                  class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  role="navigation"
-                  :href="users.edit.path(user)"
-                >
-                  My Profile
-                </inertia-link>
-                <inertia-link
-                  class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  role="navigation"
-                  :href="users.list.path()"
-                >
-                  Manage Users
-                </inertia-link>
-                <inertia-link
-                  class="block w-full text-left px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  :href="usersSessions.destroy.path()"
-                  method="delete"
-                  as="button"
-                >
-                  Logout
-                </inertia-link>
-              </div>
+              <template #dropdown>
+                <div class="mt-2 py-2 shadow-xl bg-white rounded text-sm">
+                  <inertia-link
+                    class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    role="navigation"
+                    :href="users.edit.path(user)"
+                  >
+                    My Profile
+                  </inertia-link>
+                  <inertia-link
+                    class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    role="navigation"
+                    :href="users.index.path()"
+                  >
+                    Manage Users
+                  </inertia-link>
+                  <inertia-link
+                    class="block w-full text-left px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    :href="usersSessions.destroy.path()"
+                    method="delete"
+                    as="button"
+                  >
+                    Logout
+                  </inertia-link>
+                </div>
+              </template>
             </dropdown>
           </div>
         </div>

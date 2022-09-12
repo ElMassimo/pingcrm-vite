@@ -4,7 +4,7 @@
       <h1 class="font-bold text-3xl">
         <inertia-link
           class="text-indigo-500 hover:text-indigo-600"
-          :href="$api.users.list.path()"
+          :href="$api.users.index.path()"
         >
           Users
         </inertia-link>
@@ -57,9 +57,8 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
-import TrashedMessage from '@/Shared/TrashedMessage.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
+import TrashedMessage from '~/components/TrashedMessage.vue'
 import { users } from '@/api'
 import UserForm from './Form.vue'
 
@@ -74,7 +73,6 @@ export default {
     UserForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     user: {
       type: Object,

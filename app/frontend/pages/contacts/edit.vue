@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
         class="text-indigo-500 hover:text-indigo-800"
-        :href="$api.contacts.list.path()"
+        :href="$api.contacts.index.path()"
       >
         Contacts
       </inertia-link>
@@ -47,10 +47,9 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
-import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import _ from 'lodash'
+import LoadingButton from '~/components/LoadingButton.vue'
+import TrashedMessage from '~/components/TrashedMessage.vue'
+import { omit } from '~/helpers/object'
 import ContactForm from './Form.vue'
 
 export default {
@@ -64,7 +63,6 @@ export default {
     ContactForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     contact: {
       type: Object,
@@ -79,7 +77,7 @@ export default {
   data () {
     return {
       form: this.$inertia.form({
-        contact: _.omit(this.contact, 'id', 'deleted_at'),
+        contact: omit(this.contact, 'id', 'deleted_at'),
       }),
     }
   },

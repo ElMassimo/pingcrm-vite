@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
         class="text-indigo-400 hover:text-indigo-600"
-        :href="$api.users.list.path()"
+        :href="$api.users.index.path()"
       >
         Users
       </inertia-link>
@@ -29,8 +29,7 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
-import LoadingButton from '@/Shared/LoadingButton.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
 import UserForm from './Form.vue'
 
 export default {
@@ -39,7 +38,6 @@ export default {
     LoadingButton,
     UserForm,
   },
-  layout: Layout,
   props: {
     user: {
       type: Object,

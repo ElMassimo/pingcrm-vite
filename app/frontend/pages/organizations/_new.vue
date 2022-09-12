@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import LoadingButton from '@/Shared/LoadingButton.vue'
+import LoadingButton from '~/components/LoadingButton.vue'
 import { organizations } from '@/api'
 import OrganizationForm from './Form.vue'
 
@@ -27,6 +27,7 @@ export default {
     OrganizationForm,
   },
   remember: 'form',
+  emits: ['success'],
   data () {
     return {
       form: this.$inertia.form({

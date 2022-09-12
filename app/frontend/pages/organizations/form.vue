@@ -63,16 +63,17 @@
 </template>
 
 <script>
-import SelectInput from '@/Shared/SelectInput.vue'
-import TextInput from '@/Shared/TextInput.vue'
+import SelectInput from '~/components/SelectInput.vue'
+import TextInput from '~/components/TextInput.vue'
 
 export default {
   components: {
     SelectInput,
     TextInput,
   },
+  emits: ['update:modelValue', 'submit'],
   props: {
-    value: {
+    modelValue: {
       type: Object,
       required: true,
     },
@@ -80,10 +81,10 @@ export default {
   computed: {
     form: {
       get () {
-        return this.value
+        return this.modelValue
       },
       set (val) {
-        this.$emit('input', val)
+        this.$emit('update:modelValue', val)
       },
     },
   },

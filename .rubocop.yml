@@ -1,136 +1,65 @@
 inherit_from: .rubocop_todo.yml
 
 require:
-  - rubocop-performance
+  - standard
   - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_gem:
+  standard: config/base.yml
+
+inherit_mode:
+  merge:
+    - Exclude
 
 AllCops:
-  TargetRubyVersion: 3.0
-  Exclude:
-    - bin/**/*
-    - coverage/**/*
-    - db/schema.rb
-    - log/**/*
-    - node_modules/**/*
-    - public/**/*
-    - tmp/**/*
-    - vendor/**/*
-  EnabledByDefault: true
+  SuggestExtensions: false
+  NewCops: enable
 
-### Rails
-
-Rails/FilePath:
-  EnforcedStyle: arguments
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
 
 Rails/SkipsModelValidations:
-  Enabled: false
-
-### Bundler
-
-Bundler/OrderedGems:
-  Enabled: false
-
-### Metrics
-
-Metrics/AbcSize:
-  Max: 35
-
-Metrics/BlockLength:
-  Max: 140
-
-Metrics/MethodLength:
-  Max: 30
-
-### Style
-
-Style/BlockComments:
   Exclude:
-    - 'spec/spec_helper.rb'
+    - spec/**/*
 
-Style/FrozenStringLiteralComment:
+Rails:
+  Enabled: true # enable rubocop-rails cops
+  Exclude:
+    - 'bin/**/*'
+    - 'exe/**/*'
+    - 'lib/tasks/**/*'
+    - Rakefile
+RSpec:
+  Enabled: true # enable rubocop-rspec cops
+RSpec/DescribeClass:
+  Enabled: false # ignore missing comments on classes
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/DescribedClass:
+  Enabled: false
+RSpec/Capybara/FeatureMethods:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
-Style/StringLiterals:
-  Enabled: false
+# Trailing Commas
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
 
-Style/SymbolArray:
-  EnforcedStyle: brackets
-
-Style/Documentation:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/Lambda:
-  EnforcedStyle: literal
-
-Style/LambdaCall:
-  Enabled: false
-
-Style/MethodCallWithArgsParentheses:
-  Enabled: false
-
-Style/MissingElse:
-  Enabled: false
-
-Style/Copyright:
-  Enabled: false
-
-Style/InlineComment:
-  Enabled: false
-
-Style/StringHashKeys:
-  Enabled: false
-
-Style/MethodCalledOnDoEndBlock:
-  Enabled: false
-
-Style/DocumentationMethod:
-  Enabled: false
-
-Style/DisableCopsWithinSourceCodeDirective:
-  Enabled: false
-
-### Layout
-
-Layout/DotPosition:
-  EnforcedStyle: trailing
-
-Layout/EndAlignment:
-  EnforcedStyleAlignWith: variable
-
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
-
-Layout/HashAlignment:
-  Enabled: false
-
-Layout/MultilineMethodArgumentLineBreaks:
-  Enabled: false
-
-Layout/MultilineArrayLineBreaks:
-  Enabled: false
-
-Layout/MultilineAssignmentLayout:
-  Enabled: false
-
-Layout/LineLength:
-  Max: 190
-  IgnoredPatterns: ['\A#'] # Allow long comments
-
-# Lint
-
-Lint/ConstantResolution:
-  Enabled: false
-
-Lint/NumberConversion:
-  Enabled: false
-
-# Performance
-
-Performance/ChainArrayAllocation:
-  Enabled: false
-
-Performance/OpenStruct:
-  Enabled: false
+# Outdent Access Modifier
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+Layout/CommentIndentation:
+  Exclude:
+    - integration_test_helpers/**/*

@@ -10,8 +10,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./app/javascript/*"],
-      "~/*": ["./app/javascript/*"]
+      "@/*": ["./app/frontend/*"],
+      "~/*": ["./app/frontend/*"]
     }
   },
   "exclude": [

@@ -43,7 +43,7 @@
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Country"
       >
-        <option :value="null"/>
+        <option :value="null" />
         <option value="CA">
           Canada
         </option>
@@ -58,7 +58,7 @@
         label="Postal code"
       />
     </div>
-    <slot/>
+    <slot />
   </form>
 </template>
 
@@ -72,18 +72,19 @@ export default {
     TextInput,
   },
   props: {
-    value: {
+    modelValue: {
       type: Object,
       required: true,
     },
   },
+  emits: ['update:modelValue', 'submit'],
   computed: {
     form: {
       get () {
-        return this.value
+        return this.modelValue
       },
       set (val) {
-        this.$emit('input', val)
+        this.$emit('update:modelValue', val)
       },
     },
   },

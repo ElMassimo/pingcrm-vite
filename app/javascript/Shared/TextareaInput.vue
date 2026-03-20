@@ -11,8 +11,8 @@
       v-bind="$attrs"
       class="form-textarea"
       :class="{ error: errors.length }"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
     />
     <div
       v-if="errors.length"
@@ -24,16 +24,18 @@
 </template>
 
 <script>
+let uid = 0
+
 export default {
   inheritAttrs: false,
   props: {
     id: {
       type: String,
       default () {
-        return `textarea-input-${this._uid}`
+        return `textarea-input-${++uid}`
       },
     },
-    value: {
+    modelValue: {
       type: String,
       required: true,
     },
@@ -46,6 +48,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
   methods: {
     focus () {
       this.$refs.input.focus()

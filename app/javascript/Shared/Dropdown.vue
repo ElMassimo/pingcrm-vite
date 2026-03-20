@@ -3,12 +3,9 @@
     type="button"
     @click="show = true"
   >
-    <slot/>
-    <portal
-      v-if="show"
-      to="dropdown"
-    >
-      <div>
+    <slot />
+    <Teleport to="#dropdown">
+      <div v-if="show">
         <div
           style="position: fixed; top: 0; right: 0; left: 0; bottom: 0; z-index: 99998; background: black; opacity: .2"
           @click="show = false"
@@ -18,10 +15,10 @@
           style="position: absolute; z-index: 99999;"
           @click.stop="show = autoClose ? false : true"
         >
-          <slot name="dropdown"/>
+          <slot name="dropdown" />
         </div>
       </div>
-    </portal>
+    </Teleport>
   </button>
 </template>
 
@@ -71,10 +68,16 @@ export default {
     },
   },
   mounted () {
-    document.addEventListener('keydown', (e) => {
+    this._onKeydown = (e) => {
       if (e.keyCode === 27)
         this.show = false
-    })
+    }
+    document.addEventListener('keydown', this._onKeydown)
+  },
+  beforeUnmount () {
+    if (this._onKeydown) {
+      document.removeEventListener('keydown', this._onKeydown)
+    }
   },
 }
 </script>

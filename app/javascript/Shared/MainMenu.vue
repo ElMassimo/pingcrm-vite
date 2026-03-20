@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     isUrl (...urls) {
-      const currentUrl = this.$page.url.substr(1)
+      const currentUrl = this.$page.url.substring(1)
 
       if (urls[0] === '') return currentUrl === ''
 

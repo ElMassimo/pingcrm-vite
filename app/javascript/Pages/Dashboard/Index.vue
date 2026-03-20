@@ -1,4 +1,5 @@
 <template>
+  <Head title="Dashboard" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Dashboard
@@ -23,7 +24,7 @@
       <ExternalLink href="https://vite-rails.netlify.app/guide/introduction">faster development experience</ExternalLink>
       thanks to
       <ExternalLink href="https://vite-rails.netlify.app/guide/introduction">Vite</ExternalLink>.
-      <br/>
+      <br />
       It also uses
       <ExternalLink href="https://js-from-routes.netlify.app/">
         JS From Routes
@@ -44,16 +45,15 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
 import ExternalLink from '@/Shared/ExternalLink.vue'
+import { Head } from '@inertiajs/vue3'
 import * as timeago from 'timeago.js'
 
 export default {
-  metaInfo: { title: 'Dashboard' },
   components: {
     ExternalLink,
+    Head,
   },
-  layout: Layout,
   props: {
     release: { type: Object, required: true },
     repo: { type: Object, required: true },

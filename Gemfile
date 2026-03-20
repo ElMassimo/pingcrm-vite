@@ -7,13 +7,13 @@ ruby File.read(File.expand_path('.ruby-version', __dir__)).chomp
 gem 'better_settings'
 
 # Full-stack web application framework. (https://rubyonrails.org)
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 8.0'
 
 # Pg is the Ruby interface to the {PostgreSQL RDBMS}[http://www.postgresql.org/] (https://github.com/ged/ruby-pg)
 gem 'pg', '>= 0.18', '< 2.0'
 
 # Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for Ruby/Rack applications (https://puma.io)
-gem 'puma', '~> 5.0'
+gem 'puma', '>= 5.0'
 
 # Create JSON structures via a Builder-style DSL (https://github.com/rails/jbuilder)
 gem 'jbuilder', '~> 2.7'
@@ -22,17 +22,17 @@ gem 'jbuilder', '~> 2.7'
 gem 'image_processing', '~> 1.10'
 
 # Boot large ruby/rails apps faster (https://github.com/Shopify/bootsnap)
-gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bootsnap', require: false
 
 # Provides integration to manage frontend assets with Vite.js (https://github.com/ElMassimo/vite_ruby)
-gem 'vite_rails', '~> 3.0'
+gem 'vite_rails'
 
 # Allows to register per-request thread-safe variables (https://github.com/ElMassimo/request_store_rails)
 gem 'request_store_rails'
 
 group :development, :test do
-  # Ruby fast debugger - base + CLI (https://github.com/deivid-rodriguez/byebug)
-  gem 'pry-byebug'
+  # Ruby fast debugger - base + CLI (https://github.com/ruby/debug)
+  gem 'debug', platforms: %i[mri mingw x64_mingw]
 
   # Automatic Ruby code style checking tool. (https://github.com/rubocop-hq/rubocop)
   gem 'rubocop', require: false
@@ -54,11 +54,8 @@ group :development do
   # Profiles loading speed for rack applications. (https://miniprofiler.com)
   gem 'rack-mini-profiler', '~> 2.0'
 
-  # Listen to file modifications (https://github.com/guard/listen)
-  gem 'listen', '~> 3'
-
   # Brings Rails named routes to modern javascript (https://github.com/elmassimo/js_from_routes)
-  gem 'js_from_routes', '~> 2.0.4'
+  gem 'js_from_routes'
 end
 
 group :test do
@@ -68,21 +65,21 @@ group :test do
   # The next generation developer focused tool for automated testing of webapps (https://github.com/SeleniumHQ/selenium)
   gem 'selenium-webdriver'
 
-  # Easy download and use of browser drivers. (https://github.com/titusfortner/webdrivers)
-  gem 'webdrivers'
+  # Headless Chrome driver for Capybara using CDP (https://github.com/rubycdp/cuprite)
+  gem 'cuprite'
 end
 
 # Timezone Data for TZInfo (https://tzinfo.github.io)
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: [:windows, :jruby]
 
 # Inertia adapter for Rails (https://github.com/inertiajs/inertia-rails)
-gem 'inertia_rails', '>= 1.2.2'
+gem 'inertia_rails', '>= 3.0'
 
 # Easily generate fake data (https://github.com/faker-ruby/faker)
 gem 'faker', require: false
 
 # The Ultimate Pagination Ruby Gem (https://github.com/ddnexus/pagy)
-gem 'pagy'
+gem 'pagy', '~> 9.0'
 
 # Flexible authentication solution for Rails with Warden (https://github.com/heartcombo/devise)
 gem 'devise'

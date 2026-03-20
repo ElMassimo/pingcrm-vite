@@ -1,8 +1,7 @@
-const environment = {
-  plugins: [
-    require('autoprefixer'),
-    require('postcss-nested'),
-  ],
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+    'postcss-nested': {},
+  },
 }
-
-module.exports = environment

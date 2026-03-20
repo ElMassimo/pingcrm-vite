@@ -1,34 +1,34 @@
 <!-- Source: https://github.com/adamwathan/vue-tailwind-examples -->
 
 <template>
-  <portal to="modal">
+  <Teleport to="#modal">
     <div
       v-if="showModal"
       class="fixed inset-0"
     >
       <transition
-        enterActiveClass="transition-all transition-fast ease-out-quad"
-        leaveActiveClass="transition-all transition-medium ease-in-quad"
-        enterClass="opacity-0"
-        enterToClass="opacity-100"
-        leaveClass="opacity-100"
-        leaveToClass="opacity-0"
+        enter-active-class="transition-all transition-fast ease-out-quad"
+        leave-active-class="transition-all transition-medium ease-in-quad"
+        enter-from-class="opacity-0"
+        enter-to-class="opacity-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
         appear
         @before-leave="backdropLeaving = true"
         @after-leave="backdropLeaving = false"
       >
         <div v-if="showBackdrop">
-          <div class="fixed inset-0 bg-black opacity-50"/>
+          <div class="fixed inset-0 bg-black opacity-50" />
         </div>
       </transition>
 
       <transition
-        enterActiveClass="transition-all transition-fast ease-out-quad"
-        leaveActiveClass="transition-all transition-medium ease-in-quad"
-        enterClass="opacity-0 scale-70"
-        enterToClass="opacity-100 scale-100"
-        leaveClass="opacity-100 scale-100"
-        leaveToClass="opacity-0 scale-70"
+        enter-active-class="transition-all transition-fast ease-out-quad"
+        leave-active-class="transition-all transition-medium ease-in-quad"
+        enter-from-class="opacity-0 scale-70"
+        enter-to-class="opacity-100 scale-100"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-70"
         appear
         @before-leave="cardLeaving = true"
         @after-leave="cardLeaving = false"
@@ -38,7 +38,7 @@
           class="relative h-full overflow-y-auto text-center"
           @click="close"
         >
-          <div class="absolute inline-block align-middle w-0 h-screen"/>
+          <div class="absolute inline-block align-middle w-0 h-screen" />
 
           <div
             class="inline-block align-middle text-left my-6 rounded overflow-hidden"
@@ -60,17 +60,17 @@
                   class="w-4 h-4"
                   viewBox="0 0 20 20"
                 >
-                  <path d="M10 8.59L2.93 1.51 1.51 2.93 8.59 10l-7.08 7.07 1.42 1.42L10 11.41l7.07 7.08 1.42-1.42L11.41 10l7.08-7.07-1.42-1.42L10 8.59z"/>
+                  <path d="M10 8.59L2.93 1.51 1.51 2.93 8.59 10l-7.08 7.07 1.42 1.42L10 11.41l7.07 7.08 1.42-1.42L11.41 10l7.08-7.07-1.42-1.42L10 8.59z" />
                 </svg>
               </button>
             </div>
 
-            <slot/>
+            <slot />
           </div>
         </div>
       </transition>
     </div>
-  </portal>
+  </Teleport>
 </template>
 
 <script>
@@ -85,6 +85,7 @@ export default {
       default: null,
     },
   },
+  emits: ['close'],
   data () {
     return {
       showModal: false,
@@ -122,9 +123,12 @@ export default {
         this.close()
     }
     document.addEventListener('keydown', onEscape)
-    this.$once('hook:destroyed', () => {
-      document.removeEventListener('keydown', onEscape)
-    })
+    this._onEscape = onEscape
+  },
+  beforeUnmount () {
+    if (this._onEscape) {
+      document.removeEventListener('keydown', this._onEscape)
+    }
   },
   methods: {
     show () {

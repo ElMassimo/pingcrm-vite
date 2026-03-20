@@ -1,4 +1,5 @@
 <template>
+  <Head title="Contacts" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Contacts
@@ -18,7 +19,7 @@
           v-model="form.trashed"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="with">
             With Trashed
           </option>
@@ -132,29 +133,28 @@
         </tbody>
       </table>
     </div>
-    <pagination :meta="contacts.meta"/>
+    <pagination :meta="contacts.meta" />
   </div>
 </template>
 
 <script>
 import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
 import Pagination from '@/Shared/Pagination.vue'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
+import { Head } from '@inertiajs/vue3'
 
 import ContactsApi from '@/api/ContactsApi'
 
 export default {
-  metaInfo: { title: 'Contacts' },
   components: {
+    Head,
     Icon,
     Pagination,
     SearchFilter,
   },
-  layout: Layout,
   props: {
     contacts: {
       type: Object,

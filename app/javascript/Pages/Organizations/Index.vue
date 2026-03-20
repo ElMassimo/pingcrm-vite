@@ -1,4 +1,5 @@
 <template>
+  <Head title="Organizations" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Organizations
@@ -18,7 +19,7 @@
           v-model="form.trashed"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="with">
             With Trashed
           </option>
@@ -39,7 +40,7 @@
         title="Create Organization"
         @close="modalNew = false"
       >
-        <new-organization @success="modalNew = false"/>
+        <new-organization @success="modalNew = false" />
       </modal>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
@@ -124,13 +125,12 @@
         </tbody>
       </table>
     </div>
-    <pagination :meta="organizations.meta"/>
+    <pagination :meta="organizations.meta" />
   </div>
 </template>
 
 <script>
 import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
 import Pagination from '@/Shared/Pagination.vue'
 import pickBy from 'lodash/pickBy'
@@ -139,17 +139,17 @@ import Modal from '@/Shared/Modal.vue'
 import NewOrganization from '@/Pages/Organizations/_New.vue'
 import throttle from 'lodash/throttle'
 import OrganizationsApi from '@/api/OrganizationsApi'
+import { Head } from '@inertiajs/vue3'
 
 export default {
-  metaInfo: { title: 'Organizations' },
   components: {
+    Head,
     Icon,
     Pagination,
     SearchFilter,
     Modal,
     NewOrganization,
   },
-  layout: Layout,
   props: {
     organizations: {
       type: Object,

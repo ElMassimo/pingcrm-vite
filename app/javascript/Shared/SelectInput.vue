@@ -13,7 +13,7 @@
       class="form-select"
       :class="{ error: errors.length }"
     >
-      <slot/>
+      <slot />
     </select>
     <div
       v-if="errors.length"
@@ -25,16 +25,18 @@
 </template>
 
 <script>
+let uid = 0
+
 export default {
   inheritAttrs: false,
   props: {
     id: {
       type: String,
       default () {
-        return `select-input-${this._uid}`
+        return `select-input-${++uid}`
       },
     },
-    value: {
+    modelValue: {
       type: [String, Number, Boolean],
       default: null,
     },
@@ -47,14 +49,18 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
   data () {
     return {
-      selected: this.value,
+      selected: this.modelValue,
     }
   },
   watch: {
     selected (selected) {
-      this.$emit('input', selected)
+      this.$emit('update:modelValue', selected)
+    },
+    modelValue (val) {
+      this.selected = val
     },
   },
   methods: {

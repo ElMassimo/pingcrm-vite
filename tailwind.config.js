@@ -1,14 +1,12 @@
-import { defineConfig } from 'vite-plugin-windicss'
-import colors from 'windicss/colors'
+const colors = require('tailwindcss/colors')
 
-export default defineConfig({
-  extract: {
-    include: [
-      'app/views/**/*.{html,erb}',
-      'app/helpers/**/*.rb',
-      'app/javascript/**/*.{vue,js,ts,jsx,tsx}',
-    ],
-  },
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    'app/views/**/*.{html,erb}',
+    'app/helpers/**/*.rb',
+    'app/javascript/**/*.{vue,js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -20,7 +18,7 @@ export default defineConfig({
         orange: colors.orange,
         yellow: colors.yellow,
         green: colors.green,
-        gray: colors.blueGray,
+        gray: colors.slate,
         indigo: {
           100: '#e6e8ff',
           300: '#b2b7ff',
@@ -31,13 +29,14 @@ export default defineConfig({
           900: '#191e38',
         },
       },
-      borderColor: theme => ({
+      borderColor: ({ theme }) => ({
         DEFAULT: theme('colors.gray.200', 'currentColor'),
       }),
-      boxShadow: theme => ({
+      boxShadow: ({ theme }) => ({
         outline: `0 0 0 2px ${theme('colors.indigo.500')}`,
       }),
-      fill: theme => theme('colors'),
+      fill: ({ theme }) => theme('colors'),
     },
   },
-})
+  plugins: [],
+}

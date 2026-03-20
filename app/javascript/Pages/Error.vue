@@ -1,4 +1,5 @@
 <template>
+  <Head title="Error" />
   <div class="p-5 bg-indigo-800 text-indigo-100 min-h-screen flex justify-center items-center">
     <div class="w-full max-w-md">
       <h1 class="text-3xl">
@@ -12,8 +13,10 @@
 </template>
 
 <script>
+import { Head } from '@inertiajs/vue3'
+
 export default {
-  metaInfo: { title: 'Error' },
+  components: { Head },
   props: {
     status: {
       type: Number,

@@ -6,7 +6,7 @@
         class="flex-shrink-0 w-4 h-4 fill-yellow-900 mr-2"
       />
       <div class="text-yellow-900">
-        <slot/>
+        <slot />
       </div>
     </div>
     <button

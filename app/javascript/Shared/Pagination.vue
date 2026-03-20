@@ -19,8 +19,8 @@
         class="mr-1 mb-1 px-4 py-3 text-sm border rounded text-gray-900 border-gray-400 hover:bg-white focus:border-indigo-500 focus:text-indigo-500"
         :class="{ 'bg-white': link.active, 'ml-auto': link.label === 'Next' }"
         :href="link.url"
-        preserveState
-        preserveScroll
+        preserve-state
+        preserve-scroll
       >
         {{ link.label }}
       </inertia-link>

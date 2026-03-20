@@ -15,9 +15,12 @@
   },
   "version": "0.1.0",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.0.0",
     "@vitejs/plugin-vue": "^6.0.5",
     "autoprefixer": "^10.4.0",
+    "eslint": "^10.1.0",
+    "eslint-plugin-vue": "^10.8.0",
     "postcss": "^8",
     "postcss-nested": "^7.0.0",
     "sass": "^1.80.0",
@@ -25,6 +28,7 @@
     "typescript": "^5.7.0",
     "vite": "^8.0.0",
     "vite-plugin-full-reload": "^1.2.0",
-    "vite-plugin-ruby": "^5.2.0"
+    "vite-plugin-ruby": "^5.2.0",
+    "vue-eslint-parser": "^10.4.0"
   }
 }

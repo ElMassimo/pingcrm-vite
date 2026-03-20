@@ -48,7 +48,7 @@
           dx="1"
           dy="1"
         />
-        <feGaussianBlur stdDeviation="2"/>
+        <feGaussianBlur stdDeviation="2" />
         <feColorMatrix
           type="matrix"
           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"

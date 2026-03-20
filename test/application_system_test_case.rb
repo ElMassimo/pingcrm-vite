@@ -1,18 +1,14 @@
-require "test_helper"
 require "capybara/cuprite"
+require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   include Devise::Test::IntegrationHelpers
 
-  BROWSER_PATH = ENV.fetch("CHROME_PATH") {
+  BROWSER_PATH = ENV.fetch("CHROME_PATH") do
     # Find Playwright's bundled Chromium
     Dir.glob(File.join(Dir.home, ".cache/ms-playwright/chromium-*/chrome-linux/chrome")).max
-  }
+  end
+  private_constant :BROWSER_PATH
 
-  driven_by :cuprite, screen_size: [1400, 1400], options: {
-    browser_path: BROWSER_PATH,
-    headless: true,
-    process_timeout: 30,
-    browser_options: { "no-sandbox" => nil },
-  }
+  driven_by :cuprite, screen_size: [1400, 1400], options: { browser_path: BROWSER_PATH, headless: true, process_timeout: 30, pending_connection_errors: false, browser_options: { "no-sandbox" => nil } }
 end

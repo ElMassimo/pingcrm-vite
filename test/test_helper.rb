@@ -1,7 +1,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
-require 'rails/test_help'
 require 'capybara/rails'
+require 'rails/test_help'
 
 Capybara.server = :puma, { Silent: true } # To clean up your test output
 Capybara.default_max_wait_time = 5

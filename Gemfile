@@ -32,7 +32,7 @@ gem 'request_store_rails'
 
 group :development, :test do
   # Ruby fast debugger - base + CLI (https://github.com/ruby/debug)
-  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug', platforms: [:mri, :mingw, :x64_mingw]
 
   # Automatic Ruby code style checking tool. (https://github.com/rubocop-hq/rubocop)
   gem 'rubocop', require: false

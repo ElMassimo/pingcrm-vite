@@ -17,7 +17,7 @@ class ContactsController < ApplicationController
 
   def new
     render_page(
-      organizations:  ModelSerializer.many(current_user.organizations.order(:name))
+      organizations: ModelSerializer.many(current_user.organizations.order(:name))
     )
   end
 

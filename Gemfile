@@ -32,7 +32,7 @@ gem 'request_store_rails'
 
 group :development, :test do
   # Ruby fast debugger - base + CLI (https://github.com/deivid-rodriguez/byebug)
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 3.12'
 
   # Automatic Ruby code style checking tool. (https://github.com/rubocop-hq/rubocop)
   gem 'rubocop', require: false
@@ -94,7 +94,7 @@ gem 'oj'
 gem 'oj_serializers'
 
 # Generate TypeScript interfaces from Ruby serializers.
-gem 'types_from_serializers', '~> 1.2'
+gem 'types_from_serializers', '~> 2.5'
 
 # Simple authorization solution for Rails. (https://github.com/CanCanCommunity/cancancan)
 gem 'cancancan'

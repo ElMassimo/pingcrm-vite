@@ -51,8 +51,8 @@ import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
 import _ from 'lodash'
-import ContactForm from './Form.vue'
 import type { ContactEdit } from '@/types/serializers'
+import ContactForm from './Form.vue'
 
 interface ContactFormPayload {
   contact: Omit<ContactEdit, 'id' | 'deleted_at'>

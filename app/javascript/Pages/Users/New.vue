@@ -31,8 +31,8 @@
 <script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
-import UserForm from './Form.vue'
 import type { UserNew } from '@/types/serializers'
+import UserForm from './Form.vue'
 
 interface UserNewFormPayload {
   user: UserNew

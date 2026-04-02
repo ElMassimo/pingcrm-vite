@@ -19,8 +19,8 @@
 <script lang="ts">
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import api from '@/api'
-import OrganizationForm from './Form.vue'
 import type { OrganizationEdit } from '@/types/serializers'
+import OrganizationForm from './Form.vue'
 
 interface OrganizationNewFormPayload {
   organization: Partial<OrganizationEdit>
@@ -36,7 +36,7 @@ export default {
     return {
       form: this.$inertia.form({
         organization: {},
-      }) as OrganizationNewFormPayload & { processing: boolean, reset: (...fields: string[]) => void },
+      }) as OrganizationNewFormPayload & { processing: boolean; reset: (...fields: string[]) => void },
     }
   },
   methods: {

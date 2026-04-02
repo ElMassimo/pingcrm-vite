@@ -147,11 +147,6 @@ import throttle from 'lodash/throttle'
 import api from '@/api'
 import type { Contact } from '@/types/serializers'
 
-interface PaginatedData<T> {
-  data: T[]
-  meta: Record<string, unknown>
-}
-
 interface ContactFilters {
   search?: string | null
   trashed?: string | null

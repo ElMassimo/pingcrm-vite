@@ -60,7 +60,7 @@ import FileInput from '@/Shared/FileInput.vue'
 import type { UserEdit, UserNew } from '@/types/serializers'
 
 type UserFormPayload = {
-  user: (UserNew | UserEdit) & { password?: string | null, photo?: File | null }
+  user: (UserNew | UserEdit) & { password?: string | null; photo?: File | null }
   errors: Record<string, string | undefined>
 }
 

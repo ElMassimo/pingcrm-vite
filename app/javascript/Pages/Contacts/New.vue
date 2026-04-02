@@ -32,8 +32,8 @@
 <script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
-import ContactForm from './Form.vue'
 import type { ContactEdit } from '@/types/serializers'
+import ContactForm from './Form.vue'
 
 interface NewContactForm {
   contact: Partial<ContactEdit>

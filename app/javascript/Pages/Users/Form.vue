@@ -57,10 +57,18 @@
 import SelectInput from '@/Shared/SelectInput.vue'
 import TextInput from '@/Shared/TextInput.vue'
 import FileInput from '@/Shared/FileInput.vue'
-import type { UserEdit, UserNew } from '@/types/serializers'
+
+type UserFormValue = {
+  first_name: string
+  last_name: string
+  email: string
+  owner: boolean
+  password?: string | null
+  photo?: File | null
+}
 
 type UserFormPayload = {
-  user: (UserNew | UserEdit) & { password?: string | null; photo?: File | null }
+  user: UserFormValue
   errors: Record<string, string | undefined>
 }
 

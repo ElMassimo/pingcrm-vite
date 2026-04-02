@@ -133,7 +133,7 @@ import api from '@/api'
 import type { OrganizationContact, OrganizationEdit } from '@/types/serializers'
 import OrganizationForm from './Form.vue'
 
-interface OrganizationFormPayload {
+interface OrganizationEditFormPayload {
   organization: Omit<OrganizationEdit, 'id' | 'deleted_at'>
 }
 
@@ -163,7 +163,7 @@ export default {
     return {
       form: this.$inertia.form({
         organization: _.omit(this.organization, 'id', 'deleted_at'),
-      }) as OrganizationFormPayload & { processing: boolean },
+      }) as OrganizationEditFormPayload & { processing: boolean },
     }
   },
   methods: {

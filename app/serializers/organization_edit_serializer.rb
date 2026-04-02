@@ -2,5 +2,7 @@
 
 # Public: Used in the edit page.
 class OrganizationEditSerializer < BaseSerializer
+  object_as :organization, model: :Organization
+
   attributes :id, :name, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at
 end

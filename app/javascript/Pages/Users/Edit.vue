@@ -65,7 +65,7 @@ import type { UserEdit } from '@/types/serializers'
 import UserForm from './Form.vue'
 
 interface UserEditFormPayload {
-  user: UserEdit & { password?: string | null; photo: File | null }
+  user: UserEdit & { password?: string | null; photo?: File | null }
 }
 
 export default {

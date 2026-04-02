@@ -2,6 +2,8 @@
 
 # Public: Used in users edit page.
 class UserEditSerializer < BaseSerializer
+  object_as :user, model: :User
+
   attributes(:id, :email, :first_name, :last_name, :owner, :deleted_at)
 
   attribute def photo

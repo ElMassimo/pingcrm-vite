@@ -2,8 +2,5 @@
 
 # Public: Helper to render only the id and name of the model.
 class ModelSerializer < BaseSerializer
-  attributes(
-    id: { type: :number },
-    name: { type: :string }
-  )
+  attributes(id: { type: :number }, name: { type: :string })
 end

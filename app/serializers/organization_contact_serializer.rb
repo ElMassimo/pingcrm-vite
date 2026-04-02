@@ -2,7 +2,7 @@
 
 # Public: Used in organizations edit page contacts table.
 class OrganizationContactSerializer < BaseSerializer
-  object_as :contact
+  object_as :contact, model: :Contact
 
-  attributes(:id, :name, :phone, :city, :deleted_at)
+  attributes(:id, :phone, :city, :deleted_at, name: { type: :string })
 end

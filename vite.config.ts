@@ -8,7 +8,7 @@ import ReloadOnChange from 'vite-plugin-full-reload'
 export default defineConfig({
 
   plugins: [
-    ReloadOnChange(['config/routes.rb', 'app/views/**/*']),
+    ReloadOnChange(['config/routes.rb', 'app/views/**/*', 'app/serializers/**/*.rb']),
     RubyPlugin(),
     Vue2Plugin(),
     WindiCSS({ root: process.cwd() }),

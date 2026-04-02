@@ -29,10 +29,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import ContactForm from './Form.vue'
+import type { ContactEdit } from '@/types/serializers'
+
+interface NewContactForm {
+  contact: Partial<ContactEdit>
+}
 
 export default {
   metaInfo: { title: 'Create Contact' },
@@ -52,7 +57,7 @@ export default {
     return {
       form: this.$inertia.form({
         contact: {},
-      }),
+      }) as NewContactForm & { processing: boolean },
     }
   },
 }

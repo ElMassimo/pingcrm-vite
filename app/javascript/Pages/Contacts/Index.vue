@@ -136,7 +136,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Icon from '@/Shared/Icon.vue'
 import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
@@ -144,8 +144,18 @@ import Pagination from '@/Shared/Pagination.vue'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
+import api from '@/api'
+import type { Contact } from '@/types/serializers'
 
-import ContactsApi from '@/api/ContactsApi'
+interface PaginatedData<T> {
+  data: T[]
+  meta: Record<string, unknown>
+}
+
+interface ContactFilters {
+  search?: string | null
+  trashed?: string | null
+}
 
 export default {
   metaInfo: { title: 'Contacts' },
@@ -166,10 +176,12 @@ export default {
     },
   },
   data () {
+    const filters = this.filters as ContactFilters
+
     return {
       form: {
-        search: this.filters.search,
-        trashed: this.filters.trashed,
+        search: filters.search,
+        trashed: filters.trashed,
       },
     }
   },
@@ -177,7 +189,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        ContactsApi.list({
+        api.contacts.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -189,8 +201,8 @@ export default {
     },
   },
   methods: {
-    pathToEdit (contact) {
-      return ContactsApi.edit.path(contact)
+    pathToEdit (contact: Contact) {
+      return api.contacts.edit.path(contact)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

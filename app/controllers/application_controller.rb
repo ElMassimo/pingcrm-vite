@@ -27,4 +27,9 @@ class ApplicationController < ActionController::Base
     pagy, paged_items = pagy(items)
     { data: serializer.many(paged_items), meta: pagy_metadata(pagy) }
   end
+
+  # Internal: Render an Inertia page that matches the current controller and action.
+  def render_page(**props)
+    render inertia: "#{controller_name.camelize}/#{action_name.camelize}", props: props
+  end
 end

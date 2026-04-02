@@ -9,25 +9,23 @@ class ContactsController < ApplicationController
                trash_filter(params[:trashed]).
                order_by_name
 
-    render inertia: 'Contacts/Index', props: {
+    render_page(
       contacts: paginate_data(contacts, serializer: ContactSerializer),
       filters: params.slice(:search, :trashed)
-    }
+    )
   end
 
   def new
-    render inertia: 'Contacts/New', props: {
+    render_page(
       organizations:  ModelSerializer.many(current_user.organizations.order(:name))
-    }
+    )
   end
 
   def edit
-    render inertia: 'Contacts/Edit', props: {
-      contact: jbuilder do |json|
-        json.(@contact, :id, :first_name, :last_name, :organization_id, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
+    render_page(
+      contact: ContactEditSerializer.one(@contact),
       organizations: ModelSerializer.many(current_user.organizations.order(:name))
-    }
+    )
   end
 
   def create

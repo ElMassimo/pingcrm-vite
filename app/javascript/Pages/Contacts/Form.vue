@@ -84,9 +84,15 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import SelectInput from '@/Shared/SelectInput.vue'
 import TextInput from '@/Shared/TextInput.vue'
+import type { ContactEdit } from '@/types/serializers'
+
+type ContactForm = {
+  contact: Partial<ContactEdit>
+  errors: Record<string, string | undefined>
+}
 
 export default {
   components: {
@@ -105,10 +111,10 @@ export default {
   },
   computed: {
     form: {
-      get () {
-        return this.value
+      get (): ContactForm {
+        return this.value as ContactForm
       },
-      set (val) {
+      set (val: ContactForm) {
         this.$emit('input', val)
       },
     },

@@ -93,5 +93,8 @@ gem 'oj'
 # Faster JSON serialization for Ruby on Rails. Easily migrate away from Active Model Serializers (https://github.com/ElMassimo/oj_serializers)
 gem 'oj_serializers'
 
+# Generate TypeScript interfaces from Ruby serializers.
+gem 'types_from_serializers', '~> 1.2'
+
 # Simple authorization solution for Rails. (https://github.com/CanCanCommunity/cancancan)
 gem 'cancancan'

@@ -46,12 +46,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
 import _ from 'lodash'
 import ContactForm from './Form.vue'
+import type { ContactEdit } from '@/types/serializers'
+
+interface ContactFormPayload {
+  contact: Omit<ContactEdit, 'id' | 'deleted_at'>
+}
 
 export default {
   metaInfo () {
@@ -80,7 +85,7 @@ export default {
     return {
       form: this.$inertia.form({
         contact: _.omit(this.contact, 'id', 'deleted_at'),
-      }),
+      }) as ContactFormPayload & { processing: boolean },
     }
   },
   methods: {

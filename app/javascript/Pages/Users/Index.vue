@@ -144,14 +144,21 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Icon from '@/Shared/Icon.vue'
 import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
-import UsersApi from '@/api/UsersApi'
+import api from '@/api'
+import type { User } from '@/types/serializers'
+
+interface UserFilters {
+  search?: string | null
+  role?: string | null
+  trashed?: string | null
+}
 
 export default {
   metaInfo: { title: 'Users' },
@@ -175,11 +182,13 @@ export default {
     },
   },
   data () {
+    const filters = this.filters as UserFilters
+
     return {
       form: {
-        search: this.filters.search,
-        role: this.filters.role,
-        trashed: this.filters.trashed,
+        search: filters.search,
+        role: filters.role,
+        trashed: filters.trashed,
       },
     }
   },
@@ -187,7 +196,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        UsersApi.list({
+        api.users.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -199,8 +208,8 @@ export default {
     },
   },
   methods: {
-    pathToEdit (user) {
-      return UsersApi.edit.path(user)
+    pathToEdit (user: User) {
+      return api.users.edit.path(user)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

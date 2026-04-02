@@ -28,10 +28,15 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import UserForm from './Form.vue'
+import type { UserNew } from '@/types/serializers'
+
+interface UserNewFormPayload {
+  user: UserNew
+}
 
 export default {
   metaInfo: { title: 'Create User' },
@@ -51,7 +56,7 @@ export default {
     return {
       form: this.$inertia.form({
         user: this.user,
-      }),
+      }) as UserNewFormPayload & { processing: boolean },
     }
   },
 }

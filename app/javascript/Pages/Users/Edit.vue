@@ -56,12 +56,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import { users } from '@/api'
+import api from '@/api'
+import type { UserEdit } from '@/types/serializers'
 import UserForm from './Form.vue'
+
+interface UserEditFormPayload {
+  user: UserEdit & { password?: string | null, photo: File | null }
+}
 
 export default {
   metaInfo () {
@@ -93,12 +98,12 @@ export default {
           ...this.user,
           photo: null,
         },
-      }),
+      }) as UserEditFormPayload & { processing: boolean, reset: (...fields: string[]) => void },
     }
   },
   methods: {
-    submit (form) {
-      users.update({
+    submit (form: UserEditFormPayload & { reset: (...fields: string[]) => void }) {
+      api.users.update({
         params: this.user,
         form,
         onSuccess: () => form.reset('password', 'photo'),
@@ -106,11 +111,11 @@ export default {
     },
     destroy () {
       if (confirm('Are you sure you want to delete this user?'))
-        users.destroy(this.user)
+        api.users.destroy(this.user)
     },
     restore () {
       if (confirm('Are you sure you want to restore this user?'))
-        users.restore(this.user)
+        api.users.restore(this.user)
     },
   },
 }

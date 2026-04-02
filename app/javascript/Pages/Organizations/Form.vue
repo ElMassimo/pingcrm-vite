@@ -62,9 +62,15 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import SelectInput from '@/Shared/SelectInput.vue'
 import TextInput from '@/Shared/TextInput.vue'
+import type { OrganizationEdit } from '@/types/serializers'
+
+type OrganizationFormModel = {
+  organization: Partial<OrganizationEdit>
+  errors: Record<string, string | undefined>
+}
 
 export default {
   components: {
@@ -79,10 +85,10 @@ export default {
   },
   computed: {
     form: {
-      get () {
-        return this.value
+      get (): OrganizationFormModel {
+        return this.value as OrganizationFormModel
       },
-      set (val) {
+      set (val: OrganizationFormModel) {
         this.$emit('input', val)
       },
     },

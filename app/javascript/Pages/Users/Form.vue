@@ -53,10 +53,16 @@
   </form>
 </template>
 
-<script>
+<script lang="ts">
 import SelectInput from '@/Shared/SelectInput.vue'
 import TextInput from '@/Shared/TextInput.vue'
 import FileInput from '@/Shared/FileInput.vue'
+import type { UserEdit, UserNew } from '@/types/serializers'
+
+type UserFormPayload = {
+  user: (UserNew | UserEdit) & { password?: string | null, photo?: File | null }
+  errors: Record<string, string | undefined>
+}
 
 export default {
   components: {
@@ -72,10 +78,10 @@ export default {
   },
   computed: {
     form: {
-      get () {
-        return this.value
+      get (): UserFormPayload {
+        return this.value as UserFormPayload
       },
-      set (val) {
+      set (val: UserFormPayload) {
         this.$emit('input', val)
       },
     },

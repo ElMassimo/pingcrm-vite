@@ -128,7 +128,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Icon from '@/Shared/Icon.vue'
 import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
@@ -138,7 +138,13 @@ import SearchFilter from '@/Shared/SearchFilter.vue'
 import Modal from '@/Shared/Modal.vue'
 import NewOrganization from '@/Pages/Organizations/_New.vue'
 import throttle from 'lodash/throttle'
-import OrganizationsApi from '@/api/OrganizationsApi'
+import api from '@/api'
+import type { Organization } from '@/types/serializers'
+
+interface OrganizationFilters {
+  search?: string | null
+  trashed?: string | null
+}
 
 export default {
   metaInfo: { title: 'Organizations' },
@@ -161,10 +167,12 @@ export default {
     },
   },
   data () {
+    const filters = this.filters as OrganizationFilters
+
     return {
       form: {
-        search: this.filters.search,
-        trashed: this.filters.trashed,
+        search: filters.search,
+        trashed: filters.trashed,
       },
       modalNew: false,
     }
@@ -173,7 +181,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        OrganizationsApi.list({
+        api.organizations.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -185,8 +193,8 @@ export default {
     },
   },
   methods: {
-    pathToEdit (organization) {
-      return OrganizationsApi.edit.path(organization)
+    pathToEdit (organization: Organization) {
+      return api.organizations.edit.path(organization)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

@@ -123,15 +123,19 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Icon from '@/Shared/Icon.vue'
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
 import _ from 'lodash'
-
-import { organizations } from '@/api'
+import api from '@/api'
+import type { OrganizationContact, OrganizationEdit } from '@/types/serializers'
 import OrganizationForm from './Form.vue'
+
+interface OrganizationFormPayload {
+  organization: Omit<OrganizationEdit, 'id' | 'deleted_at'>
+}
 
 export default {
   metaInfo () {
@@ -159,20 +163,20 @@ export default {
     return {
       form: this.$inertia.form({
         organization: _.omit(this.organization, 'id', 'deleted_at'),
-      }),
+      }) as OrganizationFormPayload & { processing: boolean },
     }
   },
   methods: {
-    pathToEditContact (contact) {
+    pathToEditContact (contact: OrganizationContact) {
       return this.$api.contacts.edit.path(contact)
     },
     destroy () {
       if (confirm('Are you sure you want to delete this organization?'))
-        organizations.destroy(this.organization)
+        api.organizations.destroy(this.organization)
     },
     restore () {
       if (confirm('Are you sure you want to restore this organization?'))
-        organizations.restore(this.organization)
+        api.organizations.restore(this.organization)
     },
   },
 }

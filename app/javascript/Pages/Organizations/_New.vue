@@ -16,10 +16,15 @@
   </organization-form>
 </template>
 
-<script>
+<script lang="ts">
 import LoadingButton from '@/Shared/LoadingButton.vue'
-import { organizations } from '@/api'
+import api from '@/api'
 import OrganizationForm from './Form.vue'
+import type { OrganizationEdit } from '@/types/serializers'
+
+interface OrganizationNewFormPayload {
+  organization: Partial<OrganizationEdit>
+}
 
 export default {
   components: {
@@ -31,12 +36,12 @@ export default {
     return {
       form: this.$inertia.form({
         organization: {},
-      }),
+      }) as OrganizationNewFormPayload & { processing: boolean, reset: (...fields: string[]) => void },
     }
   },
   methods: {
-    submit (form) {
-      organizations.create({
+    submit (form: OrganizationNewFormPayload & { reset: (...fields: string[]) => void }) {
+      api.organizations.create({
         form,
         onSuccess: () => {
           this.$emit('success')

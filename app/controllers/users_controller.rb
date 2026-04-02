@@ -9,33 +9,26 @@ class UsersController < ApplicationController
              role_filter(params[:role]).
              order_by_name
 
-    render inertia: 'Users/Index', props: {
+    render_page(
       users: UserSerializer.many(@users),
       can: {
         create_user: can?(:create, User)
       },
       filters: params.slice(:search, :trashed, :role)
-    }
+    )
   end
 
   def new
-    render inertia: 'Users/New', props: {
-      user: jbuilder do |json|
-        json.(@user, :email, :first_name, :last_name, :owner)
-      end
-    }
+    render_page(user: UserNewSerializer.one(@user))
   end
 
   def edit
-    render inertia: 'Users/Edit', props: {
-      user: jbuilder do |json|
-        json.(@user, :id, :email, :first_name, :last_name, :owner, :deleted_at)
-        json.photo @user.photo.attached? ? polymorphic_url(@user.photo.variant(resize_to_fill: [64, 64])) : nil
-      end,
+    render_page(
+      user: UserEditSerializer.one(@user),
       can: {
         edit_user: can?(:update, @user)
       }
-    }
+    )
   end
 
   def create

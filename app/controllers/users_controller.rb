@@ -14,13 +14,13 @@ class UsersController < ApplicationController
       can: {
         create_user: can?(:create, User)
       },
-      filters: params.slice(:search, :trashed, :role)
+      filters: params.slice(:search, :trashed, :role),
     )
   end
 
   def new
     render_page(
-      user: UserFormSerializer.one(@user)
+      user: UserFormSerializer.one(@user),
     )
   end
 
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       user: UserSerializer.one(@user),
       can: {
         edit_user: can?(:update, @user)
-      }
+      },
     )
   end
 

@@ -10,7 +10,7 @@ class OrganizationsController < ApplicationController
 
     render_page(
       organizations: paginate_data(organizations, serializer: OrganizationSerializer),
-      filters: params.slice(:search, :trashed)
+      filters: params.slice(:search, :trashed),
     )
   end
 
@@ -19,7 +19,7 @@ class OrganizationsController < ApplicationController
       organization: OrganizationFormSerializer.one(@organization),
       contacts: -> {
         ContactSerializer.many(@organization.contacts.order_by_name)
-      }
+      },
     )
   end
 

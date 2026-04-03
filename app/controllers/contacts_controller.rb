@@ -11,20 +11,20 @@ class ContactsController < ApplicationController
 
     render_page(
       contacts: paginate_data(contacts, serializer: ContactSerializer),
-      filters: params.slice(:search, :trashed)
+      filters: params.slice(:search, :trashed),
     )
   end
 
   def new
     render_page(
-      organizations:  ModelSerializer.many(current_user.organizations.order(:name))
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 
   def edit
     render_page(
       contact: ContactFormSerializer.one(@contact),
-      organizations: ModelSerializer.many(current_user.organizations.order(:name))
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 

@@ -25,18 +25,19 @@
 </template>
 
 <script>
+import { useId } from 'vue'
+
 export default {
   inheritAttrs: false,
-  setup () {
-    return { uid: useId() }
-  },
-  emits: ['update:modelValue'],
   props: {
     id: {
       type: String,
       default: null,
     },
-    modelValue: [String, Number, Boolean],
+    modelValue: {
+      type: [String, Number, Boolean],
+      default: null,
+    },
     label: {
       type: String,
       default: null,
@@ -46,10 +47,19 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
+  setup () {
+    return { uid: useId() }
+  },
   data () {
     return {
       selected: this.modelValue,
     }
+  },
+  computed: {
+    inputId () {
+      return this.id || `select-input-${this.uid}`
+    },
   },
   watch: {
     selected (selected) {
@@ -62,11 +72,6 @@ export default {
     },
     select () {
       this.$refs.input.select()
-    },
-  },
-  computed: {
-    inputId () {
-      return this.id || `select-input-${this.uid}`
     },
   },
 }

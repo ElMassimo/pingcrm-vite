@@ -25,12 +25,10 @@
 </template>
 
 <script>
+import { useId } from 'vue'
+
 export default {
   inheritAttrs: false,
-  setup () {
-    return { uid: useId() }
-  },
-  emits: ['update:modelValue'],
   props: {
     id: {
       type: String,
@@ -53,6 +51,15 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
+  setup () {
+    return { uid: useId() }
+  },
+  computed: {
+    inputId () {
+      return this.id || `text-input-${this.uid}`
+    },
+  },
   methods: {
     focus () {
       this.$refs.input.focus()
@@ -62,11 +69,6 @@ export default {
     },
     setSelectionRange (start, end) {
       this.$refs.input.setSelectionRange(start, end)
-    },
-  },
-  computed: {
-    inputId () {
-      return this.id || `text-input-${this.uid}`
     },
   },
 }

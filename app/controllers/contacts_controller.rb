@@ -23,9 +23,7 @@ class ContactsController < ApplicationController
 
   def edit
     render_page(
-      contact: jbuilder do |json|
-        json.(@contact, :id, :first_name, :last_name, :organization_id, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
+      contact: ContactFormSerializer.one(@contact),
       organizations: ModelSerializer.many(current_user.organizations.order(:name))
     )
   end

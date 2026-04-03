@@ -3,10 +3,10 @@
     <label
       v-if="label"
       class="form-label"
-      :for="id"
+      :for="inputId"
     >{{ label }}:</label>
     <select
-      :id="id"
+      :id="inputId"
       ref="input"
       v-model="selected"
       v-bind="{ ...$attrs, class: null }"
@@ -25,17 +25,16 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid'
-
 export default {
   inheritAttrs: false,
+  setup () {
+    return { uid: useId() }
+  },
   emits: ['update:modelValue'],
   props: {
     id: {
       type: String,
-      default () {
-        return `select-input-${uuid()}`
-      },
+      default: null,
     },
     modelValue: [String, Number, Boolean],
     label: {
@@ -63,6 +62,11 @@ export default {
     },
     select () {
       this.$refs.input.select()
+    },
+  },
+  computed: {
+    inputId () {
+      return this.id || `select-input-${this.uid}`
     },
   },
 }

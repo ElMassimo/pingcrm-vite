@@ -16,13 +16,9 @@ class OrganizationsController < ApplicationController
 
   def edit
     render_page(
-      organization: jbuilder do |json|
-        json.(@organization, :id, :name, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
+      organization: OrganizationFormSerializer.one(@organization),
       contacts: -> {
-        jbuilder do |json|
-          json.array! @organization.contacts.order_by_name, :id, :name, :phone, :city, :deleted_at
-        end
+        ContactSerializer.many(@organization.contacts.order_by_name)
       }
     )
   end

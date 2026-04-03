@@ -20,18 +20,13 @@ class UsersController < ApplicationController
 
   def new
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :email, :first_name, :last_name, :owner)
-      end
+      user: UserFormSerializer.one(@user)
     )
   end
 
   def edit
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :id, :email, :first_name, :last_name, :owner, :deleted_at)
-        json.photo @user.photo.attached? ? polymorphic_url(@user.photo.variant(resize_to_fill: [64, 64])) : nil
-      end,
+      user: UserSerializer.one(@user),
       can: {
         edit_user: can?(:update, @user)
       }

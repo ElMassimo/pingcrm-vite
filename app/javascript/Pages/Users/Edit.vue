@@ -60,7 +60,7 @@
 import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import api from '@/api'
+import { users } from '@/api'
 import type { UserEdit } from '@/types/serializers'
 import UserForm from './Form.vue'
 
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     submit (form: UserEditFormPayload & { reset: (...fields: string[]) => void }) {
-      api.users.update({
+      users.update({
         params: this.user,
         form,
         onSuccess: () => form.reset('password', 'photo'),
@@ -111,11 +111,11 @@ export default {
     },
     destroy () {
       if (confirm('Are you sure you want to delete this user?'))
-        api.users.destroy(this.user)
+        users.destroy(this.user)
     },
     restore () {
       if (confirm('Are you sure you want to restore this user?'))
-        api.users.restore(this.user)
+        users.restore(this.user)
     },
   },
 }

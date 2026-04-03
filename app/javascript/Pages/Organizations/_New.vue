@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import LoadingButton from '@/Shared/LoadingButton.vue'
-import api from '@/api'
+import { organizations } from '@/api'
 import type { OrganizationEdit } from '@/types/serializers'
 import OrganizationForm from './Form.vue'
 
@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     submit (form: OrganizationNewFormPayload & { reset: (...fields: string[]) => void }) {
-      api.organizations.create({
+      organizations.create({
         form,
         onSuccess: () => {
           this.$emit('success')

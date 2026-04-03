@@ -151,7 +151,7 @@ import mapValues from 'lodash/mapValues'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
-import api from '@/api'
+import { users } from '@/api'
 import type { User } from '@/types/serializers'
 
 interface UserFilters {
@@ -196,7 +196,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        api.users.list({
+        users.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -209,7 +209,7 @@ export default {
   },
   methods: {
     pathToEdit (user: User) {
-      return api.users.edit.path(user)
+      return users.edit.path(user)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

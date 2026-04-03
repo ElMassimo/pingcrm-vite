@@ -129,7 +129,7 @@ import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
 import _ from 'lodash'
-import api from '@/api'
+import { organizations } from '@/api'
 import type { OrganizationContact, OrganizationEdit } from '@/types/serializers'
 import OrganizationForm from './Form.vue'
 
@@ -172,11 +172,11 @@ export default {
     },
     destroy () {
       if (confirm('Are you sure you want to delete this organization?'))
-        api.organizations.destroy(this.organization)
+        organizations.destroy(this.organization)
     },
     restore () {
       if (confirm('Are you sure you want to restore this organization?'))
-        api.organizations.restore(this.organization)
+        organizations.restore(this.organization)
     },
   },
 }

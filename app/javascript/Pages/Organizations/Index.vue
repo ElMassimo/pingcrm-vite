@@ -138,7 +138,7 @@ import SearchFilter from '@/Shared/SearchFilter.vue'
 import Modal from '@/Shared/Modal.vue'
 import NewOrganization from '@/Pages/Organizations/_New.vue'
 import throttle from 'lodash/throttle'
-import api from '@/api'
+import { organizations } from '@/api'
 import type { Organization } from '@/types/serializers'
 
 interface OrganizationFilters {
@@ -181,7 +181,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        api.organizations.list({
+        organizations.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -194,7 +194,7 @@ export default {
   },
   methods: {
     pathToEdit (organization: Organization) {
-      return api.organizations.edit.path(organization)
+      return organizations.edit.path(organization)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

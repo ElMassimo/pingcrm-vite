@@ -144,7 +144,7 @@ import Pagination from '@/Shared/Pagination.vue'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
-import api from '@/api'
+import { contacts } from '@/api'
 import type { Contact } from '@/types/serializers'
 
 interface ContactFilters {
@@ -184,7 +184,7 @@ export default {
     form: {
       handler: throttle(function () {
         const query = pickBy(this.form)
-        api.contacts.list({
+        contacts.list({
           query: Object.keys(query).length ? query : { remember: 'forget' },
           preserveState: true,
           preserveScroll: true,
@@ -197,7 +197,7 @@ export default {
   },
   methods: {
     pathToEdit (contact: Contact) {
-      return api.contacts.edit.path(contact)
+      return contacts.edit.path(contact)
     },
     reset () {
       this.form = mapValues(this.form, () => null)

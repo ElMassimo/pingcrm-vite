@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, useId } from 'vue'
+import { useId } from 'vue'
 
 export default {
   inheritAttrs: false,
@@ -48,8 +48,7 @@ export default {
   },
   emits: ['update:modelValue'],
   setup () {
-    const instance = getCurrentInstance()
-    const uid = typeof useId === 'function' ? useId() : `fallback-${instance.uid}`
+    const uid = useId()
 
     return { uid }
   },

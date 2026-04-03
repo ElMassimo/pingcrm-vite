@@ -25,7 +25,9 @@
 </template>
 
 <script>
-import { useId } from 'vue'
+import * as Vue from 'vue'
+
+const vueRuntime = Vue
 
 export default {
   inheritAttrs: false,
@@ -49,7 +51,11 @@ export default {
   },
   emits: ['update:modelValue'],
   setup () {
-    return { uid: useId() }
+    const uid = typeof vueRuntime.useId === 'function'
+      ? vueRuntime.useId()
+      : `fallback-${vueRuntime.getCurrentInstance().uid}`
+
+    return { uid }
   },
   data () {
     return {

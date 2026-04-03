@@ -35,7 +35,7 @@ gem 'types_from_serializers'
 
 group :development, :test do
   # Ruby fast debugger - base + CLI (https://github.com/deivid-rodriguez/byebug)
-  gem 'pry-byebug'
+  gem 'pry-byebug', '~> 3.12'
 
   # Use rules from standard, and tweak them to make sense.
   gem 'standard', require: false

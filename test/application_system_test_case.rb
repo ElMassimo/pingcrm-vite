@@ -10,5 +10,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
   private_constant :BROWSER_PATH
 
-  driven_by :cuprite, screen_size: [1400, 1400], options: { browser_path: BROWSER_PATH, headless: true, process_timeout: 30, pending_connection_errors: false, browser_options: { "no-sandbox" => nil } }
+  CUPRITE_OPTIONS = { browser_path: BROWSER_PATH, headless: true, process_timeout: 30,
+                      pending_connection_errors: false, browser_options: { "no-sandbox" => nil } }.freeze
+  private_constant :CUPRITE_OPTIONS
+
+  driven_by :cuprite, screen_size: [1400, 1400], options: CUPRITE_OPTIONS
 end

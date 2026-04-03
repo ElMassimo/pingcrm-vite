@@ -23,7 +23,7 @@ Rails/FilePath:
   EnforcedStyle: arguments
 
 Rails/Env:
-  Enabled: false
+  Enabled: false # Rails.env.* is idiomatic in config files and initializers
 
 Rails/SkipsModelValidations:
   Enabled: false

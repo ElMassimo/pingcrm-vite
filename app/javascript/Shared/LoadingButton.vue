@@ -7,7 +7,7 @@
       v-if="loading"
       class="btn-spinner mr-2"
     />
-    <slot/>
+    <slot />
   </button>
 </template>
 

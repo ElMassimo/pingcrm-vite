@@ -12,8 +12,8 @@
       class="form-input"
       :class="{ error: errors.length }"
       :type="type"
-      :value="value"
-      @input="$emit('input', $event.target.value)"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
     >
     <div
       v-if="errors.length"
@@ -25,20 +25,22 @@
 </template>
 
 <script>
+let uid = 0
+
 export default {
   inheritAttrs: false,
   props: {
     id: {
       type: String,
       default () {
-        return `text-input-${this._uid}`
+        return `text-input-${++uid}`
       },
     },
     type: {
       type: String,
       default: 'text',
     },
-    value: {
+    modelValue: {
       type: String,
       default: null,
     },
@@ -51,6 +53,7 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
   methods: {
     focus () {
       this.$refs.input.focus()

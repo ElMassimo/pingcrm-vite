@@ -27,13 +27,12 @@
                 class="fill-white w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
-              ><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
-              <div
-                slot="dropdown"
-                class="mt-2 px-8 py-4 shadow-lg bg-indigo-800 rounded"
-              >
-                <main-menu/>
-              </div>
+              ><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
+              <template #dropdown>
+                <div class="mt-2 px-8 py-4 shadow-lg bg-indigo-800 rounded">
+                  <main-menu />
+                </div>
+              </template>
             </dropdown>
           </div>
           <div class="bg-white border-b w-full p-4 md:py-0 md:px-12 text-sm md:text-md flex justify-between items-center">
@@ -54,44 +53,43 @@
                   name="cheveron-down"
                 />
               </div>
-              <div
-                slot="dropdown"
-                class="mt-2 py-2 shadow-xl bg-white rounded text-sm"
-              >
-                <inertia-link
-                  class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  role="navigation"
-                  :href="routes.profile"
-                >
-                  My Profile
-                </inertia-link>
-                <inertia-link
-                  class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  role="navigation"
-                  :href="routes.users"
-                >
-                  Manage Users
-                </inertia-link>
-                <inertia-link
-                  class="block w-full text-left px-6 py-2 hover:bg-indigo-600 hover:text-white"
-                  :href="routes.signOut"
-                  method="delete"
-                  as="button"
-                >
-                  Logout
-                </inertia-link>
-              </div>
+              <template #dropdown>
+                <div class="mt-2 py-2 shadow-xl bg-white rounded text-sm">
+                  <inertia-link
+                    class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    role="navigation"
+                    :href="routes.profile"
+                  >
+                    My Profile
+                  </inertia-link>
+                  <inertia-link
+                    class="block px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    role="navigation"
+                    :href="routes.users"
+                  >
+                    Manage Users
+                  </inertia-link>
+                  <inertia-link
+                    class="block w-full text-left px-6 py-2 hover:bg-indigo-600 hover:text-white"
+                    :href="routes.signOut"
+                    method="delete"
+                    as="button"
+                  >
+                    Logout
+                  </inertia-link>
+                </div>
+              </template>
             </dropdown>
           </div>
         </div>
         <div class="md:flex md:flex-grow md:overflow-hidden">
-          <main-menu class="hidden md:block bg-indigo-800 flex-shrink-0 w-56 p-12 overflow-y-auto"/>
+          <main-menu class="hidden md:block bg-indigo-800 flex-shrink-0 w-56 p-12 overflow-y-auto" />
           <div
             class="md:flex-1 px-4 py-8 md:p-12 md:overflow-y-auto"
             scroll-region
           >
-            <flash-messages/>
-            <slot/>
+            <flash-messages />
+            <slot />
           </div>
         </div>
       </div>

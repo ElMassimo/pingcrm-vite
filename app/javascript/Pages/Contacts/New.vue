@@ -1,4 +1,5 @@
 <template>
+  <Head title="Create Contact" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
@@ -30,30 +31,27 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import ContactForm from './Form.vue'
+import { Head, useForm } from '@inertiajs/vue3'
 
 export default {
-  metaInfo: { title: 'Create Contact' },
   components: {
+    Head,
     LoadingButton,
     ContactForm,
   },
-  layout: Layout,
   props: {
     organizations: {
       type: Array,
       required: true,
     },
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        contact: {},
-      }),
-    }
+  setup () {
+    const form = useForm({
+      contact: {},
+    })
+    return { form }
   },
 }
 </script>

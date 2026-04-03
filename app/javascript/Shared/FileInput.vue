@@ -16,7 +16,7 @@
         @change="change"
       >
       <div
-        v-if="!value"
+        v-if="!modelValue"
         class="p-2"
       >
         <button
@@ -32,7 +32,7 @@
         class="flex items-center justify-between p-2"
       >
         <div class="flex-1 pr-1">
-          {{ value.name }} <span class="text-gray-600 text-xs">({{ filesize(value.size) }})</span>
+          {{ modelValue.name }} <span class="text-gray-600 text-xs">({{ filesize(modelValue.size) }})</span>
         </div>
         <button
           type="button"
@@ -55,7 +55,10 @@
 <script>
 export default {
   props: {
-    value: {}, // eslint-disable-line
+    modelValue: {
+      type: [Object, File],
+      default: null,
+    },
     label: {
       type: String,
       default: null,
@@ -69,8 +72,9 @@ export default {
       default: () => [],
     },
   },
+  emits: ['update:modelValue'],
   watch: {
-    value (value) {
+    modelValue (value) {
       if (!value)
         this.$refs.file.value = ''
     },
@@ -84,10 +88,10 @@ export default {
       this.$refs.file.click()
     },
     change (e) {
-      this.$emit('input', e.target.files[0])
+      this.$emit('update:modelValue', e.target.files[0])
     },
     remove () {
-      this.$emit('input', null)
+      this.$emit('update:modelValue', null)
     },
   },
 }

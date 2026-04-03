@@ -19,7 +19,7 @@
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Organization"
       >
-        <option :value="null"/>
+        <option :value="null" />
         <option
           v-for="organization in organizations"
           :key="organization.id"
@@ -64,7 +64,7 @@
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Country"
       >
-        <option :value="null"/>
+        <option :value="null" />
         <option value="CA">
           Canada
         </option>
@@ -80,7 +80,7 @@
       />
     </div>
 
-    <slot/>
+    <slot />
   </form>
 </template>
 
@@ -94,7 +94,7 @@ export default {
     TextInput,
   },
   props: {
-    value: {
+    modelValue: {
       type: Object,
       required: true,
     },
@@ -103,13 +103,14 @@ export default {
       required: true,
     },
   },
+  emits: ['update:modelValue', 'submit'],
   computed: {
     form: {
       get () {
-        return this.value
+        return this.modelValue
       },
       set (val) {
-        this.$emit('input', val)
+        this.$emit('update:modelValue', val)
       },
     },
   },

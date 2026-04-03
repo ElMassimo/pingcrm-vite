@@ -1,4 +1,5 @@
 <template>
+  <Head :title="form.organization.name" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
@@ -125,25 +126,22 @@
 
 <script>
 import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import _ from 'lodash'
+import { Head, useForm } from '@inertiajs/vue3'
+import omit from 'lodash/omit'
 
 import { organizations } from '@/api'
 import OrganizationForm from './Form.vue'
 
 export default {
-  metaInfo () {
-    return { title: this.form.organization.name }
-  },
   components: {
+    Head,
     Icon,
     LoadingButton,
     OrganizationForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     organization: {
       type: Object,
@@ -154,13 +152,11 @@ export default {
       required: true,
     },
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        organization: _.omit(this.organization, 'id', 'deleted_at'),
-      }),
-    }
+  setup (props) {
+    const form = useForm({
+      organization: omit(props.organization, 'id', 'deleted_at'),
+    })
+    return { form }
   },
   methods: {
     pathToEditContact (contact) {

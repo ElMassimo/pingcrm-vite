@@ -1,4 +1,5 @@
 <template>
+  <Head :title="`${form.user.first_name} ${form.user.last_name}`" />
   <div>
     <div class="mb-8 flex justify-start max-w-3xl">
       <h1 class="font-bold text-3xl">
@@ -57,24 +58,19 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
 import { users } from '@/api'
 import UserForm from './Form.vue'
+import { Head, useForm } from '@inertiajs/vue3'
 
 export default {
-  metaInfo () {
-    return {
-      title: `${this.form.user.first_name} ${this.form.user.last_name}`,
-    }
-  },
   components: {
+    Head,
     LoadingButton,
     UserForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     user: {
       type: Object,
@@ -85,16 +81,14 @@ export default {
       required: true,
     },
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: {
-          ...this.user,
-          photo: null,
-        },
-      }),
-    }
+  setup (props) {
+    const form = useForm({
+      user: {
+        ...props.user,
+        photo: null,
+      },
+    })
+    return { form }
   },
   methods: {
     submit (form) {

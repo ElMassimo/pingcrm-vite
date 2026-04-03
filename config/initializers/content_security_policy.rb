@@ -4,32 +4,34 @@
 # For further information see the following documentation
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
 
-Rails.application.config.content_security_policy do |policy|
-  policy.default_src :none
-  policy.font_src :self
-  policy.img_src :self, :data
-  policy.object_src :none
-  policy.form_action :self
-  policy.manifest_src :self
+unless Rails.env.test?
+  Rails.application.config.content_security_policy do |policy|
+    policy.default_src :none
+    policy.font_src :self
+    policy.img_src :self, :data
+    policy.object_src :none
+    policy.form_action :self
+    policy.manifest_src :self
 
-  if Rails.env.development?
-    # If you are using webpack-dev-server then specify webpack-dev-server host
-    policy.connect_src :self, "http://#{ViteRuby.config.host_with_port}", "ws://#{ViteRuby.config.host_with_port}"
+    if Rails.env.development?
+      # If you are using webpack-dev-server then specify webpack-dev-server host
+      policy.connect_src :self, "http://#{ViteRuby.config.host_with_port}", "ws://#{ViteRuby.config.host_with_port}"
 
-    # Inertia.js uses inline scripts to display error modal in development
-    policy.script_src :self, :unsafe_eval, "http://#{ViteRuby.config.host_with_port}", :unsafe_inline, 'https://polyfill.io'
-  else
-    policy.connect_src :self
-    policy.script_src :self, :blob
+      # Inertia.js uses inline scripts to display error modal in development
+      policy.script_src :self, :unsafe_eval, "http://#{ViteRuby.config.host_with_port}", :unsafe_inline, 'https://polyfill.io'
+    else
+      policy.connect_src :self
+      policy.script_src :self, :blob
+    end
+
+    # @inertiajs/progress uses inline styles
+    policy.style_src :self, :unsafe_inline
+
+    policy.base_uri :self
+
+    # Specify URI for violation reports
+    # policy.report_uri "/csp-violation-report-endpoint"
   end
-
-  # @inertiajs/progress uses inline styles
-  policy.style_src :self, :unsafe_inline
-
-  policy.base_uri :self
-
-  # Specify URI for violation reports
-  # policy.report_uri "/csp-violation-report-endpoint"
 end
 
 # If you are using UJS then enable automatic nonce generation

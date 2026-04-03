@@ -14,10 +14,12 @@
     <link rel="manifest" href="/site.webmanifest" >
     <link rel="icon" type="image/png" href="<%= vite_asset_path('images/favicon.png') %>">
 
-    <%= vite_typescript_tag 'application' %>
+    <%= vite_typescript_tag 'application', crossorigin: nil, skip_preload_tags: true %>
   </head>
 
   <body class="font-sans leading-none text-gray-800 antialiased">
+    <div id="dropdown"></div>
+    <div id="modal"></div>
     <%= yield %>
   </body>
 </html>

@@ -20,19 +20,19 @@
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import { organizations } from '@/api'
 import OrganizationForm from './Form.vue'
+import { useForm } from '@inertiajs/vue3'
 
 export default {
   components: {
     LoadingButton,
     OrganizationForm,
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        organization: {},
-      }),
-    }
+  emits: ['success'],
+  setup () {
+    const form = useForm({
+      organization: {},
+    })
+    return { form }
   },
   methods: {
     submit (form) {

@@ -1,4 +1,5 @@
 <template>
+  <Head title="Login" />
   <div class="p-6 bg-indigo-800 min-h-screen flex justify-center items-center">
     <div class="w-full max-w-md">
       <logo
@@ -10,12 +11,12 @@
         @submit.prevent="login(form)"
       >
         <div class="px-10 py-12">
-          <flash-messages/>
+          <flash-messages />
 
           <h1 class="text-center font-bold text-3xl">
             Welcome Back!
           </h1>
-          <div class="mx-auto mt-6 w-24 border-b-2"/>
+          <div class="mx-auto mt-6 w-24 border-b-2" />
           <text-input
             v-model="form.user.email"
             class="mt-10"
@@ -68,27 +69,27 @@ import FlashMessages from '@/Shared/FlashMessages.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import Logo from '@/Shared/Logo.vue'
 import TextInput from '@/Shared/TextInput.vue'
+import { Head, useForm } from '@inertiajs/vue3'
 import { usersSessions } from '@/api'
 
 export default {
-  metaInfo: { title: 'Login' },
   components: {
     FlashMessages,
+    Head,
     LoadingButton,
     Logo,
     TextInput,
   },
   layout: Layout,
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: {
-          email: 'johndoe@example.com',
-          password: 'secret',
-          remember_me: null,
-        },
-      }),
-    }
+  setup () {
+    const form = useForm({
+      user: {
+        email: 'johndoe@example.com',
+        password: 'secret',
+        remember_me: null,
+      },
+    })
+    return { form }
   },
   methods: {
     login (form) {

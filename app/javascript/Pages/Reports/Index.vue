@@ -1,4 +1,5 @@
 <template>
+  <Head title="Reports" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Reports
@@ -7,10 +8,9 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
+import { Head } from '@inertiajs/vue3'
 
 export default {
-  metaInfo: { title: 'Reports' },
-  layout: Layout,
+  components: { Head },
 }
 </script>

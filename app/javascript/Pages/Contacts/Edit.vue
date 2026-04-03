@@ -1,4 +1,5 @@
 <template>
+  <Head :title="`${form.contact.first_name} ${form.contact.last_name}`" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
@@ -47,24 +48,19 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import TrashedMessage from '@/Shared/TrashedMessage.vue'
-import _ from 'lodash'
 import ContactForm from './Form.vue'
+import { Head, useForm } from '@inertiajs/vue3'
+import omit from 'lodash/omit'
 
 export default {
-  metaInfo () {
-    return {
-      title: `${this.form.contact.first_name} ${this.form.contact.last_name}`,
-    }
-  },
   components: {
+    Head,
     LoadingButton,
     ContactForm,
     TrashedMessage,
   },
-  layout: Layout,
   props: {
     contact: {
       type: Object,
@@ -75,13 +71,11 @@ export default {
       required: true,
     },
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        contact: _.omit(this.contact, 'id', 'deleted_at'),
-      }),
-    }
+  setup (props) {
+    const form = useForm({
+      contact: omit(props.contact, 'id', 'deleted_at'),
+    })
+    return { form }
   },
   methods: {
     destroy () {

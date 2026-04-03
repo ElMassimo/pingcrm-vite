@@ -7,44 +7,35 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13-alpine
+        image: postgres:16-alpine
         ports: ["5432:5432"]
         env:
           POSTGRES_PASSWORD: postgres
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: '15'
+          node-version: '22'
+          cache: 'yarn'
 
       - name: Lint with RuboCop
         run: bundle exec rubocop --parallel
-
-      - name: Get Yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Yarn packages
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Install Yarn packages
         run: yarn install --frozen-lockfile
 
       - name: Lint with ESLint
         run: yarn lint
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium
 
       - name: Run Tests
         env:

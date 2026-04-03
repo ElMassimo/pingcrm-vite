@@ -1,4 +1,5 @@
 <template>
+  <Head title="Create User" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       <inertia-link
@@ -29,30 +30,27 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Main.vue'
 import LoadingButton from '@/Shared/LoadingButton.vue'
 import UserForm from './Form.vue'
+import { Head, useForm } from '@inertiajs/vue3'
 
 export default {
-  metaInfo: { title: 'Create User' },
   components: {
+    Head,
     LoadingButton,
     UserForm,
   },
-  layout: Layout,
   props: {
     user: {
       type: Object,
       required: true,
     },
   },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: this.user,
-      }),
-    }
+  setup (props) {
+    const form = useForm({
+      user: props.user,
+    })
+    return { form }
   },
 }
 </script>

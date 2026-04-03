@@ -1,4 +1,5 @@
 <template>
+  <Head title="Users" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Users
@@ -18,7 +19,7 @@
           v-model="form.role"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="user">
             User
           </option>
@@ -35,7 +36,7 @@
           v-model="form.trashed"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="with">
             With Trashed
           </option>
@@ -146,20 +147,19 @@
 
 <script>
 import Icon from '@/Shared/Icon.vue'
-import Layout from '@/Layouts/Main.vue'
 import mapValues from 'lodash/mapValues'
 import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Shared/SearchFilter.vue'
 import throttle from 'lodash/throttle'
 import UsersApi from '@/api/UsersApi'
+import { Head } from '@inertiajs/vue3'
 
 export default {
-  metaInfo: { title: 'Users' },
   components: {
+    Head,
     Icon,
     SearchFilter,
   },
-  layout: Layout,
   props: {
     users: {
       type: Array,

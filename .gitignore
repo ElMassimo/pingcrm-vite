@@ -45,3 +45,6 @@ node_modules
 *.local
 .vite-inspect
 .DS_Store
+
+# Bundler dependencies (should not be versioned)
+/vendor/bundle

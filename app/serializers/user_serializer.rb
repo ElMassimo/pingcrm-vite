@@ -2,6 +2,8 @@
 
 # Public: Used in the index page.
 class UserSerializer < BaseSerializer
+  object_as :user
+
   attributes(:id, :email, :name, :owner, :deleted_at)
 
   type :string

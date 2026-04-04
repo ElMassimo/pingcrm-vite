@@ -3,10 +3,10 @@
     <label
       v-if="label"
       class="form-label"
-      :for="id"
+      :for="inputId"
     >{{ label }}:</label>
     <textarea
-      :id="id"
+      :id="inputId"
       ref="input"
       v-bind="{ ...$attrs, class: null }"
       class="form-textarea"
@@ -24,17 +24,14 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid'
+import { useId } from 'vue'
 
 export default {
   inheritAttrs: false,
-  emits: ['update:modelValue'],
   props: {
     id: {
       type: String,
-      default () {
-        return `textarea-input-${uuid()}`
-      },
+      default: null,
     },
     modelValue: {
       type: String,
@@ -47,6 +44,17 @@ export default {
     errors: {
       type: Array,
       default: () => [],
+    },
+  },
+  emits: ['update:modelValue'],
+  setup () {
+    const uid = useId()
+
+    return { uid }
+  },
+  computed: {
+    inputId () {
+      return this.id || `textarea-input-${this.uid}`
     },
   },
   methods: {

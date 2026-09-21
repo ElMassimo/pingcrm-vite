@@ -3,38 +3,31 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @users = @users.
-             search(params[:search]).
-             trash_filter(params[:trashed]).
-             role_filter(params[:role]).
-             order_by_name
+    @users = UsersQuery.wrap(@users)
+      .search(search: params[:search], trashed: params[:trashed], role: params[:role])
+      .alphabetically
 
     render_page(
       users: UserSerializer.many(@users),
       can: {
         create_user: can?(:create, User)
       },
-      filters: params.slice(:search, :trashed, :role)
+      filters: params.slice(:search, :trashed, :role),
     )
   end
 
   def new
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :email, :first_name, :last_name, :owner)
-      end
+      user: UserFormSerializer.one(@user),
     )
   end
 
   def edit
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :id, :email, :first_name, :last_name, :owner, :deleted_at)
-        json.photo @user.photo.attached? ? polymorphic_url(@user.photo.variant(resize_to_fill: [64, 64])) : nil
-      end,
+      user: UserFormSerializer.one(@user),
       can: {
         edit_user: can?(:update, @user)
-      }
+      },
     )
   end
 

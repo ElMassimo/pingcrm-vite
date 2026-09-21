@@ -53,7 +53,7 @@ module Pingcrm
           # Get the status code from the path, which is /500 or /404 etc.
           status = request.path_info.delete_prefix('/').to_i
 
-          render inertia: 'Error',
+          render inertia: 'error',
                  props: { status: status }, # Make the status code available to the Vue component
                  status: status             # Return the same status code in the request header
         end

@@ -3,10 +3,10 @@
     <label
       v-if="label"
       class="form-label"
-      :for="id"
+      :for="inputId"
     >{{ label }}:</label>
     <input
-      :id="id"
+      :id="inputId"
       ref="input"
       v-bind="{ ...$attrs, class: null }"
       class="form-input"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { v4 as uuid } from 'uuid'
+import { useId } from 'vue'
 
 export default {
   inheritAttrs: false,
@@ -33,9 +33,7 @@ export default {
   props: {
     id: {
       type: String,
-      default () {
-        return `text-input-${uuid()}`
-      },
+      default: null,
     },
     type: {
       type: String,
@@ -52,6 +50,14 @@ export default {
     errors: {
       type: Array,
       default: () => [],
+    },
+  },
+  setup () {
+    return { uid: useId() }
+  },
+  computed: {
+    inputId () {
+      return this.id || `text-input-${this.uid}`
     },
   },
   methods: {

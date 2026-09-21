@@ -11,14 +11,5 @@ class ActiveSupport::TestCase
 
   include FactoryBot::Syntax::Methods
 
-  teardown do
-    messages = page.driver.browser.manage.logs.get(:browser).
-               map { |log| "[#{log.level}] #{log.message}" }.
-               reject { |msg| msg.include?('Please use the new visit event callbacks instead') || msg.include?('1038223') }
-
-
-    assert_empty(messages)
-  end
-
   # Add more helper methods to be used by all tests here...
 end

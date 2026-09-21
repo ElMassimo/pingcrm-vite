@@ -42,9 +42,9 @@ export default {
       return [
         {
           label: 'Previous',
-          url: this.url(this.meta.prev),
+          url: this.url(this.meta.previous),
         },
-        ...this.meta.sequels['0'].map((page) => {
+        ...this.meta.series.map((page) => {
           return {
             label: page,
             url: this.url(page),
@@ -62,7 +62,7 @@ export default {
   methods: {
     url (pageNumber) {
       return pageNumber
-        ? this.meta.scaffold_url.replace(/__pagy_page__/, pageNumber)
+        ? this.meta.url_template.replace('P ', pageNumber)
         : null
     },
     active (pageNumber) {

@@ -120,8 +120,8 @@ export default {
   mounted () {
     document.addEventListener('keydown', this.onEscape)
   },
-  unmounted() {
-    document.removeEventListener('keydown', this.onEscape);
+  unmounted () {
+    document.removeEventListener('keydown', this.onEscape)
   },
   methods: {
     show () {
@@ -135,8 +135,8 @@ export default {
       this.showContent = false
       if (!import.meta.env.SSR) document.body.style.removeProperty('overflow')
     },
-    onEscape () {
-      if (this.open && e.key === 'Escape')
+    onEscape (event) {
+      if (this.open && event.key === 'Escape')
         this.close()
     },
   },

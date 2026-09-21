@@ -1,8 +1,10 @@
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import path from 'path'
+
+import { defineConfig } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
 import ruby from 'vite-plugin-ruby'
-import windicss from 'vite-plugin-windicss'
+import tailwindcss from '@tailwindcss/vite'
 
 import autoImport from 'unplugin-auto-import/vite'
 import components from 'unplugin-vue-components/vite'
@@ -12,13 +14,29 @@ import reloadOnChange from 'vite-plugin-full-reload'
 import inspect from 'vite-plugin-inspect'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      // Route `$api` (js-from-routes) through the unified @inertiajs/vue3 router.
+      '@inertiajs/inertia': path.resolve(process.cwd(), 'app/frontend/shims/inertia.ts'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks (id) {
+          if (id.includes('node_modules'))
+            return 'vendor'
+        },
+      },
+    },
+  },
   plugins: [
     /**
      * Core
      */
     ruby(),
-    vue({ reactivityTransform: true }),
-    windicss({ root: process.cwd() }),
+    tailwindcss(),
+    vue(),
 
     /**
      * DX
@@ -35,13 +53,8 @@ export default defineConfig({
     reloadOnChange(['config/routes.rb', 'app/views/**/*']),
 
     /**
-     * Build
-     */
-    splitVendorChunkPlugin(),
-
-    /**
      * Debug
      */
-    process.env.DEBUG && inspect(),
+    process.env.DEBUG ? inspect() : undefined,
   ],
 })

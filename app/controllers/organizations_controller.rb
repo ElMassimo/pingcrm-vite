@@ -3,27 +3,20 @@ class OrganizationsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    organizations = @organizations.
-                    search(params[:search]).
-                    trash_filter(params[:trashed]).
-                    order(:name)
+    organizations = OrganizationsQuery.wrap(@organizations)
+      .search(search: params[:search], trashed: params[:trashed])
+      .alphabetically
 
     render_page(
       organizations: paginate_data(organizations, serializer: OrganizationSerializer),
-      filters: params.slice(:search, :trashed)
+      filters: params.slice(:search, :trashed),
     )
   end
 
   def edit
     render_page(
-      organization: jbuilder do |json|
-        json.(@organization, :id, :name, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
-      contacts: -> {
-        jbuilder do |json|
-          json.array! @organization.contacts.order_by_name, :id, :name, :phone, :city, :deleted_at
-        end
-      }
+      organization: OrganizationFormSerializer.one(@organization),
+      contacts: -> { ContactListSerializer.many(ContactsQuery.wrap(@organization.contacts).alphabetically) },
     )
   end
 

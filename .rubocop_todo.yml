@@ -123,6 +123,7 @@ Rails/FilePath:
 # Offense count: 22
 Rails/I18nLocaleTexts:
   Exclude:
+    - 'app/controllers/concerns/inertia_csrf.rb'
     - 'app/controllers/contacts_controller.rb'
     - 'app/controllers/organizations_controller.rb'
     - 'app/controllers/users_controller.rb'

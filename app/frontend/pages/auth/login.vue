@@ -9,7 +9,7 @@ const form = useForm({
     remember_me: null,
   },
 })
-const { user } = $(form)
+const { user } = form
 
 function login (form: any) {
   usersSessions.create({ form })

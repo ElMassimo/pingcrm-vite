@@ -1,1 +1,1 @@
-export { InertiaLink as default } from '@inertiajs/inertia-vue3'
+export { Link as default } from '@inertiajs/vue3'

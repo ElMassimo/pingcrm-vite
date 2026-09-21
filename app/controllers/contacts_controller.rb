@@ -3,30 +3,27 @@ class ContactsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    contacts = @contacts.
-               includes(:organization).
-               search(params[:search]).
-               trash_filter(params[:trashed]).
-               order_by_name
+    contacts = ContactsQuery.wrap(@contacts)
+      .includes(:organization)
+      .search(search: params[:search], trashed: params[:trashed])
+      .alphabetically
 
     render_page(
       contacts: paginate_data(contacts, serializer: ContactSerializer),
-      filters: params.slice(:search, :trashed)
+      filters: params.slice(:search, :trashed),
     )
   end
 
   def new
     render_page(
-      organizations:  ModelSerializer.many(current_user.organizations.order(:name))
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 
   def edit
     render_page(
-      contact: jbuilder do |json|
-        json.(@contact, :id, :first_name, :last_name, :organization_id, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
-      organizations: ModelSerializer.many(current_user.organizations.order(:name))
+      contact: ContactFormSerializer.one(@contact),
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 

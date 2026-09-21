@@ -1,4 +1,44 @@
-@import "reset";
-@import "buttons";
-@import "form";
-@import "transitions";
+@import 'tailwindcss' source('../..');
+
+@import './reset.css';
+@import './buttons.css';
+@import './form.css';
+@import './transitions.css';
+
+@theme {
+  /* Custom indigo palette (ported verbatim from the old Windi config) */
+  --color-indigo-100: #e6e8ff;
+  --color-indigo-300: #b2b7ff;
+  --color-indigo-400: #7886d7;
+  --color-indigo-500: #6574cd;
+  --color-indigo-600: #5661b3;
+  --color-indigo-800: #2f365f;
+  --color-indigo-900: #191e38;
+
+  /* Windi mapped `gray` to blueGray; preserve that tint by aliasing gray -> slate */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+}
+
+/*
+ * Tailwind v4 defaults borders to `currentColor`; Windi (and Tailwind v3)
+ * defaulted them to gray-200. Restore that so existing markup keeps its
+ * light borders without adding an explicit border-color everywhere.
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}

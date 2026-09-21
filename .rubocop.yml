@@ -1,13 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
-require:
-  - standard
+plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
-
-inherit_gem:
-  standard: config/base.yml
 
 inherit_mode:
   merge:
@@ -16,6 +12,55 @@ inherit_mode:
 AllCops:
   SuggestExtensions: false
   NewCops: enable
+  TargetRubyVersion: 4.0
+
+Layout/LineLength:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Metrics:
+  Enabled: false
+
+Naming/BlockForwarding:
+  Enabled: false
+
+Rails/EnvLocal:
+  Enabled: false
+
+Rails/RedirectBackOrTo:
+  Enabled: false
+
+Rails/ToFormattedS:
+  Enabled: false
+
+Style/ArgumentsForwarding:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/FetchEnvVar:
+  Enabled: false
+
+Style/RedundantConstantBase:
+  Enabled: false
+
+Style/SuperWithArgsParentheses:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
 
 Rails/UnknownEnv:
   Environments:
@@ -43,8 +88,6 @@ RSpec/MultipleExpectations:
 RSpec/ExampleLength:
   Enabled: false
 RSpec/DescribedClass:
-  Enabled: false
-RSpec/Capybara/FeatureMethods:
   Enabled: false
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

@@ -7,9 +7,9 @@ module Auth
     before_action :authenticate_user!
 
     rescue_from CanCan::AccessDenied do
-      render inertia: 'Error', props: {
+      render inertia: 'error', props: {
         status: 403
-      }
+      }, status: :forbidden
     end
   end
 

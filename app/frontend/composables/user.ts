@@ -3,11 +3,12 @@ import type { CurrentUser } from '~/serializers'
 
 export interface SharedData {
   user: CurrentUser
+  [key: string]: unknown
 }
 
 export function useUser () {
-  const { props } = $(usePage<SharedData>())
+  const page = usePage<SharedData>()
   return {
-    user: computed(() => props.user),
+    user: computed(() => page.props.user),
   }
 }

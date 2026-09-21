@@ -57,7 +57,7 @@
       </button>
     </div>
     <div
-      v-if="$page.props.errors"
+      v-if="Object.keys($page.props.errors || {}).length"
       class="mb-8 flex items-center justify-between bg-red-400 rounded max-w-3xl"
     >
       <div class="flex items-center">

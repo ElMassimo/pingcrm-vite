@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} / Rails ${{ matrix.rails }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ruby: "3.1"
+            rails: "7.2"
+            gemfile: rails_7.2.gemfile
+          - ruby: "3.2"
+            rails: "8.0"
+            gemfile: rails_8.0.gemfile
+          - ruby: "4.0"
+            rails: "8.1"
+            gemfile: rails_8.1.gemfile
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rspec
+
+  quality:
+    name: Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "4.0"
+          bundler-cache: true
+      - run: bundle exec rubocop
+      - run: gem build actionquery.gemspec

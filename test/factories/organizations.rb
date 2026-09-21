@@ -1,4 +1,4 @@
-require 'faker'
+require "faker"
 
 FactoryBot.define do
   factory :organization do
@@ -9,7 +9,7 @@ FactoryBot.define do
     address { Faker::Address.street_address }
     city { Faker::Address.city }
     region { Faker::Address.state }
-    country { 'US' }
+    country { "US" }
     postal_code { Faker::Address.postcode }
   end
 end

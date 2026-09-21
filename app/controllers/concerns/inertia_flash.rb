@@ -1,4 +1,4 @@
-require 'active_support/concern'
+require "active_support/concern"
 
 # Make flash messages available as shared data
 #
@@ -9,7 +9,7 @@ module InertiaFlash
     inertia_share flash: -> {
       {
         success: flash.notice,
-        alert: flash.alert
+        alert: flash.alert,
       }
     }
   end

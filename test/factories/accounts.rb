@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :account do
-    name { 'Acme Corporation' }
+    name { "Acme Corporation" }
   end
 end

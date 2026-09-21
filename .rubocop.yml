@@ -1,65 +1,45 @@
-inherit_from: .rubocop_todo.yml
+require:
+  - standard
 
 plugins:
+  - standard-custom
+  - rubocop-performance
   - rubocop-rails
   - rubocop-rspec
-  - rubocop-performance
 
-inherit_mode:
-  merge:
-    - Exclude
+inherit_gem:
+  standard: config/base.yml
 
 AllCops:
+  TargetRubyVersion: 4.0
   SuggestExtensions: false
   NewCops: enable
-  TargetRubyVersion: 4.0
+  Exclude:
+    - app/frontend/**/*
+    - bin/**/*
+    - node_modules/**/*
+    - public/**/*
+    - vendor/**/*
 
-Layout/LineLength:
-  Enabled: false
-
-Layout/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-
-Metrics:
-  Enabled: false
-
-Naming/BlockForwarding:
-  Enabled: false
+Rails/CreateTableWithTimestamps:
+  Exclude:
+    - db/schema.rb
 
 Rails/EnvLocal:
+  Enabled: false
+
+Rails/I18nLocaleTexts:
   Enabled: false
 
 Rails/RedirectBackOrTo:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - db/migrate/20201210064113_add_service_name_to_active_storage_blobs.rb
+    - spec/**/*
+
 Rails/ToFormattedS:
-  Enabled: false
-
-Style/ArgumentsForwarding:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/Documentation:
-  Enabled: false
-
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
-Style/FetchEnvVar:
-  Enabled: false
-
-Style/RedundantConstantBase:
-  Enabled: false
-
-Style/SuperWithArgsParentheses:
-  Enabled: false
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/Lambda:
   Enabled: false
 
 Rails/UnknownEnv:
@@ -68,41 +48,41 @@ Rails/UnknownEnv:
     - development
     - test
 
-Rails/SkipsModelValidations:
-  Exclude:
-    - spec/**/*
-
 Rails:
-  Enabled: true # enable rubocop-rails cops
+  Enabled: true
   Exclude:
-    - 'bin/**/*'
-    - 'exe/**/*'
-    - 'lib/tasks/**/*'
+    - bin/**/*
+    - exe/**/*
+    - lib/tasks/**/*
     - Rakefile
+
 RSpec:
-  Enabled: true # enable rubocop-rspec cops
+  Enabled: true
+
 RSpec/DescribeClass:
-  Enabled: false # ignore missing comments on classes
-RSpec/MultipleExpectations:
   Enabled: false
-RSpec/ExampleLength:
-  Enabled: false
+
 RSpec/DescribedClass:
   Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
-# Trailing Commas
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: comma
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: comma
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+  EnforcedShorthandSyntax: always
+
 Style/TrailingCommaInArguments:
   EnforcedStyleForMultiline: comma
 
-# Outdent Access Modifier
-Layout/AccessModifierIndentation:
-  EnforcedStyle: outdent
-Layout/CommentIndentation:
-  Exclude:
-    - integration_test_helpers/**/*
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma

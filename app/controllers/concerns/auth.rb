@@ -1,4 +1,4 @@
-require 'active_support/concern'
+require "active_support/concern"
 
 module Auth
   extend ActiveSupport::Concern
@@ -7,8 +7,8 @@ module Auth
     before_action :authenticate_user!
 
     rescue_from CanCan::AccessDenied do
-      render inertia: 'error', props: {
-        status: 403
+      render inertia: "error", props: {
+        status: 403,
       }, status: :forbidden
     end
   end

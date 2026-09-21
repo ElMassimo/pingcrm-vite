@@ -11,6 +11,6 @@ class UserSerializer < BaseSerializer
 
   type :object
   def can
-    { edit_user: can?(:edit, user) }
+    {edit_user: can?(:edit, user)}
   end
 end

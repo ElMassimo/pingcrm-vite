@@ -7,8 +7,8 @@ class UsersQuery < ApplicationQuery
 
   filter :role, ->(role) do
     case role
-    when 'user' then where(owner: false)
-    when 'owner' then where(owner: true)
+    when "user" then where(owner: false)
+    when "owner" then where(owner: true)
     else self
     end
   end

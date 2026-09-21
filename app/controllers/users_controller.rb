@@ -9,9 +9,9 @@ class UsersController < ApplicationController
     render_page(
       users: UserSerializer.many(@users),
       can: {
-        create_user: can?(:create, User)
+        create_user: can?(:create, User),
       },
-      filters: filters,
+      filters:,
     )
   end
 
@@ -25,50 +25,50 @@ class UsersController < ApplicationController
     render_page(
       user: UserFormSerializer.one(@user),
       can: {
-        edit_user: can?(:update, @user)
+        edit_user: can?(:update, @user),
       },
     )
   end
 
   def create
     if @user.update(user_params)
-      redirect_to users_path, notice: 'User created.'
+      redirect_to users_path, notice: "User created."
     else
-      redirect_to new_user_path, inertia: { errors: @user.errors }
+      redirect_to new_user_path, inertia: {errors: @user.errors}
     end
   end
 
   def update
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: 'Updating the demo user is not allowed.'
+      redirect_to edit_user_path(@user), alert: "Updating the demo user is not allowed."
       return
     end
 
     if @user.update(user_params)
-      redirect_to edit_user_path(@user), notice: 'User updated.'
+      redirect_to edit_user_path(@user), notice: "User updated."
     else
-      redirect_to edit_user_path(@user), inertia: { errors: @user.errors }
+      redirect_to edit_user_path(@user), inertia: {errors: @user.errors}
     end
   end
 
   def destroy
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: 'Deleting the demo user is not allowed.'
+      redirect_to edit_user_path(@user), alert: "Deleting the demo user is not allowed."
       return
     end
 
     if @user.soft_delete
-      redirect_to edit_user_path(@user), notice: 'User deleted.'
+      redirect_to edit_user_path(@user), notice: "User deleted."
     else
-      redirect_to edit_user_path(@user), alert: 'User cannot be deleted!'
+      redirect_to edit_user_path(@user), alert: "User cannot be deleted!"
     end
   end
 
   def restore
     if @user.restore
-      redirect_to edit_user_path(@user), notice: 'User restored.'
+      redirect_to edit_user_path(@user), notice: "User restored."
     else
-      redirect_to edit_user_path(@user), alert: 'User cannot be restored!'
+      redirect_to edit_user_path(@user), alert: "User cannot be restored!"
     end
   end
 

@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def demo?
-    email == 'johndoe@example.com'
+    email == "johndoe@example.com"
   end
 
   private
@@ -42,6 +42,6 @@ class User < ApplicationRecord
     return unless photo.attached?
     return if photo.content_type.in?(Rails.application.config.active_storage.web_image_content_types)
 
-    errors.add(:photo, 'Must be a .JPG, .PNG or .GIF file')
+    errors.add(:photo, "Must be a .JPG, .PNG or .GIF file")
   end
 end

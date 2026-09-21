@@ -60,7 +60,7 @@
 import LoadingButton from '~/components/LoadingButton.vue'
 import TrashedMessage from '~/components/TrashedMessage.vue'
 import { users } from '@/api'
-import UserForm from './Form.vue'
+import UserForm from './form.vue'
 
 export default {
   metaInfo () {

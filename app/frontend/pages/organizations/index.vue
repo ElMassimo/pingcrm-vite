@@ -134,7 +134,7 @@ import { clean, reset, throttle } from '~/helpers/object'
 import Pagination from '~/components/Pagination.vue'
 import SearchFilter from '~/components/SearchFilter.vue'
 import Modal from '~/components/Modal.vue'
-import NewOrganization from '@/Pages/Organizations/_New.vue'
+import NewOrganization from '@/pages/organizations/_new.vue'
 import api from '~/api'
 
 export default {

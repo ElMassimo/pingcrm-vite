@@ -50,7 +50,7 @@
 import LoadingButton from '~/components/LoadingButton.vue'
 import TrashedMessage from '~/components/TrashedMessage.vue'
 import { omit } from '~/helpers/object'
-import ContactForm from './Form.vue'
+import ContactForm from './form.vue'
 
 export default {
   metaInfo () {

@@ -130,7 +130,7 @@ import TrashedMessage from '~/components/TrashedMessage.vue'
 import { omit } from '~/helpers/object'
 
 import { organizations } from '@/api'
-import OrganizationForm from './Form.vue'
+import OrganizationForm from './form.vue'
 
 export default {
   metaInfo () {

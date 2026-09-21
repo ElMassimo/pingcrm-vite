@@ -1,8 +1,6 @@
-const environment = {
-  plugins: [
-    require('autoprefixer'),
-    require('postcss-nested'),
-  ],
-}
+import autoprefixer from 'autoprefixer'
+import postcssNested from 'postcss-nested'
 
-module.exports = environment
+export default {
+  plugins: [autoprefixer, postcssNested],
+}

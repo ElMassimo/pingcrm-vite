@@ -8,12 +8,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 import autoImport from 'unplugin-auto-import/vite'
 import components from 'unplugin-vue-components/vite'
-import layouts from './app/frontend/vite-plugins/layouts'
+import layouts from './app/frontend/vite-plugins/layouts.ts'
 import reloadOnChange from 'vite-plugin-full-reload'
 
 import inspect from 'vite-plugin-inspect'
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   resolve: {
     alias: {
       // Route `$api` (js-from-routes) through the unified @inertiajs/vue3 router.
@@ -21,6 +21,7 @@ export default defineConfig({
     },
   },
   build: {
+    ssr: isSsrBuild ? 'app/frontend/ssr/ssr.ts' : undefined,
     rollupOptions: {
       output: {
         manualChunks (id) {
@@ -57,4 +58,4 @@ export default defineConfig({
      */
     process.env.DEBUG ? inspect() : undefined,
   ],
-})
+}))

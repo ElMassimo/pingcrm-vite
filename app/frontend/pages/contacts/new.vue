@@ -31,7 +31,7 @@
 
 <script>
 import LoadingButton from '~/components/LoadingButton.vue'
-import ContactForm from './Form.vue'
+import ContactForm from './form.vue'
 
 export default {
   metaInfo: { title: 'Create Contact' },

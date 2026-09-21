@@ -1,6 +1,7 @@
 {
   "name": "pingcrm",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@12.5.1",
   "engines": {
     "node": ">=24"

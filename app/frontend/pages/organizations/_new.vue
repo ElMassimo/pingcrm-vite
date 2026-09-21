@@ -19,7 +19,7 @@
 <script>
 import LoadingButton from '~/components/LoadingButton.vue'
 import { organizations } from '@/api'
-import OrganizationForm from './Form.vue'
+import OrganizationForm from './form.vue'
 
 export default {
   components: {

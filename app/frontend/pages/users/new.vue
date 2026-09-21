@@ -30,7 +30,7 @@
 
 <script>
 import LoadingButton from '~/components/LoadingButton.vue'
-import UserForm from './Form.vue'
+import UserForm from './form.vue'
 
 export default {
   metaInfo: { title: 'Create User' },

@@ -1,9 +1,9 @@
-const js = require('@eslint/js')
-const pluginVue = require('eslint-plugin-vue')
-const globals = require('globals')
-const tseslint = require('typescript-eslint')
+import js from '@eslint/js'
+import pluginVue from 'eslint-plugin-vue'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
-module.exports = tseslint.config(
+export default tseslint.config(
   {
     ignores: [
       'app/frontend/.vite-inspect/**',

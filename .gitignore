@@ -31,6 +31,7 @@
 
 /public/assets
 .byebug_history
+/spec/examples.txt
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

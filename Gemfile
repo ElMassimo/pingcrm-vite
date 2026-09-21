@@ -74,9 +74,11 @@ end
 group :test do
   # Capybara aims to simplify the process of integration testing Rack applications, such as Rails, Sinatra or Merb (https://github.com/teamcapybara/capybara)
   gem "capybara", ">= 3.26"
+  gem "capybara_test_helpers", "~> 1.0"
 
   # Headless Chrome driver for Capybara via CDP/Ferrum, no driver downloads needed. (https://github.com/rubycdp/cuprite)
   gem "cuprite"
+  gem "rspec-rails", "~> 8.0"
 end
 
 # Timezone Data for TZInfo (https://tzinfo.github.io)

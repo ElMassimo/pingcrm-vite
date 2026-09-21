@@ -67,10 +67,10 @@ You're ready to go! Visit PingCRM in your browser (http://localhost:3000), and l
 
 ## Running tests
 
-To run the PingCRM tests, run:
+To run the PingCRM test suite, run:
 
 ```
-rails test:system
+bundle exec rspec
 ```
 
 

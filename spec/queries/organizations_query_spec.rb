@@ -1,16 +1,18 @@
-require "test_helper"
+# frozen_string_literal: true
 
-class OrganizationsQueryTest < ActiveSupport::TestCase
-  test "searches and orders active organizations" do
+require "rails_helper"
+
+RSpec.describe OrganizationsQuery do
+  it "searches and orders active organizations" do
     account = create(:account)
     matching = create(:organization, account:, name: "Analytical Engines")
     create(:organization, account:, name: "Compiler Company")
     create(:organization, account:, name: "Deleted Engines", deleted_at: Time.current)
 
-    results = OrganizationsQuery.wrap(account.organizations)
+    results = described_class.wrap(account.organizations)
       .search(search: "engine", trashed: nil)
       .by_name
 
-    assert_equal [matching], results.to_a
+    expect(results).to contain_exactly(matching)
   end
 end

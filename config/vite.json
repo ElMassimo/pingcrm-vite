@@ -9,6 +9,7 @@
   },
   "test": {
     "autoBuild": true,
+    "devServerConnectionCheck": true,
     "publicOutputDir": "vite-test",
     "port": 3037
   },

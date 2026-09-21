@@ -74,6 +74,11 @@ RSpec/MultipleExpectations:
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
+# capybara_test_helpers performs expectations through `helper.should`.
+RSpec/NoExpectationExample:
+  Exclude:
+    - spec/features/**/*
+
 Style/HashSyntax:
   EnforcedStyle: ruby19
   EnforcedShorthandSyntax: always

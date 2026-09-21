@@ -21,8 +21,8 @@ Bundler.require(*Rails.groups)
 
 module Pingcrm
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    # Initialize configuration defaults for the current Rails version.
+    config.load_defaults 8.1
 
     # Configuration for the application, engines, and railties goes here.
     #

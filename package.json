@@ -26,6 +26,7 @@
     "eslint-plugin-vue": "^10.11.0",
     "globals": "^16",
     "lodash-es": "^4",
+    "magic-string": "^1.4.1",
     "postcss": "^8",
     "postcss-nested": "^5.0.6",
     "sass": "^1.54",

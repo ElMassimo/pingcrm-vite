@@ -1,11 +1,21 @@
+<script setup lang="ts">
+const { maxWidth = 300 } = defineProps<{ maxWidth?: number }>()
+const model = defineModel<string | null>({ default: null })
+defineEmits<{ reset: [] }>()
+
+function updateModelValue (event: Event) {
+  model.value = (event.target as HTMLInputElement).value
+}
+</script>
+
 <template>
   <div class="flex items-center">
     <div class="flex w-full bg-white shadow rounded">
-      <dropdown
+      <Dropdown
         class="px-4 md:px-6 rounded-l border-r hover:bg-gray-100 focus:border-white focus:z-10"
         placement="bottom-start"
         aria-label="Filter"
-        :autoClose="false"
+        :auto-close="false"
       >
         <div class="flex items-baseline">
           <span class="text-gray-800 hidden md:inline">Filter</span>
@@ -14,7 +24,7 @@
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 961.243 599.998"
           >
-            <path d="M239.998 239.999L0 0h961.243L721.246 240c-131.999 132-240.28 240-240.624 239.999-.345-.001-108.625-108.001-240.624-240z"/>
+            <path d="M239.998 239.999L0 0h961.243L721.246 240c-131.999 132-240.28 240-240.624 239.999-.345-.001-108.625-108.001-240.624-240z" />
           </svg>
         </div>
         <template #dropdown>
@@ -22,10 +32,10 @@
             class="mt-2 px-4 py-6 w-screen shadow-xl bg-white rounded"
             :style="{ maxWidth: `${maxWidth}px` }"
           >
-            <slot/>
+            <slot />
           </div>
         </template>
-      </dropdown>
+      </Dropdown>
       <input
         class="w-full px-6 py-3 rounded-r"
         aria-label="Search"
@@ -33,8 +43,8 @@
         type="text"
         name="search"
         placeholder="Search…"
-        :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"
+        :value="model"
+        @input="updateModelValue"
       >
     </div>
     <button
@@ -46,24 +56,3 @@
     </button>
   </div>
 </template>
-
-<script>
-import Dropdown from '~/components/Dropdown.vue'
-
-export default {
-  components: {
-    Dropdown,
-  },
-  emits: ['update:modelValue', 'reset'],
-  props: {
-    modelValue: {
-      type: String,
-      default: null,
-    },
-    maxWidth: {
-      type: Number,
-      default: 300,
-    },
-  },
-}
-</script>

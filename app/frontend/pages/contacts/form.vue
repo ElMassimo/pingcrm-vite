@@ -1,25 +1,43 @@
+<script setup lang="ts">
+import type { InertiaForm } from '@inertiajs/vue3'
+import type { ContactForm, Model } from '~/serializers'
+
+type ContactData = Omit<ContactForm, 'id' | 'deleted_at'>
+type ContactFormState = InertiaForm<{ contact: ContactData }> & {
+  errors: Partial<Record<keyof ContactData, string[]>>
+}
+
+const { organizations } = defineProps<{ organizations: Model[] }>()
+const form = defineModel<ContactFormState>({ required: true })
+const emit = defineEmits<{ submit: [] }>()
+
+function submit () {
+  emit('submit')
+}
+</script>
+
 <template>
-  <form @submit.prevent="$emit('submit')">
+  <form @submit.prevent="submit">
     <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-      <text-input
+      <TextInput
         v-model="form.contact.first_name"
         :errors="form.errors.first_name"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="First name"
       />
-      <text-input
+      <TextInput
         v-model="form.contact.last_name"
         :errors="form.errors.last_name"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Last name"
       />
-      <select-input
+      <SelectInput
         v-model="form.contact.organization_id"
         :errors="form.errors.organization_id"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Organization"
       >
-        <option :value="null"/>
+        <option :value="null" />
         <option
           v-for="organization in organizations"
           :key="organization.id"
@@ -27,52 +45,52 @@
         >
           {{ organization.name }}
         </option>
-      </select-input>
-      <text-input
+      </SelectInput>
+      <TextInput
         v-model="form.contact.email"
         :errors="form.errors.email"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Email"
       />
-      <text-input
+      <TextInput
         v-model="form.contact.phone"
         :errors="form.errors.phone"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Phone"
       />
-      <text-input
+      <TextInput
         v-model="form.contact.address"
         :errors="form.errors.address"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Address"
       />
-      <text-input
+      <TextInput
         v-model="form.contact.city"
         :errors="form.errors.city"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="City"
       />
-      <text-input
+      <TextInput
         v-model="form.contact.region"
         :errors="form.errors.region"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Province/State"
       />
-      <select-input
+      <SelectInput
         v-model="form.contact.country"
         :errors="form.errors.country"
         class="pr-6 pb-8 w-full lg:w-1/2"
         label="Country"
       >
-        <option :value="null"/>
+        <option :value="null" />
         <option value="CA">
           Canada
         </option>
         <option value="US">
           United States
         </option>
-      </select-input>
-      <text-input
+      </SelectInput>
+      <TextInput
         v-model="form.contact.postal_code"
         :errors="form.errors.postal_code"
         class="pr-6 pb-8 w-full lg:w-1/2"
@@ -80,39 +98,6 @@
       />
     </div>
 
-    <slot/>
+    <slot />
   </form>
 </template>
-
-<script>
-import SelectInput from '~/components/SelectInput.vue'
-import TextInput from '~/components/TextInput.vue'
-
-export default {
-  components: {
-    SelectInput,
-    TextInput,
-  },
-  emits: ['update:modelValue', 'submit'],
-  props: {
-    modelValue: {
-      type: Object,
-      required: true,
-    },
-    organizations: {
-      type: Array,
-      required: true,
-    },
-  },
-  computed: {
-    form: {
-      get () {
-        return this.modelValue
-      },
-      set (val) {
-        this.$emit('update:modelValue', val)
-      },
-    },
-  },
-}
-</script>

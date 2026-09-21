@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Public: Used to populate the contact edit form.
+# Public: Used to populate contact forms.
 class ContactFormSerializer < BaseSerializer
   object_as :contact
 

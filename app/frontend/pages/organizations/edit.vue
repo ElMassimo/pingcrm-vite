@@ -1,26 +1,58 @@
+<script setup lang="ts">
+import { contacts as contactsApi, organizations } from '~/api'
+import { useForm } from '~/composables/form'
+import { omit } from '~/helpers/object'
+import type { ContactList, OrganizationForm as OrganizationFormData } from '~/serializers'
+import OrganizationForm from './form.vue'
+
+type OrganizationData = Omit<OrganizationFormData, 'id' | 'deleted_at'>
+defineOptions({ remember: 'form' })
+const { organization, contacts } = defineProps<{
+  organization: OrganizationFormData
+  contacts: ContactList[]
+}>()
+const form = useForm<{ organization: OrganizationData }>({
+  organization: omit(organization, 'id', 'deleted_at'),
+})
+const title = $computed(() => form.organization.name)
+
+function pathToEditContact (contact: ContactList) {
+  return contactsApi.edit.path(contact)
+}
+
+function destroy () {
+  if (confirm('Are you sure you want to delete this organization?')) organizations.destroy(organization)
+}
+
+function restore () {
+  if (confirm('Are you sure you want to restore this organization?')) organizations.restore(organization)
+}
+</script>
+
 <template>
+  <Head :title="title" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link
+      <InertiaLink
         class="text-indigo-500 hover:text-indigo-800"
-        :href="$api.organizations.index.path()"
+        :href="organizations.index.path()"
       >
         Organizations
-      </inertia-link>
+      </InertiaLink>
       <span class="text-indigo-400 font-medium">/</span>
       {{ form.organization.name }}
     </h1>
-    <trashed-message
+    <TrashedMessage
       v-if="organization.deleted_at"
       class="mb-6"
       @restore="restore"
     >
       This organization has been deleted.
-    </trashed-message>
+    </TrashedMessage>
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-      <organization-form
+      <OrganizationForm
         v-model="form"
-        @submit="$api.organizations.update({ params: organization, form })"
+        @submit="organizations.update({ params: organization, form })"
       >
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
           <button
@@ -32,15 +64,15 @@
           >
             Delete Organization
           </button>
-          <loading-button
+          <LoadingButton
             :loading="form.processing"
             class="btn-indigo ml-auto"
             type="submit"
           >
             Update Organization
-          </loading-button>
+          </LoadingButton>
         </div>
-      </organization-form>
+      </OrganizationForm>
     </div>
     <h2 class="mt-12 font-bold text-2xl">
       Contacts
@@ -67,47 +99,47 @@
           class="hover:bg-gray-100 focus-within:bg-gray-100"
         >
           <td class="border-t">
-            <inertia-link
+            <InertiaLink
               class="px-6 py-4 flex items-center focus:text-indigo-500"
               :href="pathToEditContact(contact)"
             >
               {{ contact.name }}
-              <icon
+              <Icon
                 v-if="contact.deleted_at"
                 name="trash"
                 class="flex-shrink-0 w-3 h-3 fill-gray-500 ml-2"
               />
-            </inertia-link>
+            </InertiaLink>
           </td>
           <td class="border-t">
-            <inertia-link
+            <InertiaLink
               class="px-6 py-4 flex items-center"
               :href="pathToEditContact(contact)"
               tabindex="-1"
             >
               {{ contact.city }}
-            </inertia-link>
+            </InertiaLink>
           </td>
           <td class="border-t">
-            <inertia-link
+            <InertiaLink
               class="px-6 py-4 flex items-center"
               :href="pathToEditContact(contact)"
               tabindex="-1"
             >
               {{ contact.phone }}
-            </inertia-link>
+            </InertiaLink>
           </td>
           <td class="border-t w-px">
-            <inertia-link
+            <InertiaLink
               class="px-4 flex items-center"
               :href="pathToEditContact(contact)"
               tabindex="-1"
             >
-              <icon
+              <Icon
                 name="cheveron-right"
                 class="block w-6 h-6 fill-gray-500"
               />
-            </inertia-link>
+            </InertiaLink>
           </td>
         </tr>
         <tr v-if="contacts.length === 0">
@@ -122,56 +154,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import Icon from '~/components/Icon.vue'
-import LoadingButton from '~/components/LoadingButton.vue'
-import TrashedMessage from '~/components/TrashedMessage.vue'
-import { omit } from '~/helpers/object'
-
-import { organizations } from '@/api'
-import OrganizationForm from './form.vue'
-
-export default {
-  metaInfo () {
-    return { title: this.form.organization.name }
-  },
-  components: {
-    Icon,
-    LoadingButton,
-    OrganizationForm,
-    TrashedMessage,
-  },
-  props: {
-    organization: {
-      type: Object,
-      required: true,
-    },
-    contacts: {
-      type: Array,
-      required: true,
-    },
-  },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        organization: omit(this.organization, 'id', 'deleted_at'),
-      }),
-    }
-  },
-  methods: {
-    pathToEditContact (contact) {
-      return this.$api.contacts.edit.path(contact)
-    },
-    destroy () {
-      if (confirm('Are you sure you want to delete this organization?'))
-        organizations.destroy(this.organization)
-    },
-    restore () {
-      if (confirm('Are you sure you want to restore this organization?'))
-        organizations.restore(this.organization)
-    },
-  },
-}
-</script>

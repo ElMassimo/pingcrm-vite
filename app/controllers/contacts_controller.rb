@@ -15,6 +15,7 @@ class ContactsController < ApplicationController
 
   def new
     render_page(
+      contact: ContactFormSerializer.one(@contact),
       organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
@@ -28,37 +29,37 @@ class ContactsController < ApplicationController
 
   def create
     if @contact.update(contact_params)
-      redirect_to contacts_path, notice: "Contact created."
+      redirect_to_index @contact, notice: "Contact created."
     else
-      redirect_to new_contact_path, inertia: {errors: @contact.errors}
+      redirect_to_new @contact, unprocessable: true
     end
   end
 
   def update
     if @contact.update(contact_params)
-      redirect_to edit_contact_path(@contact), notice: "Contact updated."
+      redirect_to_edit @contact, notice: "Contact updated."
     else
-      redirect_to edit_contact_path(@contact), inertia: {errors: @contact.errors}
+      redirect_to_edit @contact, unprocessable: true
     end
   end
 
   def destroy
     if @contact.soft_delete
       if can? :edit, @contact
-        redirect_to edit_contact_path(@contact), notice: "Contact deleted."
+        redirect_to_edit @contact, notice: "Contact deleted."
       else
-        redirect_to contacts_path, notice: "Contact deleted."
+        redirect_to_index @contact, notice: "Contact deleted."
       end
     else
-      redirect_to edit_contact_path(@contact), alert: "Contact cannot be deleted!"
+      redirect_to_edit @contact, alert: "Contact cannot be deleted!"
     end
   end
 
   def restore
     if @contact.restore
-      redirect_to edit_contact_path(@contact), notice: "Contact restored."
+      redirect_to_edit @contact, notice: "Contact restored."
     else
-      redirect_to edit_contact_path(@contact), alert: "Contact cannot be restored!"
+      redirect_to_edit @contact, alert: "Contact cannot be restored!"
     end
   end
 

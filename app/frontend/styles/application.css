@@ -15,9 +15,9 @@
   --color-indigo-800: #2f365f;
   --color-indigo-900: #191e38;
 
-  /* Windi mapped `gray` to blueGray; preserve that tint by aliasing gray -> slate */
+  /* Preserve Windi's blueGray palette, with the requested neutral page background at gray-100. */
   --color-gray-50: #f8fafc;
-  --color-gray-100: #f1f5f9;
+  --color-gray-100: #f3f4f6;
   --color-gray-200: #e2e8f0;
   --color-gray-300: #cbd5e1;
   --color-gray-400: #94a3b8;

@@ -1,3 +1,30 @@
+<script setup lang="ts">
+defineOptions({ inheritAttrs: false })
+
+const {
+  id = undefined,
+  label = undefined,
+  errors = [],
+} = defineProps<{
+  id?: string
+  label?: string
+  errors?: string[]
+}>()
+const model = defineModel<string>({ required: true })
+const uid = useId()
+const input = useTemplateRef<HTMLTextAreaElement>('input')
+const inputId = $computed(() => id || `textarea-input-${uid}`)
+
+function updateModelValue (event: Event) {
+  model.value = (event.target as HTMLTextAreaElement).value
+}
+
+defineExpose({
+  focus: () => input.value?.focus(),
+  select: () => input.value?.select(),
+})
+</script>
+
 <template>
   <div :class="$attrs.class">
     <label
@@ -11,8 +38,8 @@
       v-bind="{ ...$attrs, class: null }"
       class="form-textarea"
       :class="{ error: errors.length }"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      :value="model"
+      @input="updateModelValue"
     />
     <div
       v-if="errors.length"
@@ -22,46 +49,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useId } from 'vue'
-
-export default {
-  inheritAttrs: false,
-  emits: ['update:modelValue'],
-  props: {
-    id: {
-      type: String,
-      default: null,
-    },
-    modelValue: {
-      type: String,
-      required: true,
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    errors: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  setup () {
-    return { uid: useId() }
-  },
-  computed: {
-    inputId () {
-      return this.id || `textarea-input-${this.uid}`
-    },
-  },
-  methods: {
-    focus () {
-      this.$refs.input.focus()
-    },
-    select () {
-      this.$refs.input.select()
-    },
-  },
-}
-</script>

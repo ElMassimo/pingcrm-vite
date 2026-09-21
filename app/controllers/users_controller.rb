@@ -32,43 +32,43 @@ class UsersController < ApplicationController
 
   def create
     if @user.update(user_params)
-      redirect_to users_path, notice: "User created."
+      redirect_to_index @user, notice: "User created."
     else
-      redirect_to new_user_path, inertia: {errors: @user.errors}
+      redirect_to_new @user, unprocessable: true
     end
   end
 
   def update
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: "Updating the demo user is not allowed."
+      redirect_to_edit @user, alert: "Updating the demo user is not allowed."
       return
     end
 
     if @user.update(user_params)
-      redirect_to edit_user_path(@user), notice: "User updated."
+      redirect_to_edit @user, notice: "User updated."
     else
-      redirect_to edit_user_path(@user), inertia: {errors: @user.errors}
+      redirect_to_edit @user, unprocessable: true
     end
   end
 
   def destroy
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: "Deleting the demo user is not allowed."
+      redirect_to_edit @user, alert: "Deleting the demo user is not allowed."
       return
     end
 
     if @user.soft_delete
-      redirect_to edit_user_path(@user), notice: "User deleted."
+      redirect_to_edit @user, notice: "User deleted."
     else
-      redirect_to edit_user_path(@user), alert: "User cannot be deleted!"
+      redirect_to_edit @user, alert: "User cannot be deleted!"
     end
   end
 
   def restore
     if @user.restore
-      redirect_to edit_user_path(@user), notice: "User restored."
+      redirect_to_edit @user, notice: "User restored."
     else
-      redirect_to edit_user_path(@user), alert: "User cannot be restored!"
+      redirect_to_edit @user, alert: "User cannot be restored!"
     end
   end
 

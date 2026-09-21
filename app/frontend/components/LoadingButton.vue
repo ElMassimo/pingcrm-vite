@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { loading = false } = defineProps<{ loading?: boolean }>()
+</script>
+
 <template>
   <button
     :disabled="loading"
@@ -7,14 +11,6 @@
       v-if="loading"
       class="btn-spinner mr-2"
     />
-    <slot/>
+    <slot />
   </button>
 </template>
-
-<script>
-export default {
-  props: {
-    loading: Boolean,
-  },
-}
-</script>

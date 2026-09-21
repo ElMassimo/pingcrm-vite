@@ -21,37 +21,37 @@ class OrganizationsController < ApplicationController
 
   def create
     if @organization.update(organization_params)
-      redirect_to organizations_path, notice: "Organization created."
+      redirect_to_index @organization, notice: "Organization created."
     else
-      redirect_to organizations_path, inertia: {errors: @organization.errors}
+      redirect_to_index @organization, unprocessable: true
     end
   end
 
   def update
     if @organization.update(organization_params)
-      redirect_to edit_organization_path(@organization), notice: "Organization updated."
+      redirect_to_edit @organization, notice: "Organization updated."
     else
-      redirect_to edit_organization_path(@organization), inertia: {errors: @organization.errors}
+      redirect_to_edit @organization, unprocessable: true
     end
   end
 
   def destroy
     if @organization.soft_delete
       if can? :edit, @organization
-        redirect_to edit_organization_path(@organization), notice: "Organization deleted."
+        redirect_to_edit @organization, notice: "Organization deleted."
       else
-        redirect_to organizations_path, notice: "Organization deleted."
+        redirect_to_index @organization, notice: "Organization deleted."
       end
     else
-      redirect_to edit_organization_path(@organization), alert: "Organization cannot be deleted!"
+      redirect_to_edit @organization, alert: "Organization cannot be deleted!"
     end
   end
 
   def restore
     if @organization.restore
-      redirect_to edit_organization_path(@organization), notice: "Organization restored."
+      redirect_to_edit @organization, notice: "Organization restored."
     else
-      redirect_to edit_organization_path(@organization), alert: "Organization cannot be restored!"
+      redirect_to_edit @organization, alert: "Organization cannot be restored!"
     end
   end
 

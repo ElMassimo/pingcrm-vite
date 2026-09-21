@@ -3,6 +3,7 @@ import path from 'path'
 import { defineConfig } from 'vite'
 
 import vue from '@vitejs/plugin-vue'
+import reactivityTransform from '@vue-macros/reactivity-transform/vite'
 import ruby from 'vite-plugin-ruby'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -37,6 +38,7 @@ export default defineConfig(({ isSsrBuild }) => ({
      */
     ruby(),
     tailwindcss(),
+    reactivityTransform(),
     vue(),
 
     /**

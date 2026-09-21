@@ -5,5 +5,11 @@
 class ContactListSerializer < BaseSerializer
   object_as :contact
 
-  attributes(:id, :name, :phone, :city, :deleted_at)
+  attributes(
+    :id,
+    :phone,
+    :city,
+    :deleted_at,
+    name: {type: :string},
+  )
 end

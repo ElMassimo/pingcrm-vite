@@ -1,3 +1,26 @@
+<script setup lang="ts">
+defineOptions({ inheritAttrs: false })
+
+const {
+  id = undefined,
+  label = undefined,
+  errors = [],
+} = defineProps<{
+  id?: string
+  label?: string
+  errors?: string[]
+}>()
+const model = defineModel<string | number | boolean | null>({ default: null })
+const uid = useId()
+const input = useTemplateRef<HTMLSelectElement>('input')
+const inputId = $computed(() => id || `select-input-${uid}`)
+
+defineExpose({
+  focus: () => input.value?.focus(),
+  select: () => input.value?.focus(),
+})
+</script>
+
 <template>
   <div :class="$attrs.class">
     <label
@@ -8,12 +31,12 @@
     <select
       :id="inputId"
       ref="input"
-      v-model="selected"
+      v-model="model"
       v-bind="{ ...$attrs, class: null }"
       class="form-select"
       :class="{ error: errors.length }"
     >
-      <slot/>
+      <slot />
     </select>
     <div
       v-if="errors.length"
@@ -23,53 +46,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { useId } from 'vue'
-
-export default {
-  inheritAttrs: false,
-  emits: ['update:modelValue'],
-  props: {
-    id: {
-      type: String,
-      default: null,
-    },
-    modelValue: [String, Number, Boolean],
-    label: {
-      type: String,
-      default: null,
-    },
-    errors: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  setup () {
-    return { uid: useId() }
-  },
-  computed: {
-    inputId () {
-      return this.id || `select-input-${this.uid}`
-    },
-  },
-  data () {
-    return {
-      selected: this.modelValue,
-    }
-  },
-  watch: {
-    selected (selected) {
-      this.$emit('update:modelValue', selected)
-    },
-  },
-  methods: {
-    focus () {
-      this.$refs.input.focus()
-    },
-    select () {
-      this.$refs.input.select()
-    },
-  },
-}
-</script>

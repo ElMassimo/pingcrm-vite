@@ -59,6 +59,9 @@ class ContactsTest < ApplicationSystemTestCase
     assert_selector "form"
     assert_selector "button", text: "Create Contact"
 
+    click_on "Create Contact"
+    assert_selector "div", text: "There are 2 form errors."
+
     fill_in "First name:", with: "Jane"
     fill_in "Last name:", with: "Doe"
     click_on "Create Contact"

@@ -60,6 +60,7 @@ class UsersTest < ApplicationSystemTestCase
     visit "/users/#{@user.id}/edit"
 
     assert_selector "form"
+    assert_text @account.name
     assert_selector "button", text: "Update User"
     fill_in "First name:", with: "Jonathan"
     click_on "Update User"

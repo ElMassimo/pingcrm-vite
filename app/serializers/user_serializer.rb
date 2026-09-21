@@ -2,7 +2,13 @@
 
 # Public: Used in the index page.
 class UserSerializer < BaseSerializer
-  attributes(:id, :email, :name, :owner, :deleted_at)
+  attributes(
+    :id,
+    :email,
+    :owner,
+    :deleted_at,
+    name: {type: :string},
+  )
 
   type :string
   def photo

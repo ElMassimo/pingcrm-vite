@@ -10,7 +10,7 @@ gem 'better_settings'
 gem 'rails', '~> 8.1.0'
 
 # Relation-backed query objects for Active Record. (https://github.com/ElMassimo/actionquery)
-gem 'actionquery', github: 'ElMassimo/actionquery', branch: 'feature/action-query-core'
+gem 'actionquery', '~> 1.0'
 
 # Pg is the Ruby interface to the {PostgreSQL RDBMS}[http://www.postgresql.org/] (https://github.com/ged/ruby-pg)
 gem 'pg', '>= 0.18', '< 2.0'

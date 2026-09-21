@@ -38,6 +38,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Authenticate private gem sources
+        run: git config --global url."https://x-access-token:${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:

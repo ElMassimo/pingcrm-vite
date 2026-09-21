@@ -1,49 +1,72 @@
 name: Continuous integration
-on: push
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     services:
       postgres:
-        image: postgres:13-alpine
-        ports: ["5432:5432"]
+        image: postgres:18-alpine
+        ports: ['5432:5432']
         env:
           POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: localhost
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      RAILS_ENV: test
 
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          version: 7.4.1
+      - uses: actions/checkout@v7
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
 
-      - uses: actions/setup-node@v2
+      - name: Set up pnpm and Node
+        uses: pnpm/setup@v3
         with:
-          cache: 'pnpm'
-          node-version: '16'
+          runtime: node@24
+          cache: true
+          require-lockfile: true
 
-      - run: pnpm install --frozen-lockfile
-
-      - name: Lint with RuboCop
+      - name: Lint Ruby
         run: bundle exec rubocop --parallel
 
-      - name: Lint with ESLint
+      - name: Lint JavaScript
         run: pnpm lint
 
-      - name: Run Tests
-        env:
-          DB_HOST: localhost
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          RAILS_ENV: test
-        run: |
-          bundle exec rake db:prepare
-          bundle exec rake test
-          bundle exec rake test:system
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build client assets
+        run: bin/vite build
+
+      - name: Build SSR assets
+        run: bin/vite build --ssr
+
+      - name: Prepare database
+        run: bin/rails db:prepare
+
+      - name: Run tests
+        run: bin/rails test:all

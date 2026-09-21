@@ -13,7 +13,7 @@ class UsersQuery < ApplicationQuery
     end
   end
 
-  def alphabetically
+  def by_name
     order(:last_name, :first_name)
   end
 end

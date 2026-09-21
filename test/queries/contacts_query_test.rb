@@ -10,8 +10,8 @@ class ContactsQueryTest < ActiveSupport::TestCase
 
     query = ContactsQuery.wrap(account.contacts)
 
-    assert_equal [matching], query.search(search: 'engine', trashed: nil).alphabetically.to_a
-    assert_equal [trashed, matching], query.search(search: 'ada', trashed: 'with').alphabetically.to_a
+    assert_equal [matching], query.search(search: 'engine', trashed: nil).by_name.to_a
+    assert_equal [trashed, matching], query.search(search: 'ada', trashed: 'with').by_name.to_a
     assert_equal [trashed], query.search(search: nil, trashed: 'only').to_a
   end
 end

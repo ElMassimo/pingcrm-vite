@@ -3,7 +3,7 @@ class OrganizationsQuery < ApplicationQuery
 
   filter :search, ->(value) { value.present? ? where(matches(:name, value)) : self }
 
-  def alphabetically
+  def by_name
     order(:name)
   end
 end

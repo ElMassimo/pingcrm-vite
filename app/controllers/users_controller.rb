@@ -3,10 +3,8 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    filters = params.permit(:search, :trashed, :role)
-    @users = UsersQuery.wrap(@users)
-      .search(**filters.to_keywords)
-      .alphabetically
+    filters = params.permit(:search, :trashed, :role).to_keywords
+    @users = UsersQuery.wrap(@users).search(**filters).by_name
 
     render_page(
       users: UserSerializer.many(@users),

@@ -15,7 +15,7 @@ class ContactsQuery < ApplicationQuery
     ).left_joins(:organization)
   end
 
-  def alphabetically
+  def by_name
     order(:last_name, :first_name)
   end
 end

@@ -3,11 +3,9 @@ class ContactsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    filters = params.permit(:search, :trashed)
-    contacts = ContactsQuery.wrap(@contacts)
-      .includes(:organization)
-      .search(**filters.to_keywords)
-      .alphabetically
+    filters = params.permit(:search, :trashed).to_keywords
+    contacts = ContactsQuery.wrap(@contacts).includes(:organization)
+      .search(**filters).by_name
 
     render_page(
       contacts: paginate_data(contacts, serializer: ContactSerializer),

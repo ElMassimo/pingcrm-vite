@@ -9,7 +9,7 @@ class UsersQueryTest < ActiveSupport::TestCase
 
     results = UsersQuery.wrap(account.users)
                         .search(search: 'ada', trashed: nil, role: 'owner')
-                        .alphabetically
+                        .by_name
 
     assert_equal [owner], results.to_a
   end

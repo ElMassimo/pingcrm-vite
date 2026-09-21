@@ -9,7 +9,7 @@ class OrganizationsQueryTest < ActiveSupport::TestCase
 
     results = OrganizationsQuery.wrap(account.organizations)
                                 .search(search: 'engine', trashed: nil)
-                                .alphabetically
+                                .by_name
 
     assert_equal [matching], results.to_a
   end

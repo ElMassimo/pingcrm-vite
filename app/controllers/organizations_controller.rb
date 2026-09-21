@@ -3,10 +3,8 @@ class OrganizationsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    filters = params.permit(:search, :trashed)
-    organizations = OrganizationsQuery.wrap(@organizations)
-      .search(**filters.to_keywords)
-      .alphabetically
+    filters = params.permit(:search, :trashed).to_keywords
+    organizations = OrganizationsQuery.wrap(@organizations).search(**filters).by_name
 
     render_page(
       organizations: paginate_data(organizations, serializer: OrganizationSerializer),
@@ -17,7 +15,7 @@ class OrganizationsController < ApplicationController
   def edit
     render_page(
       organization: OrganizationFormSerializer.one(@organization),
-      contacts: -> { ContactListSerializer.many(ContactsQuery.wrap(@organization.contacts).alphabetically) },
+      contacts: -> { ContactListSerializer.many(ContactsQuery.wrap(@organization.contacts).by_name) },
     )
   end
 

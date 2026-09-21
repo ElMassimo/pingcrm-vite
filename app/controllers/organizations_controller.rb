@@ -3,13 +3,14 @@ class OrganizationsController < ApplicationController
   load_and_authorize_resource
 
   def index
+    filters = params.permit(:search, :trashed)
     organizations = OrganizationsQuery.wrap(@organizations)
-      .search(search: params[:search], trashed: params[:trashed])
+      .search(**filters.to_keywords)
       .alphabetically
 
     render_page(
       organizations: paginate_data(organizations, serializer: OrganizationSerializer),
-      filters: params.slice(:search, :trashed),
+      filters: filters,
     )
   end
 

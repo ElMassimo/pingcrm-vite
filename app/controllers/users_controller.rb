@@ -3,8 +3,9 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
+    filters = params.permit(:search, :trashed, :role)
     @users = UsersQuery.wrap(@users)
-      .search(search: params[:search], trashed: params[:trashed], role: params[:role])
+      .search(**filters.to_keywords)
       .alphabetically
 
     render_page(
@@ -12,7 +13,7 @@ class UsersController < ApplicationController
       can: {
         create_user: can?(:create, User)
       },
-      filters: params.slice(:search, :trashed, :role),
+      filters: filters,
     )
   end
 

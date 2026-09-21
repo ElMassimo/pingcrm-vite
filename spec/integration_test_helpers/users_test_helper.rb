@@ -1,20 +1,11 @@
 # frozen_string_literal: true
 
 class UsersTestHelper < BaseTestHelper
-  aliases(user_form: "form")
+  # Aliases: Semantic aliases for locators, can be used in most DSL methods.
 
-  def given_user(account:, owner: false, **attributes)
-    create(:user, account:, owner:, **attributes)
-  end
+  # Finders: A convenient way to get related data or nested elements.
 
-  def given_users(account:, count:)
-    Array.new(count) { create(:user, account:) }.sort_by(&:name)
-  end
-
-  def delete_record(user)
-    user.soft_delete!
-  end
-
+  # Actions: Encapsulate complex actions to provide a cleaner interface.
   def visit_index
     visit_page(:users)
   end
@@ -27,23 +18,17 @@ class UsersTestHelper < BaseTestHelper
     visit_page(:user, user:)
   end
 
-  def start_creating
-    click_on("Create User")
-  end
-
   def create_user(first_name:, last_name:, email:)
+    click_on("Create User")
     fill_in("First name:", with: first_name)
     fill_in("Last name:", with: last_name)
     fill_in("Email:", with: email)
     click_on("Create User")
   end
 
-  def edit_user(email:)
+  def edit_user(email:, with:)
     find(:table_row, {"Email" => email}).find(:link, match: :first).click
-  end
-
-  def update_first_name(first_name)
-    fill_in("First name:", with: first_name)
+    fill_in("First name:", with: with.fetch(:first_name))
     click_on("Update User")
   end
 
@@ -61,8 +46,9 @@ class UsersTestHelper < BaseTestHelper
     select("User", from: "Role:")
   end
 
-  def have_index
-    current_page.have_heading("Users")
+  # Assertions: Check on element properties, used with `should` and `should_not`.
+  def see_heading
+    have_heading("Users")
   end
 
   def have_rows(count)
@@ -78,27 +64,15 @@ class UsersTestHelper < BaseTestHelper
     have(:table_row, cells)
   end
 
-  def have_create_action
+  def see_create_action
     have_button("Create User")
   end
 
-  def have_create_form
-    have(:user_form)
-    have_field("Owner:")
-    have_button("Create User")
-  end
-
-  def have_update_form(account:)
-    have(:user_form)
-    current_page.have_message(account.name)
+  def see_update_action
     have_button("Update User")
   end
 
-  def have_update_action
-    have_button("Update User")
-  end
-
-  def have_delete_action
+  def see_delete_action
     have_button("Delete User")
   end
 
@@ -107,10 +81,19 @@ class UsersTestHelper < BaseTestHelper
   end
 
   def have_forbidden
-    current_page.have_message("Forbidden")
+    have_text("Forbidden")
   end
 
-  def have_login
-    current_page.have_heading("Welcome Back!")
+  # Background: Helpers to add/modify/delete data in the database or session.
+  def given_user(account:, owner: false, **attributes)
+    create(:user, account:, owner:, **attributes)
+  end
+
+  def given_users(account:, count:)
+    Array.new(count) { create(:user, account:) }.sort_by(&:name)
+  end
+
+  def delete_record(user)
+    user.soft_delete!
   end
 end

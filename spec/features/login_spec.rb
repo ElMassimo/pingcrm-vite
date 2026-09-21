@@ -13,7 +13,7 @@ RSpec.feature "Authentication", test_helpers: %i[login] do
     login.should.have_dashboard
 
     login.log_out
-    login.should.have_login
+    login.should.see_login_page
   end
 
   scenario "redirecting expired Inertia sessions to login" do
@@ -22,7 +22,7 @@ RSpec.feature "Authentication", test_helpers: %i[login] do
     login.expire_session_for(user)
     login.follow_contacts
 
-    login.should.have_login
+    login.should.see_login_page
     login.should.be_in_page(:login)
   end
 end

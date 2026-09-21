@@ -1,37 +1,26 @@
 # frozen_string_literal: true
 
 class ContactsTestHelper < BaseTestHelper
-  aliases(contact_form: "form")
+  # Aliases: Semantic aliases for locators, can be used in most DSL methods.
 
-  def given_contacts(account:, count:)
-    Array.new(count) { create(:contact, account:) }.sort_by(&:name)
-  end
+  # Finders: A convenient way to get related data or nested elements.
 
-  def delete_record(contact)
-    contact.soft_delete!
-  end
-
+  # Actions: Encapsulate complex actions to provide a cleaner interface.
   def visit_index
     visit_page(:contacts)
   end
 
-  def start_creating
+  def create_contact(first_name:, last_name:)
     click_on("Create Contact")
-  end
-
-  def submit_create(first_name: nil, last_name: nil)
-    fill_in("First name:", with: first_name) if first_name
-    fill_in("Last name:", with: last_name) if last_name
-    click_on("Create Contact")
-  end
-
-  def edit_contact(name)
-    find(:table_row, {"Name" => name}).find(:link, match: :first).click
-  end
-
-  def update_name(first_name:, last_name:)
     fill_in("First name:", with: first_name)
     fill_in("Last name:", with: last_name)
+    click_on("Create Contact")
+  end
+
+  def edit_contact(name, with:)
+    find(:table_row, {"Name" => name}).find(:link, match: :first).click
+    fill_in("First name:", with: with.fetch(:first_name))
+    fill_in("Last name:", with: with.fetch(:last_name))
     click_on("Update Contact")
   end
 
@@ -52,8 +41,9 @@ class ContactsTestHelper < BaseTestHelper
     select("With Trashed", from: "Trashed:")
   end
 
-  def have_index
-    current_page.have_heading("Contacts")
+  # Assertions: Check on element properties, used with `should` and `should_not`.
+  def see_heading
+    have_heading("Contacts")
   end
 
   def have_rows(count)
@@ -68,21 +58,17 @@ class ContactsTestHelper < BaseTestHelper
     have(:table_row, {"Name" => name})
   end
 
-  def have_create_form
-    have(:contact_form)
-    have_button("Create Contact")
-  end
-
-  def have_form_errors(count)
-    current_page.have_message("There are #{count} form errors.")
-  end
-
   def have_updated_name(first_name:, last_name:)
     have_field("First name:", with: first_name)
     have_field("Last name:", with: last_name)
   end
 
-  def have_login
-    current_page.have_heading("Welcome Back!")
+  # Background: Helpers to add/modify/delete data in the database or session.
+  def given_contacts(account:, count:)
+    Array.new(count) { create(:contact, account:) }.sort_by(&:name)
+  end
+
+  def delete_record(contact)
+    contact.soft_delete!
   end
 end

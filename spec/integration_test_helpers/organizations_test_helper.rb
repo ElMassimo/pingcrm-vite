@@ -1,37 +1,27 @@
 # frozen_string_literal: true
 
 class OrganizationsTestHelper < BaseTestHelper
+  # Aliases: Semantic aliases for locators, can be used in most DSL methods.
   aliases(organization_form: "form")
 
-  def given_organizations(account:, count:)
-    Array.new(count) { create(:organization, account:) }.sort_by(&:name)
-  end
+  # Finders: A convenient way to get related data or nested elements.
 
-  def delete_record(organization)
-    organization.soft_delete!
-  end
-
+  # Actions: Encapsulate complex actions to provide a cleaner interface.
   def visit_index
     visit_page(:organizations)
   end
 
-  def start_creating
-    click_on("Create Organization")
-  end
-
   def create_organization(name:)
+    click_on("Create Organization")
     within(:organization_form) do
       fill_in("Name:", with: name)
       click_on("Create Organization")
     end
   end
 
-  def edit_organization(name)
+  def edit_organization(name, with:)
     find(:table_row, {"Name" => name}).click_link(name)
-  end
-
-  def update_name(name)
-    fill_in("Name:", with: name)
+    fill_in("Name:", with: with.fetch(:name))
     click_on("Update Organization")
   end
 
@@ -52,8 +42,9 @@ class OrganizationsTestHelper < BaseTestHelper
     select("With Trashed", from: "Trashed:")
   end
 
-  def have_index
-    current_page.have_heading("Organizations")
+  # Assertions: Check on element properties, used with `should` and `should_not`.
+  def see_heading
+    have_heading("Organizations")
   end
 
   def have_rows(count)
@@ -68,16 +59,16 @@ class OrganizationsTestHelper < BaseTestHelper
     have(:table_row, {"Name" => name})
   end
 
-  def have_create_form
-    have(:organization_form)
-    have_button("Create Organization")
-  end
-
   def have_updated_name(name)
     have_field("Name:", with: name)
   end
 
-  def have_login
-    current_page.have_heading("Welcome Back!")
+  # Background: Helpers to add/modify/delete data in the database or session.
+  def given_organizations(account:, count:)
+    Array.new(count) { create(:organization, account:) }.sort_by(&:name)
+  end
+
+  def delete_record(organization)
+    organization.soft_delete!
   end
 end

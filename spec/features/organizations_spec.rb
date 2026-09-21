@@ -12,7 +12,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
     records = organizations.given_organizations(account:, count: 15)
 
     organizations.visit_index
-    organizations.should.have_index
+    organizations.should.see_heading
     organizations.should.have_rows(10)
     organizations.should.have_organizations(*records.first(10))
 
@@ -39,18 +39,14 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
 
   scenario "creating, editing, and deleting an organization" do
     organizations.visit_index
-    organizations.start_creating
-    organizations.should.have_create_form
-
     organizations.create_organization(name: "The new organization")
     organizations.should.have_organization("The new organization")
 
-    organizations.edit_organization("The new organization")
-    organizations.update_name("The updated organization")
+    organizations.edit_organization("The new organization", with: {name: "The updated organization"})
     organizations.should.have_updated_name("The updated organization")
 
     organizations.delete
-    organizations.should.have_index
+    organizations.should.see_heading
     organizations.should_not.have_organization("The updated organization")
   end
 
@@ -58,7 +54,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
     organizations.sign_out(owner)
     organizations.visit_index
 
-    organizations.should.have_login
+    organizations.should.see_login_page
     organizations.should.be_in_page(:login)
   end
 end

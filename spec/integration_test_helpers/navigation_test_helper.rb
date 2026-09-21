@@ -1,17 +1,10 @@
 # frozen_string_literal: true
 
 class NavigationTestHelper < Capybara::TestHelper
-  def visit_page(page_alias, **options)
-    visit(path_for(page_alias, **options))
-  end
+  # Aliases: Semantic aliases for locators, can be used in most DSL methods.
 
-  def be_in_page(page_alias, **options)
-    have_current_path(path_for(page_alias, **options))
-  end
-
-  private
-
-  def path_for(page_alias, **options)
+  # Finders: A convenient way to get related data or nested elements.
+  private def path_for(page_alias, **options)
     routes = Rails.application.routes.url_helpers
 
     case page_alias
@@ -28,4 +21,16 @@ class NavigationTestHelper < Capybara::TestHelper
     else raise ArgumentError, "Unknown page alias: #{page_alias.inspect}"
     end
   end
+
+  # Actions: Encapsulate complex actions to provide a cleaner interface.
+  def visit_page(page_alias, **options)
+    visit(path_for(page_alias, **options))
+  end
+
+  # Assertions: Check on element properties, used with `should` and `should_not`.
+  def be_in_page(page_alias, **options)
+    have_current_path(path_for(page_alias, **options))
+  end
+
+  # Background: Helpers to add/modify/delete data in the database or session.
 end

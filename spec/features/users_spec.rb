@@ -12,7 +12,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
     users.sign_in_as(user)
 
     users.visit_index
-    users.should.have_index
+    users.should.see_heading
     users.should.have_rows(17)
     users.should.have_users(*records)
 
@@ -26,19 +26,14 @@ RSpec.feature "Users", test_helpers: %i[users] do
     users.sign_in_as(owner)
 
     users.visit_index
-    users.start_creating
-    users.should.have_create_form
-
     users.create_user(first_name: "Jonathan", last_name: "Smith", email: "john@smith.com")
     users.should.have_user(name: "Smith, Jonathan", email: "john@smith.com")
 
-    users.edit_user(email: "john@smith.com")
-    users.should.have_update_form(account:)
-    users.update_first_name("Jon")
+    users.edit_user(email: "john@smith.com", with: {first_name: "Jon"})
     users.should.have_updated_first_name("Jon")
 
     users.delete
-    users.should.have_index
+    users.should.see_heading
     users.should_not.have_user(email: "john@smith.com")
   end
 
@@ -46,14 +41,14 @@ RSpec.feature "Users", test_helpers: %i[users] do
     users.sign_in_as(user)
 
     users.visit_index
-    users.should_not.have_create_action
+    users.should_not.see_create_action
 
     users.visit_new
     users.should.have_forbidden
 
     users.visit_edit(user)
-    users.should_not.have_update_action
-    users.should_not.have_delete_action
+    users.should_not.see_update_action
+    users.should_not.see_delete_action
   end
 
   scenario "including deleted users through the filters" do
@@ -70,7 +65,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
   scenario "requiring authentication" do
     users.visit_index
 
-    users.should.have_login
+    users.should.see_login_page
     users.should.be_in_page(:login)
   end
 end

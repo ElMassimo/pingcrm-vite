@@ -1,13 +1,51 @@
+<script setup lang="ts">
+import { users } from '~/api'
+import { useForm } from '~/composables/form'
+import type { UserForm as UserFormData } from '~/serializers'
+import UserForm from './form.vue'
+
+type UserData = Omit<UserFormData, 'id' | 'deleted_at' | 'photo'> & {
+  password?: string
+  photo: File | null
+}
+defineOptions({ remember: 'form' })
+const { user, can } = defineProps<{
+  user: UserFormData
+  can: { edit_user: boolean }
+}>()
+const form = useForm<{ user: UserData }>({
+  user: { ...user, photo: null },
+})
+const title = $computed(() => `${form.user.first_name} ${form.user.last_name}`)
+
+function submit () {
+  users.update({
+    params: user,
+    form,
+    onSuccess: () => form.reset('user.password', 'user.photo'),
+  })
+}
+
+function destroy () {
+  if (confirm('Are you sure you want to delete this user?')) users.destroy(user)
+}
+
+function restore () {
+  if (confirm('Are you sure you want to restore this user?')) users.restore(user)
+}
+</script>
+
 <template>
+  <Head :title="title" />
   <div>
     <div class="mb-8 flex justify-start max-w-3xl">
       <h1 class="font-bold text-3xl">
-        <inertia-link
+        <InertiaLink
           class="text-indigo-500 hover:text-indigo-600"
-          :href="$api.users.index.path()"
+          :href="users.index.path()"
         >
           Users
-        </inertia-link>
+        </InertiaLink>
         <span class="text-indigo-400 font-medium">/</span>
         {{ form.user.first_name }} {{ form.user.last_name }}
       </h1>
@@ -18,17 +56,17 @@
         alt="Photo"
       >
     </div>
-    <trashed-message
+    <TrashedMessage
       v-if="user.deleted_at"
       class="mb-6"
       @restore="restore"
     >
       This user has been deleted.
-    </trashed-message>
+    </TrashedMessage>
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-      <user-form
+      <UserForm
         v-model="form"
-        @submit="submit(form)"
+        @submit="submit"
       >
         <div
           v-if="can.edit_user"
@@ -43,73 +81,15 @@
           >
             Delete User
           </button>
-          <loading-button
+          <LoadingButton
             :loading="form.processing"
             class="btn-indigo ml-auto"
             type="submit"
           >
             Update User
-          </loading-button>
+          </LoadingButton>
         </div>
-      </user-form>
+      </UserForm>
     </div>
   </div>
 </template>
-
-<script>
-import LoadingButton from '~/components/LoadingButton.vue'
-import TrashedMessage from '~/components/TrashedMessage.vue'
-import { users } from '@/api'
-import UserForm from './Form.vue'
-
-export default {
-  metaInfo () {
-    return {
-      title: `${this.form.user.first_name} ${this.form.user.last_name}`,
-    }
-  },
-  components: {
-    LoadingButton,
-    UserForm,
-    TrashedMessage,
-  },
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-    can: {
-      type: Object,
-      required: true,
-    },
-  },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: {
-          ...this.user,
-          photo: null,
-        },
-      }),
-    }
-  },
-  methods: {
-    submit (form) {
-      users.update({
-        params: this.user,
-        form,
-        onSuccess: () => form.reset('password', 'photo'),
-      })
-    },
-    destroy () {
-      if (confirm('Are you sure you want to delete this user?'))
-        users.destroy(this.user)
-    },
-    restore () {
-      if (confirm('Are you sure you want to restore this user?'))
-        users.restore(this.user)
-    },
-  },
-}
-</script>

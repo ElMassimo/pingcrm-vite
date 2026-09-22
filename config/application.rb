@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -21,8 +21,8 @@ Bundler.require(*Rails.groups)
 
 module Pingcrm
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    # Initialize configuration defaults for the current Rails version.
+    config.load_defaults 8.1
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -51,11 +51,11 @@ module Pingcrm
       Class.new(ActionController::Base) do # rubocop:disable Rails/ApplicationController
         def show
           # Get the status code from the path, which is /500 or /404 etc.
-          status = request.path_info.delete_prefix('/').to_i
+          status = request.path_info.delete_prefix("/").to_i
 
-          render inertia: 'Error',
-                 props: { status: status }, # Make the status code available to the Vue component
-                 status: status             # Return the same status code in the request header
+          render inertia: "error",
+            props: {status:}, # Make the status code available to the Vue component
+            status:             # Return the same status code in the request header
         end
       end.action(:show).call(env)
     end

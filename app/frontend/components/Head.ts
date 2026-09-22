@@ -1,1 +1,1 @@
-export { InertiaHead as default } from '@inertiajs/inertia-vue3'
+export { Head as default } from '@inertiajs/vue3'

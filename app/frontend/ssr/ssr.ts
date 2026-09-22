@@ -1,8 +1,8 @@
-import { createRenderer } from 'vue-server-renderer'
-import createServer from '@inertiajs/server'
+import createServer from '@inertiajs/vue3/server'
+import { renderToString } from 'vue/server-renderer'
 import { createApp } from '~/app'
 
 createServer(page => createApp({
   page,
-  render: createRenderer().renderToString,
+  render: renderToString,
 }))

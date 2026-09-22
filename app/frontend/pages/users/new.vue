@@ -1,56 +1,47 @@
+<script setup lang="ts">
+import { users } from '~/api'
+import { useForm } from '~/composables/form'
+import type { UserForm as UserFormData } from '~/serializers'
+import UserForm from './form.vue'
+
+type UserData = Omit<UserFormData, 'id' | 'deleted_at' | 'photo'> & {
+  password?: string
+  photo: File | null
+}
+defineOptions({ remember: 'form' })
+const { user } = defineProps<{ user: UserFormData }>()
+const form = useForm<{ user: UserData }>({
+  user: { ...user, photo: null },
+})
+</script>
+
 <template>
+  <Head title="Create User" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link
+      <InertiaLink
         class="text-indigo-400 hover:text-indigo-600"
-        :href="$api.users.index.path()"
+        :href="users.index.path()"
       >
         Users
-      </inertia-link>
+      </InertiaLink>
       <span class="text-indigo-400 font-medium">/</span> Create
     </h1>
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-      <user-form
+      <UserForm
         v-model="form"
-        @submit="$api.users.create({ form })"
+        @submit="users.create({ form })"
       >
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
-          <loading-button
+          <LoadingButton
             :loading="form.processing"
             class="btn-indigo"
             type="submit"
           >
             Create User
-          </loading-button>
+          </LoadingButton>
         </div>
-      </user-form>
+      </UserForm>
     </div>
   </div>
 </template>
-
-<script>
-import LoadingButton from '~/components/LoadingButton.vue'
-import UserForm from './Form.vue'
-
-export default {
-  metaInfo: { title: 'Create User' },
-  components: {
-    LoadingButton,
-    UserForm,
-  },
-  props: {
-    user: {
-      type: Object,
-      required: true,
-    },
-  },
-  remember: 'form',
-  data () {
-    return {
-      form: this.$inertia.form({
-        user: this.user,
-      }),
-    }
-  },
-}
-</script>

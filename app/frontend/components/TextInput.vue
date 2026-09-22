@@ -1,19 +1,49 @@
+<script setup lang="ts">
+defineOptions({ inheritAttrs: false })
+
+const {
+  id = undefined,
+  type = 'text',
+  label = undefined,
+  errors = [],
+} = defineProps<{
+  id?: string
+  type?: string
+  label?: string
+  errors?: string[]
+}>()
+const model = defineModel<string | null>({ default: null })
+const uid = useId()
+const input = useTemplateRef<HTMLInputElement>('input')
+const inputId = $computed(() => id || `text-input-${uid}`)
+
+function updateModelValue (event: Event) {
+  model.value = (event.target as HTMLInputElement).value
+}
+
+defineExpose({
+  focus: () => input.value?.focus(),
+  select: () => input.value?.select(),
+  setSelectionRange: (start: number, end: number) => input.value?.setSelectionRange(start, end),
+})
+</script>
+
 <template>
   <div :class="$attrs.class">
     <label
       v-if="label"
       class="form-label"
-      :for="id"
+      :for="inputId"
     >{{ label }}:</label>
     <input
-      :id="id"
+      :id="inputId"
       ref="input"
       v-bind="{ ...$attrs, class: null }"
       class="form-input"
       :class="{ error: errors.length }"
       :type="type"
-      :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      :value="model"
+      @input="updateModelValue"
     >
     <div
       v-if="errors.length"
@@ -23,47 +53,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { v4 as uuid } from 'uuid'
-
-export default {
-  inheritAttrs: false,
-  emits: ['update:modelValue'],
-  props: {
-    id: {
-      type: String,
-      default () {
-        return `text-input-${uuid()}`
-      },
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    modelValue: {
-      type: String,
-      default: null,
-    },
-    label: {
-      type: String,
-      default: null,
-    },
-    errors: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  methods: {
-    focus () {
-      this.$refs.input.focus()
-    },
-    select () {
-      this.$refs.input.select()
-    },
-    setSelectionRange (start, end) {
-      this.$refs.input.setSelectionRange(start, end)
-    },
-  },
-}
-</script>

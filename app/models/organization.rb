@@ -5,6 +5,4 @@ class Organization < ApplicationRecord
   validates :name, presence: true
 
   include SoftDelete
-
-  scope :search, ->(query) { query.present? ? where("organizations.name ILIKE ?", "%#{query}%") : all }
 end

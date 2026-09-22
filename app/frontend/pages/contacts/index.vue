@@ -1,13 +1,65 @@
+<script setup lang="ts">
+import { contacts as contactsApi } from '~/api'
+import { clean, reset, throttle } from '~/helpers/object'
+import type { Contact } from '~/serializers'
+
+interface Filters {
+  search?: string | null
+  trashed?: string | null
+}
+interface PaginationMeta {
+  page: number
+  previous: number | null
+  next: number | null
+  series: string[]
+  url_template: string
+}
+interface PaginatedContacts {
+  data: Contact[]
+  meta: PaginationMeta
+}
+
+const { contacts, filters } = defineProps<{
+  contacts: PaginatedContacts
+  filters: Filters
+}>()
+
+const form = $ref({
+  search: filters.search,
+  trashed: filters.trashed,
+})
+
+watch(() => form, throttle(function () {
+  const query = clean(form)
+  contactsApi.index({
+    query: Object.keys(query).length ? query : { remember: 'forget' },
+    preserveState: true,
+    preserveScroll: true,
+    replace: true,
+    only: ['contacts'],
+  })
+}, 150), { deep: true })
+
+function pathToEdit (contact: Contact) {
+  return contactsApi.edit.path(contact)
+}
+
+function resetFilters () {
+  Object.assign(form, reset(form))
+}
+</script>
+
 <template>
+  <Head title="Contacts" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Contacts
     </h1>
     <div class="mb-6 flex justify-between items-center">
-      <search-filter
+      <SearchFilter
         v-model="form.search"
         class="w-full max-w-md mr-4"
-        @reset="reset"
+        @reset="resetFilters"
       >
         <label
           class="block text-gray-800"
@@ -18,7 +70,7 @@
           v-model="form.trashed"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="with">
             With Trashed
           </option>
@@ -26,13 +78,13 @@
             Only Trashed
           </option>
         </select>
-      </search-filter>
-      <inertia-link
+      </SearchFilter>
+      <InertiaLink
         class="btn-indigo"
-        :href="$api.contacts.new.path()"
+        :href="contactsApi.new.path()"
       >
         Create <span class="hidden md:inline">Contact</span>
-      </inertia-link>
+      </InertiaLink>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
       <table class="w-full whitespace-nowrap">
@@ -62,21 +114,21 @@
             class="hover:bg-gray-100 focus-within:bg-gray-100"
           >
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center focus:text-indigo-500"
                 :href="pathToEdit(contact)"
                 aria-label="Edit"
               >
                 {{ contact.name }}
-                <icon
+                <Icon
                   v-if="contact.deleted_at"
                   name="trash"
                   class="flex-shrink-0 w-3 h-3 fill-gray-500 ml-2"
                 />
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center"
                 :href="pathToEdit(contact)"
                 tabindex="-1"
@@ -85,40 +137,40 @@
                 <div v-if="contact.organization">
                   {{ contact.organization.name }}
                 </div>
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center"
                 :href="pathToEdit(contact)"
                 tabindex="-1"
                 aria-label="Edit"
               >
                 {{ contact.city }}
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center"
                 :href="pathToEdit(contact)"
                 tabindex="-1"
                 aria-label="Edit"
               >
                 {{ contact.phone }}
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t w-px">
-              <inertia-link
+              <InertiaLink
                 class="px-4 flex items-center"
                 :href="pathToEdit(contact)"
                 tabindex="-1"
                 aria-label="Edit"
               >
-                <icon
+                <Icon
                   name="cheveron-right"
                   class="block w-6 h-6 fill-gray-500"
                 />
-              </inertia-link>
+              </InertiaLink>
             </td>
           </tr>
           <tr v-if="contacts.data.length === 0">
@@ -132,65 +184,6 @@
         </tbody>
       </table>
     </div>
-    <pagination :meta="contacts.meta"/>
+    <Pagination :meta="contacts.meta" />
   </div>
 </template>
-
-<script>
-import Icon from '~/components/Icon.vue'
-import { clean, reset, throttle } from '~/helpers/object'
-import Pagination from '~/components/Pagination.vue'
-import SearchFilter from '~/components/SearchFilter.vue'
-
-import { contacts as contactsApi } from '~/api'
-
-export default {
-  metaInfo: { title: 'Contacts' },
-  components: {
-    Icon,
-    Pagination,
-    SearchFilter,
-  },
-  props: {
-    contacts: {
-      type: Object,
-      required: true,
-    },
-    filters: {
-      type: Object,
-      required: true,
-    },
-  },
-  data () {
-    return {
-      form: {
-        search: this.filters.search,
-        trashed: this.filters.trashed,
-      },
-    }
-  },
-  watch: {
-    form: {
-      handler: throttle(function () {
-        const query = clean(this.form)
-        contactsApi.index({
-          query: Object.keys(query).length ? query : { remember: 'forget' },
-          preserveState: true,
-          preserveScroll: true,
-          replace: true,
-          only: ['contacts'],
-        })
-      }, 150),
-      deep: true,
-    },
-  },
-  methods: {
-    pathToEdit (contact) {
-      return contactsApi.edit.path(contact)
-    },
-    reset () {
-      this.form = reset(this.form)
-    },
-  },
-}
-</script>

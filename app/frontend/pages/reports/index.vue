@@ -1,5 +1,8 @@
+<script setup lang="ts">
+</script>
+
 <template>
-  <Head title="Reports"/>
+  <Head title="Reports" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Reports

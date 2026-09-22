@@ -1,3 +1,39 @@
+<script setup lang="ts">
+const {
+  label = undefined,
+  accept = undefined,
+  errors = [],
+} = defineProps<{
+  label?: string
+  accept?: string
+  errors?: string[]
+}>()
+const model = defineModel<File | null>({ default: null })
+const file = useTemplateRef<HTMLInputElement>('file')
+
+watch(() => model.value, (value) => {
+  if (!value && file.value) file.value.value = ''
+})
+
+function filesize (size: number) {
+  const index = Math.floor(Math.log(size) / Math.log(1024))
+  return `${(size / 1024 ** index).toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][index]}`
+}
+
+function browse () {
+  file.value?.click()
+}
+
+function change (event: Event) {
+  const input = event.target as HTMLInputElement
+  model.value = input.files?.[0] ?? null
+}
+
+function remove () {
+  model.value = null
+}
+</script>
+
 <template>
   <div>
     <label
@@ -16,7 +52,7 @@
         @change="change"
       >
       <div
-        v-if="!modelValue"
+        v-if="!model"
         class="p-2"
       >
         <button
@@ -32,7 +68,7 @@
         class="flex items-center justify-between p-2"
       >
         <div class="flex-1 pr-1">
-          {{ modelValue.name }} <span class="text-gray-600 text-xs">({{ filesize(modelValue.size) }})</span>
+          {{ model.name }} <span class="text-gray-600 text-xs">({{ filesize(model.size) }})</span>
         </div>
         <button
           type="button"
@@ -51,45 +87,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  emits: ['update:modelValue'],
-  props: {
-    modelValue: {}, // eslint-disable-line
-    label: {
-      type: String,
-      default: null,
-    },
-    accept: {
-      type: String,
-      default: null,
-    },
-    errors: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  watch: {
-    modelValue (modelValue) {
-      if (!modelValue)
-        this.$refs.file.value = ''
-    },
-  },
-  methods: {
-    filesize (size) {
-      const i = Math.floor(Math.log(size) / Math.log(1024))
-      return `${(size / Math.pow(1024, i)).toFixed(2)} ${['B', 'kB', 'MB', 'GB', 'TB'][i]}`
-    },
-    browse () {
-      this.$refs.file.click()
-    },
-    change (e) {
-      this.$emit('update:modelValue', e.target.files[0])
-    },
-    remove () {
-      this.$emit('update:modelValue', null)
-    },
-  },
-}
-</script>

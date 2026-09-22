@@ -1,17 +1,18 @@
-import { createInertiaApp } from '@inertiajs/inertia-vue3'
-import type { CreateInertiaAppProps } from '@inertiajs/inertia-vue3'
-import { createApp as createVueApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import { createSSRApp, h } from 'vue'
 import { resolvePage } from '~/pages'
 import api from '~/api'
 
-export function createApp (options?: Omit<CreateInertiaAppProps, 'resolve' | 'setup'>) {
+type InertiaOptions = Parameters<typeof createInertiaApp>[0]
+
+export function createApp (options?: Omit<InertiaOptions, 'resolve' | 'setup'>) {
   return createInertiaApp({
     resolve: resolvePage,
 
     title: title => [title, 'PingCRM on Vite Ruby'].filter(x => x).join(' - '),
 
-    setup ({ plugin, app: InertiaApp, props, el }) {
-      const app = createVueApp({ render: () => h(InertiaApp, props) })
+    setup ({ plugin, App, props, el }) {
+      const app = createSSRApp({ render: () => h(App, props) })
         .use(plugin)
 
       app.config.globalProperties.$api = api

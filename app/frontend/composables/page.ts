@@ -1,1 +1,1 @@
-export { usePage } from '@inertiajs/inertia-vue3'
+export { usePage } from '@inertiajs/vue3'

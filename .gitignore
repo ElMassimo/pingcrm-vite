@@ -7,6 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
+# Bundler dependencies (should not be versioned)
+/vendor/bundle
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-*
@@ -28,6 +31,7 @@
 
 /public/assets
 .byebug_history
+/spec/examples.txt
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

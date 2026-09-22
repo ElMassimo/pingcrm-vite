@@ -1,1 +1,1 @@
-export { useForm } from '@inertiajs/inertia-vue3'
+export { useForm } from '@inertiajs/vue3'

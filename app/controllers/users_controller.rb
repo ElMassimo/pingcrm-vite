@@ -3,80 +3,72 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @users = @users.
-             search(params[:search]).
-             trash_filter(params[:trashed]).
-             role_filter(params[:role]).
-             order_by_name
+    filters = params.permit(:search, :trashed, :role).to_keywords
+    @users = UsersQuery.wrap(@users).search(**filters).by_name
 
     render_page(
       users: UserSerializer.many(@users),
       can: {
-        create_user: can?(:create, User)
+        create_user: can?(:create, User),
       },
-      filters: params.slice(:search, :trashed, :role)
+      filters:,
     )
   end
 
   def new
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :email, :first_name, :last_name, :owner)
-      end
+      user: UserFormSerializer.one(@user),
     )
   end
 
   def edit
     render_page(
-      user: jbuilder do |json|
-        json.(@user, :id, :email, :first_name, :last_name, :owner, :deleted_at)
-        json.photo @user.photo.attached? ? polymorphic_url(@user.photo.variant(resize_to_fill: [64, 64])) : nil
-      end,
+      user: UserFormSerializer.one(@user),
       can: {
-        edit_user: can?(:update, @user)
-      }
+        edit_user: can?(:update, @user),
+      },
     )
   end
 
   def create
     if @user.update(user_params)
-      redirect_to users_path, notice: 'User created.'
+      redirect_to_index @user, notice: "User created."
     else
-      redirect_to new_user_path, inertia: { errors: @user.errors }
+      redirect_to_new @user, unprocessable: true
     end
   end
 
   def update
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: 'Updating the demo user is not allowed.'
+      redirect_to_edit @user, alert: "Updating the demo user is not allowed."
       return
     end
 
     if @user.update(user_params)
-      redirect_to edit_user_path(@user), notice: 'User updated.'
+      redirect_to_edit @user, notice: "User updated."
     else
-      redirect_to edit_user_path(@user), inertia: { errors: @user.errors }
+      redirect_to_edit @user, unprocessable: true
     end
   end
 
   def destroy
     if @user.demo?
-      redirect_to edit_user_path(@user), alert: 'Deleting the demo user is not allowed.'
+      redirect_to_edit @user, alert: "Deleting the demo user is not allowed."
       return
     end
 
     if @user.soft_delete
-      redirect_to edit_user_path(@user), notice: 'User deleted.'
+      redirect_to_edit @user, notice: "User deleted."
     else
-      redirect_to edit_user_path(@user), alert: 'User cannot be deleted!'
+      redirect_to_edit @user, alert: "User cannot be deleted!"
     end
   end
 
   def restore
     if @user.restore
-      redirect_to edit_user_path(@user), notice: 'User restored.'
+      redirect_to_edit @user, notice: "User restored."
     else
-      redirect_to edit_user_path(@user), alert: 'User cannot be restored!'
+      redirect_to_edit @user, alert: "User cannot be restored!"
     end
   end
 
@@ -84,8 +76,8 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.fetch(:user, {}).permit(
-      :first_name, :last_name, :email, :owner, :password, :photo
+    params.expect(
+      user: %i[first_name last_name email owner password photo],
     ).tap do |p|
       p.delete(:photo) if p[:photo].blank?
     end

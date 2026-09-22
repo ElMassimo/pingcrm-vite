@@ -3,66 +3,63 @@ class ContactsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    contacts = @contacts.
-               includes(:organization).
-               search(params[:search]).
-               trash_filter(params[:trashed]).
-               order_by_name
+    filters = params.permit(:search, :trashed).to_keywords
+    contacts = ContactsQuery.wrap(@contacts).includes(:organization)
+      .search(**filters).by_name
 
     render_page(
       contacts: paginate_data(contacts, serializer: ContactSerializer),
-      filters: params.slice(:search, :trashed)
+      filters:,
     )
   end
 
   def new
     render_page(
-      organizations:  ModelSerializer.many(current_user.organizations.order(:name))
+      contact: ContactFormSerializer.one(@contact),
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 
   def edit
     render_page(
-      contact: jbuilder do |json|
-        json.(@contact, :id, :first_name, :last_name, :organization_id, :email, :phone, :address, :city, :region, :country, :postal_code, :deleted_at)
-      end,
-      organizations: ModelSerializer.many(current_user.organizations.order(:name))
+      contact: ContactFormSerializer.one(@contact),
+      organizations: ModelSerializer.many(current_user.organizations.order(:name)),
     )
   end
 
   def create
     if @contact.update(contact_params)
-      redirect_to contacts_path, notice: 'Contact created.'
+      redirect_to_index @contact, notice: "Contact created."
     else
-      redirect_to new_contact_path, inertia: { errors: @contact.errors }
+      redirect_to_new @contact, unprocessable: true
     end
   end
 
   def update
     if @contact.update(contact_params)
-      redirect_to edit_contact_path(@contact), notice: 'Contact updated.'
+      redirect_to_edit @contact, notice: "Contact updated."
     else
-      redirect_to edit_contact_path(@contact), inertia: { errors: @contact.errors }
+      redirect_to_edit @contact, unprocessable: true
     end
   end
 
   def destroy
     if @contact.soft_delete
       if can? :edit, @contact
-        redirect_to edit_contact_path(@contact), notice: 'Contact deleted.'
+        redirect_to_edit @contact, notice: "Contact deleted."
       else
-        redirect_to contacts_path, notice: 'Contact deleted.'
+        redirect_to_index @contact, notice: "Contact deleted."
       end
     else
-      redirect_to edit_contact_path(@contact), alert: 'Contact cannot be deleted!'
+      redirect_to_edit @contact, alert: "Contact cannot be deleted!"
     end
   end
 
   def restore
     if @contact.restore
-      redirect_to edit_contact_path(@contact), notice: 'Contact restored.'
+      redirect_to_edit @contact, notice: "Contact restored."
     else
-      redirect_to edit_contact_path(@contact), alert: 'Contact cannot be restored!'
+      redirect_to_edit @contact, alert: "Contact cannot be restored!"
     end
   end
 
@@ -70,9 +67,10 @@ class ContactsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def contact_params
-    params.fetch(:contact, {}).permit(
-      :organization_id, :first_name, :last_name, :email, :phone, :address, :city,
-      :region, :country, :postal_code
+    params.expect(
+      contact: %i[
+        organization_id first_name last_name email phone address city region country postal_code
+      ],
     )
   end
 end

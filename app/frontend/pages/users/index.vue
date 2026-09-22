@@ -1,13 +1,56 @@
+<script setup lang="ts">
+import { users as usersApi } from '~/api'
+import { clean, reset, throttle } from '~/helpers/object'
+import type { User } from '~/serializers'
+
+interface Filters {
+  search?: string | null
+  role?: string | null
+  trashed?: string | null
+}
+
+const { users, filters, can } = defineProps<{
+  users: User[]
+  filters: Filters
+  can: { create_user: boolean }
+}>()
+const form = $ref({
+  search: filters.search,
+  role: filters.role,
+  trashed: filters.trashed,
+})
+
+watch(() => form, throttle(function () {
+  const query = clean(form)
+  usersApi.index({
+    query: Object.keys(query).length ? query : { remember: 'forget' },
+    preserveState: true,
+    preserveScroll: true,
+    replace: true,
+    only: ['users'],
+  })
+}, 150), { deep: true })
+
+function pathToEdit (user: User) {
+  return usersApi.edit.path(user)
+}
+
+function resetFilters () {
+  Object.assign(form, reset(form))
+}
+</script>
+
 <template>
+  <Head title="Users" />
   <div>
     <h1 class="mb-8 font-bold text-3xl">
       Users
     </h1>
     <div class="mb-6 flex justify-between items-center">
-      <search-filter
+      <SearchFilter
         v-model="form.search"
         class="w-full max-w-md mr-4"
-        @reset="reset"
+        @reset="resetFilters"
       >
         <label
           class="block text-gray-800"
@@ -18,7 +61,7 @@
           v-model="form.role"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="user">
             User
           </option>
@@ -35,7 +78,7 @@
           v-model="form.trashed"
           class="mt-1 w-full form-select"
         >
-          <option :value="null"/>
+          <option :value="null" />
           <option value="with">
             With Trashed
           </option>
@@ -43,14 +86,14 @@
             Only Trashed
           </option>
         </select>
-      </search-filter>
-      <inertia-link
+      </SearchFilter>
+      <InertiaLink
         v-if="can.create_user"
         class="btn-indigo"
-        :href="$api.users.new.path()"
+        :href="usersApi.new.path()"
       >
         Create <span class="hidden md:inline">User</span>
-      </inertia-link>
+      </InertiaLink>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
       <table class="w-full whitespace-nowrap">
@@ -77,7 +120,7 @@
             class="hover:bg-gray-100 focus-within:bg-gray-100"
           >
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center focus:text-indigo-500"
                 :href="pathToEdit(user)"
                 aria-label="Edit"
@@ -89,45 +132,45 @@
                   alt="Photo"
                 >
                 {{ user.name }}
-                <icon
+                <Icon
                   v-if="user.deleted_at"
                   name="trash"
                   class="flex-shrink-0 w-3 h-3 fill-gray-500 ml-2"
                 />
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center"
                 :href="pathToEdit(user)"
                 tabindex="-1"
                 aria-label="Edit"
               >
                 {{ user.email }}
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t">
-              <inertia-link
+              <InertiaLink
                 class="px-6 py-4 flex items-center"
                 :href="pathToEdit(user)"
                 tabindex="-1"
                 aria-label="Edit"
               >
                 {{ user.owner ? 'Owner' : 'User' }}
-              </inertia-link>
+              </InertiaLink>
             </td>
             <td class="border-t w-px">
-              <inertia-link
+              <InertiaLink
                 class="px-4 flex items-center"
                 :href="pathToEdit(user)"
                 tabindex="-1"
                 aria-label="Edit"
               >
-                <icon
+                <Icon
                   name="cheveron-right"
                   class="block w-6 h-6 fill-gray-500"
                 />
-              </inertia-link>
+              </InertiaLink>
             </td>
           </tr>
           <tr v-if="users.length === 0">
@@ -143,64 +186,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import Icon from '~/components/Icon.vue'
-import { clean, reset, throttle } from '~/helpers/object'
-import SearchFilter from '~/components/SearchFilter.vue'
-import { users as usersApi } from '~/api'
-
-export default {
-  metaInfo: { title: 'Users' },
-  components: {
-    Icon,
-    SearchFilter,
-  },
-  props: {
-    users: {
-      type: Array,
-      required: true,
-    },
-    filters: {
-      type: Object,
-      required: true,
-    },
-    can: {
-      type: Object,
-      required: true,
-    },
-  },
-  data () {
-    return {
-      form: {
-        search: this.filters.search,
-        role: this.filters.role,
-        trashed: this.filters.trashed,
-      },
-    }
-  },
-  watch: {
-    form: {
-      handler: throttle(function () {
-        const query = clean(this.form)
-        usersApi.index({
-          query: Object.keys(query).length ? query : { remember: 'forget' },
-          preserveState: true,
-          preserveScroll: true,
-          replace: true,
-          only: ['users'],
-        })
-      }, 150),
-      deep: true,
-    },
-  },
-  methods: {
-    pathToEdit (user) {
-      return usersApi.edit.path(user)
-    },
-    reset () {
-      this.form = reset(this.form)
-    },
-  },
-}
-</script>

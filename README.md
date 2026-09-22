@@ -16,14 +16,14 @@
 [vite-plugin-full-reload]: https://github.com/ElMassimo/vite-plugin-full-reload
 [webpacker]: https://github.com/rails/webpacker
 [vite]: http://vitejs.dev/
-[Windi CSS]: https://windicss.org/
+[Tailwind CSS]: https://tailwindcss.com/
 
 Unlike the [original demo], this replaces [webpacker] with [Vite Rails],
 which provides a substantially faster development experience.
 
 It also leverages [<kbd>js_from_routes</kbd>][js_from_routes] to auto-generate API methods to effortlessly integrate with the Rails backend, which works nicely in combination with <kbd>[vite-plugin-full-reload]</kbd>
 
-Styles are powered by [Windi CSS], a faster alternative to Tailwind CSS.
+Styles are powered by [Tailwind CSS], configured CSS-first (no `tailwind.config.js`) via the official `@tailwindcss/vite` plugin.
 
 ## Demo 🚀
 
@@ -67,18 +67,21 @@ You're ready to go! Visit PingCRM in your browser (http://localhost:3000), and l
 
 ## Running tests
 
-To run the PingCRM tests, run:
+To run the PingCRM test suite, run:
 
 ```
-rails test:system
+bundle exec rspec
 ```
 
 
 ## Requirements
 
-- Ruby 3.1
-- Ruby on Rails 7
+- Ruby 4.0 (managed with [mise])
+- Node 24 (managed with [mise])
+- Ruby on Rails 8
 - PostgreSQL
+
+[mise]: https://mise.jdx.dev/
 
 
 ## Credits

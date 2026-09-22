@@ -1,10 +1,50 @@
+<script setup lang="ts">
+import { createPopper, type Instance, type Placement } from '@popperjs/core'
+
+const {
+  placement = 'bottom-end',
+  autoClose = true,
+} = defineProps<{
+  placement?: Placement
+  autoClose?: boolean
+}>()
+
+const root = useTemplateRef<HTMLButtonElement>('root')
+const dropdown = useTemplateRef<HTMLElement>('dropdown')
+let show = $ref(false)
+let popper: Instance | undefined
+
+watch(() => show, async (isShown) => {
+  if (isShown) {
+    await nextTick()
+    if (root.value && dropdown.value) {
+      popper = createPopper(root.value, dropdown.value, {
+        placement,
+        modifiers: [{ name: 'preventOverflow', options: { altBoundary: true } }],
+      })
+    }
+  }
+  else if (popper) {
+    setTimeout(() => popper?.destroy(), 100)
+  }
+})
+
+function onEscape (event: KeyboardEvent) {
+  if (event.key === 'Escape') show = false
+}
+
+onMounted(() => document.addEventListener('keydown', onEscape))
+onUnmounted(() => document.removeEventListener('keydown', onEscape))
+</script>
+
 <template>
   <button
+    ref="root"
     type="button"
     @click="show = true"
   >
-    <slot/>
-    <teleport
+    <slot />
+    <Teleport
       v-if="show"
       to="#dropdown"
     >
@@ -18,59 +58,9 @@
           style="position: absolute; z-index: 99999;"
           @click.stop="show = !autoClose"
         >
-          <slot name="dropdown"/>
+          <slot name="dropdown" />
         </div>
       </div>
-    </teleport>
+    </Teleport>
   </button>
 </template>
-
-<script>
-import { createPopper } from '@popperjs/core'
-
-export default {
-  props: {
-    placement: {
-      type: String,
-      default: 'bottom-end',
-    },
-    autoClose: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data () {
-    return {
-      show: false,
-    }
-  },
-  watch: {
-    show (show) {
-      if (show) {
-        this.$nextTick(() => {
-          this.popper = createPopper(this.$el, this.$refs.dropdown, {
-            placement: this.placement,
-            modifiers: [
-              {
-                name: 'preventOverflow',
-                options: {
-                  altBoundary: true,
-                },
-              },
-            ],
-          })
-        })
-      }
-      else if (this.popper) {
-        setTimeout(() => this.popper.destroy(), 100)
-      }
-    },
-  },
-  mounted () {
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape')
-        this.show = false
-    })
-  },
-}
-</script>

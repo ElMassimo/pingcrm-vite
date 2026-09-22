@@ -17,7 +17,7 @@ Rails.application.config.content_security_policy do |policy|
     policy.connect_src :self, "http://#{ViteRuby.config.host_with_port}", "ws://#{ViteRuby.config.host_with_port}"
 
     # Inertia.js uses inline scripts to display error modal in development
-    policy.script_src :self, :unsafe_eval, "http://#{ViteRuby.config.host_with_port}", :unsafe_inline, 'https://polyfill.io'
+    policy.script_src :self, :unsafe_eval, "http://#{ViteRuby.config.host_with_port}", :unsafe_inline, "https://polyfill.io"
   else
     policy.connect_src :self
     policy.script_src :self, :blob

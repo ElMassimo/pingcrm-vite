@@ -9,33 +9,33 @@ const form = useForm({
     remember_me: null,
   },
 })
-const { user } = $(form)
+const { user } = form
 
-function login (form: any) {
+function login () {
   usersSessions.create({ form })
 }
 </script>
 
 <template layout="base">
-  <Head title="Login"/>
+  <Head title="Login" />
   <div class="p-6 bg-indigo-800 min-h-screen flex justify-center items-center">
     <div class="w-full max-w-md">
-      <logo
+      <Logo
         class="block mx-auto w-full max-w-xs text-white"
         height="50"
       />
       <form
         class="mt-8 bg-white rounded-lg shadow-xl overflow-hidden"
-        @submit.prevent="login(form)"
+        @submit.prevent="login"
       >
         <div class="px-10 py-12">
-          <flash-messages/>
+          <FlashMessages />
 
           <h1 class="text-center font-bold text-3xl">
             Welcome Back!
           </h1>
-          <div class="mx-auto mt-6 w-24 border-b-2"/>
-          <text-input
+          <div class="mx-auto mt-6 w-24 border-b-2" />
+          <TextInput
             v-model="user.email"
             class="mt-10"
             label="Email"
@@ -43,7 +43,7 @@ function login (form: any) {
             autofocus
             autocapitalize="off"
           />
-          <text-input
+          <TextInput
             v-model="user.password"
             class="mt-6"
             label="Password"
@@ -68,13 +68,13 @@ function login (form: any) {
             tabindex="-1"
             href="#reset-password"
           >Forget password?</a>
-          <loading-button
+          <LoadingButton
             :loading="form.processing"
             class="btn-indigo"
             type="submit"
           >
             Login
-          </loading-button>
+          </LoadingButton>
         </div>
       </form>
     </div>

@@ -11,7 +11,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
   scenario "listing, paginating, and searching organizations" do
     records = organizations.given_organizations(account:, count: 15)
 
-    organizations.visit_index
+    organizations.visit_page
     organizations.should.see_heading
     organizations.should.have_rows(10)
     organizations.should.have_organizations(*records.first(10))
@@ -30,7 +30,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
     records = organizations.given_organizations(account:, count: 5)
     organizations.delete_record(records.first)
 
-    organizations.visit_index
+    organizations.visit_page
     organizations.should.have_rows(4)
 
     organizations.include_deleted
@@ -38,7 +38,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
   end
 
   scenario "creating, editing, and deleting an organization" do
-    organizations.visit_index
+    organizations.visit_page
     organizations.create_organization(name: "The new organization")
     organizations.should.have_organization("The new organization")
 
@@ -52,7 +52,7 @@ RSpec.feature "Organizations", test_helpers: %i[organizations] do
 
   scenario "requiring authentication" do
     organizations.sign_out(owner)
-    organizations.visit_index
+    organizations.visit_page
 
     organizations.should.see_login_page
     organizations.should.be_in_page(:login)

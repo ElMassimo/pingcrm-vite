@@ -6,10 +6,6 @@ class UsersTestHelper < BaseTestHelper
   # Finders: A convenient way to get related data or nested elements.
 
   # Actions: Encapsulate complex actions to provide a cleaner interface.
-  def visit_index
-    visit_page(:users)
-  end
-
   def visit_new
     visit_page(:new_user)
   end

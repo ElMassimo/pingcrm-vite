@@ -11,7 +11,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
     records = users.given_users(account:, count: 15)
     users.sign_in_as(user)
 
-    users.visit_index
+    users.visit_page
     users.should.see_heading
     users.should.have_rows(17)
     users.should.have_users(*records)
@@ -25,7 +25,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
   scenario "an owner creates, edits, and deletes a user" do
     users.sign_in_as(owner)
 
-    users.visit_index
+    users.visit_page
     users.create_user(first_name: "Jonathan", last_name: "Smith", email: "john@smith.com")
     users.should.have_user(name: "Smith, Jonathan", email: "john@smith.com")
 
@@ -40,7 +40,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
   scenario "a non-owner cannot create, edit, or delete users" do
     users.sign_in_as(user)
 
-    users.visit_index
+    users.visit_page
     users.should_not.see_create_action
 
     users.visit_new
@@ -55,7 +55,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
     users.delete_record(user)
     users.sign_in_as(owner)
 
-    users.visit_index
+    users.visit_page
     users.should_not.have_user(email: user.email)
 
     users.include_deleted_users
@@ -63,7 +63,7 @@ RSpec.feature "Users", test_helpers: %i[users] do
   end
 
   scenario "requiring authentication" do
-    users.visit_index
+    users.visit_page
 
     users.should.see_login_page
     users.should.be_in_page(:login)

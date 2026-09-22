@@ -6,10 +6,6 @@ class ContactsTestHelper < BaseTestHelper
   # Finders: A convenient way to get related data or nested elements.
 
   # Actions: Encapsulate complex actions to provide a cleaner interface.
-  def visit_index
-    visit_page(:contacts)
-  end
-
   def create_contact(first_name:, last_name:)
     click_on("Create Contact")
     fill_in("First name:", with: first_name)

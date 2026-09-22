@@ -12,7 +12,9 @@ class BaseTestHelper < Capybara::TestHelper
   # Finders: A convenient way to get related data or nested elements.
 
   # Actions: Encapsulate complex actions to provide a cleaner interface.
-  delegate :visit_page, to: :navigation
+  def visit_page(page_alias = friendly_name.to_sym, **options)
+    navigation.visit_page(page_alias, **options)
+  end
 
   # Assertions: Check on element properties, used with `should` and `should_not`.
   def have_heading(text)

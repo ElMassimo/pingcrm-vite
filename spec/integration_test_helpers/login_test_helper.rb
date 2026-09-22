@@ -7,7 +7,7 @@ class LoginTestHelper < BaseTestHelper
 
   # Actions: Encapsulate complex actions to provide a cleaner interface.
   def log_in(user, password: user.password)
-    visit_page(:login)
+    visit_page
     fill_in("Email", with: user.email)
     fill_in("Password", with: password)
     click_on("Login")

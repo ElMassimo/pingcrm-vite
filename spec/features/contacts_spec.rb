@@ -11,7 +11,7 @@ RSpec.feature "Contacts", test_helpers: %i[contacts] do
   scenario "listing, paginating, and searching contacts" do
     records = contacts.given_contacts(account:, count: 15)
 
-    contacts.visit_index
+    contacts.visit_page
     contacts.should.see_heading
     contacts.should.have_rows(10)
     contacts.should.have_contacts(*records.first(10))
@@ -30,7 +30,7 @@ RSpec.feature "Contacts", test_helpers: %i[contacts] do
     records = contacts.given_contacts(account:, count: 5)
     contacts.delete_record(records.first)
 
-    contacts.visit_index
+    contacts.visit_page
     contacts.should.have_rows(4)
 
     contacts.include_deleted
@@ -38,7 +38,7 @@ RSpec.feature "Contacts", test_helpers: %i[contacts] do
   end
 
   scenario "creating, editing, and deleting a contact" do
-    contacts.visit_index
+    contacts.visit_page
     contacts.create_contact(first_name: "Jane", last_name: "Doe")
     contacts.should.have_contact("Doe, Jane")
 
@@ -52,7 +52,7 @@ RSpec.feature "Contacts", test_helpers: %i[contacts] do
 
   scenario "requiring authentication" do
     contacts.sign_out(owner)
-    contacts.visit_index
+    contacts.visit_page
 
     contacts.should.see_login_page
     contacts.should.be_in_page(:login)

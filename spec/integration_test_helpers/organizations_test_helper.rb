@@ -7,10 +7,6 @@ class OrganizationsTestHelper < BaseTestHelper
   # Finders: A convenient way to get related data or nested elements.
 
   # Actions: Encapsulate complex actions to provide a cleaner interface.
-  def visit_index
-    visit_page(:organizations)
-  end
-
   def create_organization(name:)
     click_on("Create Organization")
     within(:organization_form) do
